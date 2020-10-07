@@ -8,11 +8,13 @@ public class MarketItem {
     private final ItemStack stack;
     private final Player player;
     private final long expire;
+    private final double price;
 
-    public MarketItem(ItemStack stack, Player player, long expire) {
+    public MarketItem(ItemStack stack, Player player, long expire, double price) {
         this.stack = stack;
         this.player = player;
         this.expire = expire;
+        this.price = price;
     }
 
     public Player getPlayer() {
@@ -29,6 +31,10 @@ public class MarketItem {
 
     public boolean isExpired() {
         return expire < System.currentTimeMillis();
+    }
+
+    public double getPrice() {
+        return price;
     }
 
 }

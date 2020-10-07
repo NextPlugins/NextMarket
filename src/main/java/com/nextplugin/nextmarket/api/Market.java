@@ -2,6 +2,7 @@ package com.nextplugin.nextmarket.api;
 
 import com.nextplugin.nextmarket.NextMarket;
 import com.nextplugin.nextmarket.api.category.Category;
+import com.nextplugin.nextmarket.api.category.loader.CategoryLoader;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,7 @@ public class Market {
     private final List<Category> categories;
 
     public Market(NextMarket plugin) {
-        this.categories = new ArrayList<>();
+        this.categories = new CategoryLoader(plugin).load();
     }
 
     public List<MarketItem> getMarketItemsFrom(Player player) {
@@ -48,6 +49,10 @@ public class Market {
         }
 
         return null;
+    }
+
+    public void createNewAnnounce(ItemStack itemStack, double price) {
+        
     }
 
 }

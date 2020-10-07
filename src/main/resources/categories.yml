@@ -19,7 +19,7 @@ categories:
         - HIDE_ATTRIBUTES
       lore:
         - '&7Veja os spawners que estão a venda.'
-      slot: 10
+      slot: 11
 
 categories-item:
   # Item:ID da categoria
