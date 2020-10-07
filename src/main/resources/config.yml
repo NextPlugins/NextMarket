@@ -14,4 +14,3 @@ announcement:
   delay: 600
   # Preço por anúncio (-1 para desativar)
   price: -1
-
