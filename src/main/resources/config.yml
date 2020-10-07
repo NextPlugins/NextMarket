@@ -1,0 +1,17 @@
+connection:
+  # Tipos:
+  # 0 = SQLITE
+  # 1 = MYSQL
+  type: 0
+  user: root
+  password: ""
+  database: "localhost:3306/myDatabase"
+
+announcement:
+  message: "&6&l[MERCADO]&r &e{jogador} &7anunciou {item-name} &7por &6{amount}"
+  # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
+  # novo item, um novo anúncio, do contário, o item será anunciado sem destaque.
+  delay: 600
+  # Preço por anúncio (-1 para desativar)
+  price: -1
+
