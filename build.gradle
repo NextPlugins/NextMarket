@@ -14,10 +14,13 @@ repositories {
 
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
+
+    maven { url = 'https://jitpack.io/' }
 }
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
+    pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
 }
 
 buildscript {
