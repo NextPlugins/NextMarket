@@ -1,4 +1,4 @@
-package com.nextplugin.nextmarket.api.listener;
+package com.nextplugin.nextmarket.api.event;
 
 import com.nextplugin.nextmarket.api.MarketItem;
 import org.bukkit.entity.Player;
@@ -6,10 +6,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MarketItemBuyEvent extends Event implements Cancellable {
+public class MarketItemSellEvent extends Event implements Cancellable {
 
-    private Player whoBought;
-    private MarketItem boughtItem;
+    private Player whoSell;
+    private MarketItem marketItem;
     private boolean isCancelled;
     private String cancellationReason;
 
@@ -17,25 +17,25 @@ public class MarketItemBuyEvent extends Event implements Cancellable {
      * The default constructor is defined for cleaner code. This constructor
      * assumes the event is synchronous.
      */
-    public MarketItemBuyEvent(Player whoBought, MarketItem boughtItem) {
-        this.whoBought = whoBought;
-        this.boughtItem = boughtItem;
+    public MarketItemSellEvent(Player whoSell, MarketItem marketItem) {
+        this.whoSell = whoSell;
+        this.marketItem = marketItem;
     }
 
-    public Player getWhoBought() {
-        return whoBought;
+    public Player getWhoSell() {
+        return whoSell;
     }
 
-    public void setWhoBought(Player whoBought) {
-        this.whoBought = whoBought;
+    public void setWhoSell(Player whoSell) {
+        this.whoSell = whoSell;
     }
 
-    public MarketItem getBoughtItem() {
-        return boughtItem;
+    public MarketItem getMarketItem() {
+        return marketItem;
     }
 
-    public void setBoughtItem(MarketItem boughtItem) {
-        this.boughtItem = boughtItem;
+    public void setMarketItem(MarketItem marketItem) {
+        this.marketItem = marketItem;
     }
 
     public String getCancellationReason() {

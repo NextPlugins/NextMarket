@@ -1,14 +1,15 @@
-package com.nextplugin.nextmarket.api.listener;
+package com.nextplugin.nextmarket.api.event;
 
+import com.nextplugin.nextmarket.api.MarketItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MarketItemCreateEvent extends Event implements Cancellable {
+public class MarketItemRemoveEvent extends Event implements Cancellable {
 
-    private Player seller;
-    private double price;
+    private Player whoRemoved;
+    private MarketItem marketItem;
     private boolean isCancelled;
     private String cancellationReason;
 
@@ -16,25 +17,25 @@ public class MarketItemCreateEvent extends Event implements Cancellable {
      * The default constructor is defined for cleaner code. This constructor
      * assumes the event is synchronous.
      */
-    public MarketItemCreateEvent(Player seller, double price) {
-        this.seller = seller;
-        this.price = price;
+    public MarketItemRemoveEvent(Player whoRemoved, MarketItem marketItem) {
+        this.whoRemoved = whoRemoved;
+        this.marketItem = marketItem;
     }
 
-    public Player getSeller() {
-        return seller;
+    public Player getWhoRemoved() {
+        return whoRemoved;
     }
 
-    public void setSeller(Player seller) {
-        this.seller = seller;
+    public void setWhoRemoved(Player whoRemoved) {
+        this.whoRemoved = whoRemoved;
     }
 
-    public double getPrice() {
-        return price;
+    public MarketItem getMarketItem() {
+        return marketItem;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setMarketItem(MarketItem marketItem) {
+        this.marketItem = marketItem;
     }
 
     public String getCancellationReason() {
@@ -83,10 +84,6 @@ public class MarketItemCreateEvent extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 
