@@ -4,23 +4,24 @@
 # Ao anunciar, o item irá diretamente para categoria qual corresponde,
 # além de também, servir para melhor organização do mercado.
 
-menu:
-  lines-amount: 6
-  name: "Mercado"
+inventory:
+  main: # Inventário principal onde serão exibidas todas as categorias
+    title: "&8Mercado"
+    lines: 6
+  category: # Inventário onde será exibido os itens daquela categoria
+    title: "&8Categoria: {category_name}"
+    lines: 5
 
 categories:
   # ID
   spawners:
     item:
-      icon: MOB_SPAWNER
-      name: "&dSpawners"
-      data: 0
-      flags:
-        - HIDE_ATTRIBUTES
-      lore:
-        - '&7Veja os spawners que estão a venda.'
-      slot: 11
-
-categories-item:
-  # Item:ID da categoria
-  - 'MOB_SPAWNER:spawners'
+      displayName: "Gerador de Monstros"
+      description: "Compre geradores de monstros nesta categoria!"
+      icon:
+        material: MOB_SPAWNERR
+        data: 0
+        inventorySlot: 11
+      allowedMaterials:
+        - "MOB_SPAWNER"
+        - "MÃE_DO_EIKE"

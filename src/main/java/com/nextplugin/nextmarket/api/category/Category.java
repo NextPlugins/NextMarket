@@ -13,6 +13,7 @@ public final class Category {
 
     private final String id;
     private final String displayName;
+    private final String description;
 
     private final CategoryIcon icon;
     private final List<Material> allowedMaterials;
