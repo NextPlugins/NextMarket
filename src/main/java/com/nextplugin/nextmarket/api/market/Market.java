@@ -1,6 +1,7 @@
-package com.nextplugin.nextmarket.api;
+package com.nextplugin.nextmarket.api.market;
 
 import com.nextplugin.nextmarket.NextMarket;
+import com.nextplugin.nextmarket.api.MarketItem;
 import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.category.loader.CategoryLoader;
 import org.bukkit.Material;
@@ -11,15 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Market {
+public interface Market {
 
-    private final List<Category> categories;
+    List<Category> categories = new CategoryLoader(NextMarket.getInstance()).load();
 
-    public Market(NextMarket plugin) {
-        this.categories = new CategoryLoader(plugin).load();
-    }
-
-    public List<MarketItem> getMarketItemsFrom(Player player) {
+    default List<MarketItem> getMarketItemsFrom(Player player) {
         List<MarketItem> items = new ArrayList<>();
 
         for (Category category : getCategories()) {
@@ -37,11 +34,11 @@ public class Market {
         return items;
     }
 
-    public List<Category> getCategories() {
+    default List<Category> getCategories() {
         return categories;
     }
 
-    public Category getCategoryToItem(ItemStack itemStack) {
+    default Category getCategoryToItem(ItemStack itemStack) {
         Material material = itemStack.getType();
 
         for (Category category : getCategories()) {
@@ -49,10 +46,6 @@ public class Market {
         }
 
         return null;
-    }
-
-    public void createNewAnnounce(ItemStack itemStack, double price) {
-        
     }
 
 }
