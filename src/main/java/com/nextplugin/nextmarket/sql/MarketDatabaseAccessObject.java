@@ -1,6 +1,8 @@
 package com.nextplugin.nextmarket.sql;
 
+import com.google.inject.Inject;
 import com.nextplugin.nextmarket.api.item.MarketItem;
+import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.sql.provider.ConnectionBuilder;
 import com.nextplugin.nextmarket.sql.provider.DatabaseProvider;
 import com.nextplugin.nextmarket.sql.provider.document.impl.MarketItemSerializer;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MarketDatabaseAccessObject extends DatabaseProvider {
+
+    @Inject private ConfigValue values;
 
     public MarketDatabaseAccessObject(ConnectionBuilder connectionBuilder) {
         super(connectionBuilder);
@@ -38,7 +42,7 @@ public class MarketDatabaseAccessObject extends DatabaseProvider {
     public List<MarketItem> getAllExpiredItems() {
         return getAllMarketItems()
                 .stream()
-                .filter(item -> item.isExpired(3600))
+                .filter(item -> item.isExpired(values.announcementExpireTime()))
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +58,7 @@ public class MarketDatabaseAccessObject extends DatabaseProvider {
     public List<MarketItem> getExpiredItemsFrom(Player player) {
         return getMarketItemsFrom(player)
                 .stream()
-                .filter(item -> item.isExpired(3600))
+                .filter(item -> item.isExpired(values.announcementExpireTime()))
                 .collect(Collectors.toList());
     }
 
