@@ -27,6 +27,8 @@ dependencies {
     annotationProcessor lombokDependency
 }
 
+jar.dependsOn project.tasks.getByName('pdm')
+
 buildscript {
 
     repositories {
