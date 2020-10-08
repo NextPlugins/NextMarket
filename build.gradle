@@ -21,6 +21,10 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
     pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
+
+    def lombokDependency = 'org.projectlombok:lombok:1.18.12'
+    compileOnly lombokDependency
+    annotationProcessor lombokDependency
 }
 
 buildscript {
