@@ -9,7 +9,7 @@ import java.util.List;
 
 @Builder
 @Data
-public class Category {
+public final class Category {
 
     private final String id;
     private final String displayName;
