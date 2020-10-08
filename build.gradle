@@ -24,8 +24,6 @@ dependencies {
     pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
     pdm 'com.google.inject:guice:4.0'
 
-    pdm 'javax.inject:javax.inject:1'
-
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
     annotationProcessor lombokDependency
@@ -40,7 +38,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "me.bristermitten:pdm-gradle:0.0.26"
+        classpath "me.bristermitten:pdm-gradle:0.0.28"
     }
 
 }
