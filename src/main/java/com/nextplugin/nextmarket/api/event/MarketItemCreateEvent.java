@@ -14,8 +14,6 @@ public class MarketItemCreateEvent extends MarketEvent implements Cancellable {
 
     private final Player player;
     private final MarketItem marketItem;
-
     private boolean cancelled;
-    private String cancellationReason;
 
 }
