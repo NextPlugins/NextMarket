@@ -6,47 +6,66 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import lombok.Getter;
+import me.bristermitten.pdm.PDMBuilder;
+import me.bristermitten.pdm.PluginDependencyManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 @Getter
 public final class NextMarket extends JavaPlugin {
 
-    public static NextMarket getInstance() {
-        return getPlugin(NextMarket.class);
-    }
+    private CompletableFuture<Void> dependencyLoader;
 
     private Injector injector;
     private FileConfiguration categoriesConfiguration;
 
     @Inject private CategoryManager categoryManager;
 
+    public static NextMarket getInstance() {
+        return getPlugin(NextMarket.class);
+    }
+
     @Override
     public void onLoad() {
         saveDefaultConfig();
         loadCategoriesConfiguration();
 
-        NextMarket instance = this;
-        this.injector = Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-                bind(NextMarket.class).toInstance(instance);
-                bind(Logger.class).toInstance(instance.getLogger());
+        PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
+        this.dependencyLoader = dependencyManager.loadAllDependencies();
+        dependencyLoader.thenRun(() -> {
+            try {
+                NextMarket instance = getInstance();
+                this.injector = Guice.createInjector(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(NextMarket.class).toInstance(instance);
+                        bind(Logger.class).toInstance(instance.getLogger());
+                    }
+                });
+
+                this.injector.injectMembers(instance);
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
         });
-
-        this.injector.injectMembers(this);
     }
 
     @Override
     public void onEnable() {
-        this.categoryManager.registerCategories(
-                this.categoriesConfiguration.getConfigurationSection("categories")
-        );
+        System.out.println("abc");
+        dependencyLoader.thenRun(() -> {
+            System.out.println("ta aqui porra");
+            System.out.println(this.categoryManager);
+            this.categoryManager.registerCategories(
+                    this.categoriesConfiguration.getConfigurationSection("categories")
+            );
+            System.out.println(this.categoryManager.getCategoryMap());
+        });
     }
 
     @Override

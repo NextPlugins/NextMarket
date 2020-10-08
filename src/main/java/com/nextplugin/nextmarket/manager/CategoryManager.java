@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.parser.CategoryParser;
+import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.LinkedHashMap;
@@ -15,6 +16,7 @@ import java.util.function.Predicate;
  * @author Henry Fábio
  * Github: https://github.com/HenryFabio
  */
+@Getter
 @Singleton
 public final class CategoryManager {
 
