@@ -1,6 +1,6 @@
 package com.nextplugin.nextmarket.api.event;
 
-import com.nextplugin.nextmarket.api.MarketItem;
+import com.nextplugin.nextmarket.api.item.MarketItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

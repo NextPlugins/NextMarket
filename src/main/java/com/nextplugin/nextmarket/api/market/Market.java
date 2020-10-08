@@ -1,7 +1,7 @@
 package com.nextplugin.nextmarket.api.market;
 
 import com.nextplugin.nextmarket.NextMarket;
-import com.nextplugin.nextmarket.api.MarketItem;
+import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.category.loader.CategoryLoader;
 import org.bukkit.Material;
