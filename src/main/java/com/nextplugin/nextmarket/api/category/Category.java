@@ -1,39 +1,20 @@
 package com.nextplugin.nextmarket.api.category;
 
-import com.nextplugin.nextmarket.api.MarketItem;
+import com.nextplugin.nextmarket.api.category.icon.CategoryIcon;
+import lombok.Builder;
+import lombok.Data;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@Builder
+@Data
 public class Category {
 
-    private final ItemStack icon;
-    private final List<Material> validTypes;
-    private final List<MarketItem> items;
-    private final int position;
+    private final String id;
+    private final String displayName;
 
-    public Category(ItemStack icon, List<Material> validTypes, List<MarketItem> items, int position) {
-        this.icon = icon;
-        this.validTypes = validTypes;
-        this.items = items;
-        this.position = position;
-    }
-
-    public ItemStack getIcon() {
-        return icon;
-    }
-
-    public List<Material> getValidTypes() {
-        return validTypes;
-    }
-
-    public List<MarketItem> getItems() {
-        return items;
-    }
-
-    public int getPosition() {
-        return position;
-    }
+    private final CategoryIcon icon;
+    private final List<Material> allowedMaterials;
 
 }
