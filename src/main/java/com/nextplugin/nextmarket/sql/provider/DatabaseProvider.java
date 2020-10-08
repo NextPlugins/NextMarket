@@ -91,4 +91,12 @@ public class DatabaseProvider {
         }
     }
 
+    public void shutdown() {
+        try {
+            if (getConnection() != null) getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

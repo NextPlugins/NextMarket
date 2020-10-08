@@ -1,11 +1,11 @@
-connection:
+database:
   # Tipos:
-  # 0 = SQLITE
-  # 1 = MYSQL
-  type: 0
+  # SQLite = org.jdbc.SQLite
+  # MySQL = com.mysql.JDBC
+  driver: "org.jdbc.SQLite"
   user: root
   password: ""
-  database: "localhost:3306/myDatabase"
+  url: "localhost:3306/myDatabase"
 
 announcement:
   message: "&6&l[MERCADO]&r &e{jogador} &7anunciou {item-name} &7por &6{amount}"
