@@ -1,10 +1,13 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
-apply plugin: 'me.bristermitten.pdm'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "com.palantir.git-version"
+
+def gitDetails = versionDetails.call()
 
 group = 'com.nextplugin'
-version = '0.0.1-SNAPSHOT'
+version = gitDetails.gitHash
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -21,24 +24,26 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
 
-    pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
-    pdm 'com.google.inject:guice:4.0'
+    compile 'com.github.HenryFabio:inventory-api:2b163967d1'
+    compile 'com.google.inject:guice:4.0'
 
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
     annotationProcessor lombokDependency
 }
 
-jar.dependsOn project.tasks.getByName('pdm')
+build.dependsOn shadowJar
 
 buildscript {
 
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
 
     dependencies {
-        classpath "me.bristermitten:pdm-gradle:0.0.28"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+        classpath 'com.palantir.gradle.gitversion:gradle-git-version:0.12.3'
     }
 
 }
@@ -47,4 +52,8 @@ processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
