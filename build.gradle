@@ -26,7 +26,15 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
 
     pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
+    pdm 'com.zaxxer:HikariCP:3.4.5'
+    pdm 'com.github.SaiintBrisson:command-framework:1.0.0'
     pdm 'com.google.inject:guice:4.0'
+    pdm 'javax.inject:javax.inject:1'
+    pdm 'javax.inject:javax.inject-tck:1'
+    pdm 'aopalliance:aopalliance:1.0'
+    pdm 'com.google.guava:guava:27.1-jre'
+    pdm 'com.google.guava:guava-testlib:27.1-jre'
+    pdm 'org.ow2.asm:asm:8.0.1'
 
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
