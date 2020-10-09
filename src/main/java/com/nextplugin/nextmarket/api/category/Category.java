@@ -6,6 +6,7 @@ import lombok.Data;
 import org.bukkit.Material;
 
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Data
@@ -16,6 +17,6 @@ public final class Category {
     private final String description;
 
     private final CategoryIcon icon;
-    private final List<Material> allowedMaterials;
+    private final Set<Material> allowedMaterials;
 
 }

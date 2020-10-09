@@ -1,3 +1,13 @@
+connection:
+  mysql:
+    enabled: false
+    address: "localhost:3306"
+    username: "root"
+    passowrd: ""
+    database: "test"
+  sqlite:
+    file: "market.sql"
+
 announcement:
   message: "&6&l[MERCADO]&r &e{jogador} &7anunciou {item-name} &7por &6{amount}"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um

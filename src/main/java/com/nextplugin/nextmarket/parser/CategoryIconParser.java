@@ -2,6 +2,7 @@ package com.nextplugin.nextmarket.parser;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.nextplugin.nextmarket.api.category.icon.CategoryIcon;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
 @Singleton
 public final class CategoryIconParser {
 
-    @Inject private Logger logger;
+    @Inject @Named("main") private Logger logger;
 
     public CategoryIcon parseSection(ConfigurationSection section) {
         return CategoryIcon.builder()
@@ -33,7 +34,7 @@ public final class CategoryIconParser {
                     (short) section.getInt("data")
             );
         } catch (Throwable t) {
-            this.logger.warning(section.getRoot().getName() + " category is invalid!");
+            this.logger.warning(section.getParent().getName() + " category is invalid!");
             return null;
         }
     }
