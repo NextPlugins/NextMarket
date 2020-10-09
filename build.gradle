@@ -4,6 +4,7 @@ apply plugin: 'java'
 
 apply plugin: 'me.bristermitten.pdm'
 apply plugin: "com.palantir.git-version"
+apply plugin: "com.github.johnrengelman.shadow"
 
 def gitDetails = versionDetails.call()
 
@@ -12,6 +13,9 @@ version = gitDetails.gitHash
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
+
+jar.dependsOn project.tasks.getByName('pdm')
+jar.dependsOn project.tasks.getByName('shadowJar')
 
 repositories {
     mavenCentral()
@@ -41,8 +45,6 @@ dependencies {
     annotationProcessor lombokDependency
 }
 
-jar.dependsOn project.tasks.getByName('pdm')
-
 buildscript {
 
     repositories {
@@ -52,8 +54,13 @@ buildscript {
     dependencies {
         classpath 'me.bristermitten:pdm-gradle:0.0.28'
         classpath 'com.palantir.gradle.gitversion:gradle-git-version:0.12.3'
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.0.0"
     }
 
+}
+
+shadowJar {
+    archiveName("${project.name}.jar")
 }
 
 processResources {
