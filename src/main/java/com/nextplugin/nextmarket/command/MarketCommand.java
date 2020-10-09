@@ -61,9 +61,19 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        if(!target.isOnline()){
-            player.sendMessage(configValue.offlinePlayerMessage());
+        double maxValue = configValue.maximumAnnouncementValue();
+        double minValue = configValue.minimumAnnouncementValue();
+
+        if(value > maxValue){ player.sendMessage(configValue.maximumValueReachedMessage()); }
+        if(value < minValue){ player.sendMessage(configValue.minimumValueNotReachedMessage()); }
+
+        if(target != null){
+
+            // TODO sells on target's private market
+
         }
+
+        // TODO sells on global market
 
     }
 
@@ -81,7 +91,7 @@ public class MarketCommand {
     @Command(name = "mercado.anunciados")
     public void viewMarketAnnouncedItems(Context<Player> context){
 
-
+        // TODO announced items inventory
 
     }
 
