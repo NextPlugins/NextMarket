@@ -3,7 +3,6 @@ package com.nextplugin.nextmarket.sql;
 import com.google.inject.Inject;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
-import com.nextplugin.nextmarket.sql.provider.ConnectionBuilder;
 import com.nextplugin.nextmarket.sql.provider.DatabaseProvider;
 import com.nextplugin.nextmarket.sql.provider.document.impl.MarketItemSerializer;
 import org.bukkit.entity.Player;
@@ -15,10 +14,6 @@ public class MarketDatabaseAccessObject extends DatabaseProvider {
 
     @Inject private ConfigValue values;
 
-    public MarketDatabaseAccessObject(ConnectionBuilder connectionBuilder) {
-        super(connectionBuilder);
-    }
-
     public void create() {
         update("create table if not exists `market_items` (" +
                 "`owner` char(36) not null, " +
@@ -26,10 +21,6 @@ public class MarketDatabaseAccessObject extends DatabaseProvider {
                 "`destination` char(36)," +
                 "`created_at` integer(8) not null" +
                 ");");
-    }
-
-    public void shutdown() {
-        super.shutdown();
     }
 
     public List<MarketItem> getAllMarketItems() {

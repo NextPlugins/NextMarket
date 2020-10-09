@@ -5,14 +5,18 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.nextplugin.nextmarket.manager.CategoryManager;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
-//import me.bristermitten.pdm.PDMBuilder;
-//import me.bristermitten.pdm.PluginDependencyManager;
+import me.bristermitten.pdm.PDMBuilder;
+import me.bristermitten.pdm.PluginDependencyManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -23,6 +27,8 @@ public final class NextMarket extends JavaPlugin {
 
     private Injector injector;
     private FileConfiguration categoriesConfiguration;
+    private HikariConfig hikariConfig;
+    private HikariDataSource dataSource;
 
     @Inject private CategoryManager categoryManager;
 
@@ -34,9 +40,23 @@ public final class NextMarket extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         loadCategoriesConfiguration();
+        loadConnectionProperties();
 
-        //PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
-        //this.dependencyLoader = dependencyManager.loadAllDependencies();
+        PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
+        this.dependencyLoader = dependencyManager.loadAllDependencies();
+
+        File connectionFile = new File(getDataFolder(), "connection.properties");
+        Properties properties = new Properties();
+
+        try (FileInputStream inputStream = new FileInputStream(connectionFile)) {
+            properties.load(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        hikariConfig = new HikariConfig(properties);
+        dataSource = new HikariDataSource(hikariConfig);
+
         dependencyLoader.thenRun(() -> {
             try {
                 NextMarket instance = getInstance();
@@ -44,7 +64,7 @@ public final class NextMarket extends JavaPlugin {
                     @Override
                     protected void configure() {
                         bind(NextMarket.class).toInstance(instance);
-                        bind(Logger.class).toInstance(instance.getLogger());
+                        bind(HikariDataSource.class).toInstance(dataSource);
                     }
                 });
 
@@ -53,6 +73,7 @@ public final class NextMarket extends JavaPlugin {
                 t.printStackTrace();
             }
         });
+
     }
 
     @Override
@@ -79,6 +100,10 @@ public final class NextMarket extends JavaPlugin {
         categoriesConfiguration = YamlConfiguration.loadConfiguration(
                 new File(getDataFolder(), "categories.yml")
         );
+    }
+
+    private void loadConnectionProperties() {
+        saveResource("connection.properties", false);
     }
 
 }
