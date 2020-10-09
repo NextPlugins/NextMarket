@@ -6,8 +6,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import lombok.Getter;
-import me.bristermitten.pdm.PDMBuilder;
-import me.bristermitten.pdm.PluginDependencyManager;
+//import me.bristermitten.pdm.PDMBuilder;
+//import me.bristermitten.pdm.PluginDependencyManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,8 +35,8 @@ public final class NextMarket extends JavaPlugin {
         saveDefaultConfig();
         loadCategoriesConfiguration();
 
-        PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
-        this.dependencyLoader = dependencyManager.loadAllDependencies();
+        //PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
+        //this.dependencyLoader = dependencyManager.loadAllDependencies();
         dependencyLoader.thenRun(() -> {
             try {
                 NextMarket instance = getInstance();
