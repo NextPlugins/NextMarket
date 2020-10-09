@@ -26,6 +26,7 @@ jobs:
         run: |
           HASH=$(git rev-parse --short "$GITHUB_SHA")
           echo "::set-env name=COMMIT_HASH::$HASH"
+
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -42,6 +43,7 @@ jobs:
                   github.sha
               )
             }}
+
       - name: Upload Release Assets
         uses: AButler/upload-release-assets@v2.0
         with:
