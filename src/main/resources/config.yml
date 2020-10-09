@@ -33,7 +33,7 @@ command-message:
 messages:
   maximum-value-reached: '&cVocê chegou ao valor máximo.'
   minimum-value-not-reached: '&cVocê precisa por um valor acima de 100.'
-  player-offline: '&cEsse jogador está offline.'
+  player-offline: '&cEste jogador encontra-se offline.'
   expired-item: '&cUm item seu expirou no mercado, colete-o usando /mercado expirados.'
   bought-a-item: '&aVocê comprou um item do mercado.'
   sold-a-item: '&aVocê vendeu um item no mercado por %valor%.'
