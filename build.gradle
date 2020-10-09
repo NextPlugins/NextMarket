@@ -1,7 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
-apply plugin: 'me.bristermitten.pdm'
+//apply plugin: 'me.bristermitten.pdm'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 group = 'com.nextplugin'
 version = '0.0.1-SNAPSHOT'
@@ -21,24 +22,24 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
 
-    pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
-    pdm 'com.google.inject:guice:4.0'
+    compile 'com.github.HenryFabio:inventory-api:2b163967d1'
+    compile 'com.google.inject:guice:4.0'
 
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
     annotationProcessor lombokDependency
 }
 
-jar.dependsOn project.tasks.getByName('pdm')
+build.dependsOn shadowJar
 
 buildscript {
 
     repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
 
     dependencies {
-        classpath "me.bristermitten:pdm-gradle:0.0.28"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 
 }
