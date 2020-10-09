@@ -54,11 +54,11 @@ public final class NextMarket extends JavaPlugin {
             e.printStackTrace();
         }
 
-        hikariConfig = new HikariConfig(properties);
-        dataSource = new HikariDataSource(hikariConfig);
-
         dependencyLoader.thenRun(() -> {
             try {
+                hikariConfig = new HikariConfig(properties);
+                dataSource = new HikariDataSource(hikariConfig);
+
                 NextMarket instance = getInstance();
                 this.injector = Guice.createInjector(new AbstractModule() {
                     @Override
