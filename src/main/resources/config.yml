@@ -1,12 +1,3 @@
-database:
-  # Tipos:
-  # SQLite = org.jdbc.SQLite
-  # MySQL = com.mysql.JDBC
-  driver: "org.jdbc.SQLite"
-  user: root
-  password: ""
-  url: "localhost:3306/myDatabase"
-
 announcement:
   message: "&6&l[MERCADO]&r &e{jogador} &7anunciou {item-name} &7por &6{amount}"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
@@ -16,3 +7,24 @@ announcement:
   price: -1
   # Tempo pro item se expirar (em segundos)
   expire-time: 3600
+  minimum-value: 100
+  maximum-value: -1
+
+command-message:
+  - ''
+  - '&a/mercado &7- exibe essa mensagem.'
+  - '&a/mercado ver &7- abra o mercado.'
+  - '&a/mercado vender <valor> &7- venda o item que está segurando.'
+  - '&a/mercado vender <valor> (jogador) &7- venda o item para um jogador em específico.'
+  - '&a/mercado expirados &7- veja seus itens que foram expirados e removidos do mercado.'
+  - '&a/mercado anunciados &7- veja seus itens anunciados.'
+  - ''
+
+messages:
+  maximum-value-reached: '&cVocê chegou ao valor máximo.'
+  minimum-value-not-reached: '&cVocê precisa por um valor acima de 100.'
+  player-offline: '&cEsse jogador está offline.'
+  expired-item: '&cUm item seu expirou no mercado, colete-o usando /mercado expirados.'
+  bougth-a-item: '&aVocê comprou um item do mercado.'
+  selled-a-item: '&aVocê vendeu um item no mercado por %valor%.'
+  announced-a-item: '&aVocê anunciou um item por %valor% no mercado.'
