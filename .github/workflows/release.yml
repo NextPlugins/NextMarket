@@ -28,15 +28,14 @@ jobs:
       - name: Prepare Release
         run: |
           HASH=$(git rev-parse --short "$GITHUB_SHA")
-          BRANCH=${GITHUB_REF##*/}
-          echo "::set-env name=RELEASE_NAME::$"
+          echo "::set-env name=COMMIT_HASH::$HASH"
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.RELEASE_NAME }}
-          release_name: 1.0.0
+          tag_name: ${{ env.COMMIT_HASH }}
+          release_name: ${{ env.COMMIT_HASH }}
           body: |
             - ### Commit:
             ${{

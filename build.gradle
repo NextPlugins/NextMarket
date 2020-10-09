@@ -1,10 +1,14 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
+
 apply plugin: 'me.bristermitten.pdm'
+apply plugin: "com.palantir.git-version"
+
+def gitDetails = versionDetails.call()
 
 group = 'com.nextplugin'
-version = '0.0.1-SNAPSHOT'
+version = gitDetails.gitHash
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -34,11 +38,12 @@ jar.dependsOn project.tasks.getByName('pdm')
 buildscript {
 
     repositories {
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
-        classpath "me.bristermitten:pdm-gradle:0.0.28"
+        classpath 'me.bristermitten:pdm-gradle:0.0.28'
+        classpath 'com.palantir.gradle.gitversion:gradle-git-version:0.12.3'
     }
 
 }
