@@ -26,13 +26,13 @@ public class ConfigValue {
     private final int announcementExpireTime = config.getInt("announcement.expire-time");
     private final double announcementPrice = config.getDouble("announcement.price");
 
-    private final String announcementMessage =  translateColor(config.getString("announcement.message"));
+    private final String announcementMessage = translateColor(config.getString("announcement.message"));
     private final List<String> commandMessage =
             config
-            .getStringList("command-message")
-            .stream()
-            .map(this::translateColor)
-            .collect(Collectors.toList());
+                    .getStringList("command-message")
+                    .stream()
+                    .map(this::translateColor)
+                    .collect(Collectors.toList());
     private final String maximumValueReachedMessage = translateColor(config.getString("messages.maximum-value-reached"));
     private final String minimumValueNotReachedMessage = translateColor(config.getString("messages.minimu-value-not-reached"));
     private final String offlinePlayerMessage = translateColor(config.getString("message.player-offline"));

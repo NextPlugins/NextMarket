@@ -15,6 +15,7 @@ import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
+import me.saiintbrisson.minecraft.command.message.MessageType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,10 +36,9 @@ public final class NextMarket extends JavaPlugin {
     private Injector injector;
     private FileConfiguration categoriesConfiguration;
 
-    private BukkitFrame bukkitFrame;
-
     private SQLConnection sqlConnection;
-    @Inject private CategoryManager categoryManager;
+    @Inject
+    private CategoryManager categoryManager;
 
     public static NextMarket getInstance() {
         return getPlugin(NextMarket.class);
@@ -77,6 +77,20 @@ public final class NextMarket extends JavaPlugin {
         this.dependencyLoader.thenRun(() -> {
             try {
                 this.injector.injectMembers(this);
+
+                MarketCommand marketCommand = new MarketCommand();
+
+                this.injector.injectMembers(marketCommand);
+
+                BukkitFrame bukkitFrame = new BukkitFrame(this);
+
+                bukkitFrame.registerCommands(marketCommand);
+
+                bukkitFrame.getCommandMap().forEach((s, bukkitCommand) -> {
+                    System.out.println(s);
+                    System.out.println(bukkitCommand);
+                });
+
                 this.categoryManager.registerCategories(
                         this.categoriesConfiguration.getConfigurationSection("categories")
                 );
@@ -94,11 +108,8 @@ public final class NextMarket extends JavaPlugin {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+
         });
-
-        bukkitFrame = new BukkitFrame(this);
-
-        bukkitFrame.registerCommands(new MarketCommand(new ConfigValue()));
 
     }
 

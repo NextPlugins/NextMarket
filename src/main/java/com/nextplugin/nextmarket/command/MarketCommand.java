@@ -1,23 +1,23 @@
 package com.nextplugin.nextmarket.command;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
+import lombok.experimental.Accessors;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class MarketCommand {
 
-    private final ConfigValue configValue;
-
-    public MarketCommand(ConfigValue configValue) {
-        this.configValue = configValue;
-    }
+    @Inject private ConfigValue configValue;
 
     @Command(
             name = "mercado",
@@ -26,16 +26,20 @@ public class MarketCommand {
             description = "Comando principal do sistema de mercado.",
             target = CommandTarget.PLAYER
     )
-    public void marketCommand(Context<Player> context){
+    public void marketCommand(Context<Player> context) {
 
         Player player = context.getSender();
 
-        configValue.commandMessage().forEach(player::sendMessage);
+        List<String> messages = configValue.commandMessage();
+
+        for (String message : messages) {
+            player.sendMessage(message);
+        }
 
     }
 
     @Command(name = "mercado.ver")
-    public void viewMarket(Context<Player> context){
+    public void viewMarket(Context<Player> context) {
 
         Player player = context.getSender();
 
@@ -46,7 +50,7 @@ public class MarketCommand {
     }
 
     @Command(name = "mercado.pessoal")
-    public void viewPersonalMarket(Context<Player> context){
+    public void viewPersonalMarket(Context<Player> context) {
 
         Player player = context.getSender();
 
@@ -57,17 +61,21 @@ public class MarketCommand {
     }
 
     @Command(name = "mercado.vender")
-    public void announceItemOnMarket(Context<Player> context, double value, @Optional Player target){
+    public void announceItemOnMarket(Context<Player> context, double value, @Optional Player target) {
 
         Player player = context.getSender();
 
         double maxValue = configValue.maximumAnnouncementValue();
         double minValue = configValue.minimumAnnouncementValue();
 
-        if(value > maxValue){ player.sendMessage(configValue.maximumValueReachedMessage()); }
-        if(value < minValue){ player.sendMessage(configValue.minimumValueNotReachedMessage()); }
+        if (value > maxValue) {
+            player.sendMessage(configValue.maximumValueReachedMessage());
+        }
+        if (value < minValue) {
+            player.sendMessage(configValue.minimumValueNotReachedMessage());
+        }
 
-        if(target != null){
+        if (target != null) {
 
             // TODO sells on target's private market
 
@@ -78,7 +86,7 @@ public class MarketCommand {
     }
 
     @Command(name = "mercado.expirados")
-    public void viewMarketExpiredItems(Context<Player> context){
+    public void viewMarketExpiredItems(Context<Player> context) {
 
         Player player = context.getSender();
 
@@ -89,7 +97,7 @@ public class MarketCommand {
     }
 
     @Command(name = "mercado.anunciados")
-    public void viewMarketAnnouncedItems(Context<Player> context){
+    public void viewMarketAnnouncedItems(Context<Player> context) {
 
         // TODO announced items inventory
 
