@@ -16,9 +16,12 @@ import java.util.stream.Collectors;
 @Getter
 public class ConfigValue {
 
-    @Inject private NextMarket market;
+    private FileConfiguration config;
 
-    private final FileConfiguration config = market.getConfig();
+    @Inject
+    public ConfigValue(NextMarket market) {
+        this.config = market.getConfig();
+    }
 
     private final double minimumAnnouncementValue = config.getDouble("announcement.minimum-value");
     private final double maximumAnnouncementValue = config.getDouble("announcement.maximum-value");

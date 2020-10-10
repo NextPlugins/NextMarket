@@ -17,7 +17,12 @@ import java.util.List;
 
 public class MarketCommand {
 
-    @Inject private ConfigValue configValue;
+    private final ConfigValue configValue;
+
+    @Inject
+    public MarketCommand(ConfigValue configValue) {
+        this.configValue = configValue;
+    }
 
     @Command(
             name = "mercado",

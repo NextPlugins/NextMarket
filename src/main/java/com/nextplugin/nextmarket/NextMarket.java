@@ -78,7 +78,7 @@ public final class NextMarket extends JavaPlugin {
             try {
                 this.injector.injectMembers(this);
 
-                MarketCommand marketCommand = new MarketCommand();
+                MarketCommand marketCommand = new MarketCommand(new ConfigValue(this));
 
                 this.injector.injectMembers(marketCommand);
 
