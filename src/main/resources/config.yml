@@ -1,14 +1,15 @@
-database:
-  # Tipos:
-  # SQLite = org.jdbc.SQLite
-  # MySQL = com.mysql.JDBC
-  driver: "org.jdbc.SQLite"
-  user: root
-  password: ""
-  url: "localhost:3306/myDatabase"
+connection:
+  mysql:
+    enabled: false
+    address: "localhost:3306"
+    username: "root"
+    passowrd: ""
+    database: "test"
+  sqlite:
+    file: "market.sql"
 
 announcement:
-  message: "&6&l[MERCADO]&r &e{jogador} &7anunciou {item-name} &7por &6{amount}"
+  message: "&2&lMERCADO &7{jogador} &fanunciou um item por &a{amount}"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
   # novo item, um novo anúncio, do contário, o item será anunciado sem destaque.
   delay: 600
@@ -16,3 +17,28 @@ announcement:
   price: -1
   # Tempo pro item se expirar (em segundos)
   expire-time: 3600
+  # Valor mínimo para colocar itens no mercado (Não colocar valores menores que 1 :d)
+  minimum-value: 100
+  # Valor máximo para colocar itens no mercado (-1 para desativar)
+  maximum-value: -1
+
+command-message:
+  - '&2&lMERCADO &f- Ajuda'
+  - ''
+  - '&a/mercado &7- Exibe essa mensagem.'
+  - '&a/mercado ver &7- Abra o mercado.'
+  - '&a/mercado vender <valor> &7- Venda o item que está segurando.'
+  - '&a/mercado vender <valor> (jogador) &7- Venda o item para um jogador em específico.'
+  - '&a/mercado expirados &7- Veja seus itens que foram expirados e removidos do mercado.'
+  - '&a/mercado anunciados &7- Veja seus itens anunciados.'
+  - ''
+
+messages:
+  maximum-value-reached: '&cVocê inseriu um valor muito alto.'
+  minimum-value-not-reached: '&cVocê precisa por um valor acima de %valor%.'
+  player-offline: '&cEste jogador encontra-se offline.'
+  expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados &cpara coletar.'
+  bought-a-item: '&aVocê comprou um item do mercado.'
+  sold-a-item: '&aVocê vendeu um item por &f%valor% &ano mercado.'
+  announced-a-item: '&aVocê anunciou um item por &f%valor% &ano mercado.'
+  insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'

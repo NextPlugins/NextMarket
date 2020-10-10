@@ -1,8 +1,10 @@
 package com.nextplugin.nextmarket.sql.provider;
 
+import com.google.inject.Inject;
+import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.provider.document.Document;
+import com.zaxxer.hikari.HikariDataSource;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -11,18 +13,10 @@ import java.util.List;
 
 public class DatabaseProvider {
 
-    private final Connection connection;
-
-    public DatabaseProvider(ConnectionBuilder connectionBuilder) {
-        this.connection = connectionBuilder.build();
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
+    @Inject private SQLConnection sqlConnection;
 
     public Document queryOne(String query, Object... values) {
-        try (PreparedStatement statement = getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = sqlConnection.findConnection().prepareStatement(query)) {
             for (int index = 0; index < values.length; index++) {
                 statement.setObject(index + 1, values[index]);
             }
@@ -52,7 +46,7 @@ public class DatabaseProvider {
     public List<Document> queryMany(String query, Object... values) {
         List<Document> documents = new ArrayList<>();
 
-        try (PreparedStatement statement = getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = sqlConnection.findConnection().prepareStatement(query)) {
             for (int index = 0; index < values.length; index++) {
                 statement.setObject(index + 1, values[index]);
             }
@@ -80,20 +74,12 @@ public class DatabaseProvider {
     }
 
     public void update(String query, Object... values) {
-        try (PreparedStatement statement = getConnection().prepareStatement(query)) {
+        try (PreparedStatement statement = sqlConnection.findConnection().prepareStatement(query)) {
             for (int index = 0; index < values.length; index++) {
                 statement.setObject(index + 1, values[index]);
             }
 
             statement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void shutdown() {
-        try {
-            if (getConnection() != null) getConnection().close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package com.nextplugin.nextmarket.api.item;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 @Builder
 @Data
+@AllArgsConstructor
 public class MarketItem {
 
     private final String sellerName;

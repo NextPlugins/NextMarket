@@ -15,13 +15,11 @@ inventory:
 categories:
   # ID
   spawners:
-    item:
-      displayName: "Gerador de Monstros"
-      description: "Compre geradores de monstros nesta categoria!"
-      icon:
-        material: MOB_SPAWNERR
-        data: 0
-        inventorySlot: 11
-      allowedMaterials:
-        - "MOB_SPAWNER"
-        - "MÃE_DO_EIKE"
+    displayName: "Gerador de Monstros"
+    description: "Compre geradores de monstros nesta categoria!"
+    icon:
+      material: MOB_SPAWNER
+      data: 0
+      inventorySlot: 11
+    allowedMaterials:
+      - "MOB_SPAWNER"

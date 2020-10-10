@@ -2,6 +2,7 @@ package com.nextplugin.nextmarket.parser;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.name.Named;
 import com.nextplugin.nextmarket.api.category.Category;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 @Singleton
 public final class CategoryParser {
 
-    @Inject private Logger logger;
+    @Inject @Named("main") private Logger logger;
     @Inject private CategoryIconParser categoryIconParser;
 
     public Category parseSection(ConfigurationSection section) {
@@ -27,6 +28,7 @@ public final class CategoryParser {
                 .displayName(section.getString("displayName"))
                 .description(section.getString("description"))
                 .icon(this.categoryIconParser.parseSection(section.getConfigurationSection("icon")))
+                .allowedMaterials(parseMaterialsSection(section))
                 .build();
     }
 
