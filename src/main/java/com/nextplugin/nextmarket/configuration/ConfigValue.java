@@ -1,7 +1,5 @@
 package com.nextplugin.nextmarket.configuration;
 
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.NextMarket;
 import lombok.Getter;
 import lombok.experimental.Accessors;
@@ -11,42 +9,60 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
 @Accessors(fluent = true)
 @Getter
 public class ConfigValue {
 
     private FileConfiguration config;
 
-    @Inject
+    private final double minimumAnnouncementValue;
+    private final double maximumAnnouncementValue;
+    private final double announcementPrice;
+    private final int announcementSecondsDelay;
+    private final int announcementExpireTime;
+
+    private final String announcementMessage;
+    private final List<String> commandMessage;
+    private final String maximumValueReachedMessage;
+    private final String minimumValueNotReachedMessage;
+    private final String offlinePlayerMessage;
+    private final String expiredItemMessage;
+    private final String boughtAnItemMessage;
+    private final String soldAItemMessage;
+    private final String announcedAItemMessage;
+    private final String insufficientMoneyMessage;
+
     public ConfigValue(NextMarket market) {
-        this.config = market.getConfig();
+        config = market.getConfig();
+
+        minimumAnnouncementValue = config.getDouble("announcement.minimum-value");
+
+        maximumAnnouncementValue = config.getDouble("announcement.maximum-value");
+        announcementPrice = config.getDouble("announcement.price");
+        announcementSecondsDelay = config.getInt("announcement.delay");
+        announcementExpireTime = config.getInt("announcement.expire-time");
+
+        announcementMessage = getTranslatedString("announcement.message");
+        commandMessage = config.getStringList("command-message")
+                        .stream()
+                        .map(this::translateColor)
+                        .collect(Collectors.toList());
+        maximumValueReachedMessage = getTranslatedString("messages.maximum-value-reached");
+        minimumValueNotReachedMessage = getTranslatedString("messages.minimum-value-not-reached");
+        offlinePlayerMessage = getTranslatedString("messages.player-offline");
+        expiredItemMessage = getTranslatedString("messages.expired-item");
+        boughtAnItemMessage = getTranslatedString("messages.bought-a-item");
+        soldAItemMessage = getTranslatedString("messages.sold-a-item");
+        announcedAItemMessage = getTranslatedString("messages.announced-a-item");
+        insufficientMoneyMessage = getTranslatedString("messages.insufficient-money");
     }
-
-    private final double minimumAnnouncementValue = config.getDouble("announcement.minimum-value");
-    private final double maximumAnnouncementValue = config.getDouble("announcement.maximum-value");
-    private final int announcementSecondsDelay = config.getInt("announcement.delay");
-    private final int announcementExpireTime = config.getInt("announcement.expire-time");
-    private final double announcementPrice = config.getDouble("announcement.price");
-
-    private final String announcementMessage = translateColor(config.getString("announcement.message"));
-    private final List<String> commandMessage =
-            config
-                    .getStringList("command-message")
-                    .stream()
-                    .map(this::translateColor)
-                    .collect(Collectors.toList());
-    private final String maximumValueReachedMessage = translateColor(config.getString("messages.maximum-value-reached"));
-    private final String minimumValueNotReachedMessage = translateColor(config.getString("messages.minimu-value-not-reached"));
-    private final String offlinePlayerMessage = translateColor(config.getString("message.player-offline"));
-    private final String expiredItemMessage = translateColor(config.getString("message.expired-item"));
-    private final String boughtAnItemMessage = translateColor(config.getString("message.bought-a-item"));
-    private final String soldAItemMessage = translateColor(config.getString("message.sold-a-item"));
-    private final String announcedAItemMessage = translateColor(config.getString("message.announced-a-item"));
-    private final String insufficientMoneyMessage = translateColor(config.getString("message.insufficient-money"));
 
     private String translateColor(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
+    }
+
+    private String getTranslatedString(String key) {
+        return translateColor(config.getString(key));
     }
 
 }

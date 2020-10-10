@@ -1,12 +1,10 @@
 package com.nextplugin.nextmarket.command;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
-import lombok.experimental.Accessors;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
@@ -19,7 +17,6 @@ public class MarketCommand {
 
     private final ConfigValue configValue;
 
-    @Inject
     public MarketCommand(ConfigValue configValue) {
         this.configValue = configValue;
     }
@@ -32,7 +29,6 @@ public class MarketCommand {
             target = CommandTarget.PLAYER
     )
     public void marketCommand(Context<Player> context) {
-
         Player player = context.getSender();
 
         List<String> messages = configValue.commandMessage();

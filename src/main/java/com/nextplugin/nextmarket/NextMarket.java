@@ -73,42 +73,22 @@ public final class NextMarket extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println("abc: " + this.dependencyLoader);
         this.dependencyLoader.thenRun(() -> {
             try {
                 this.injector.injectMembers(this);
 
                 MarketCommand marketCommand = new MarketCommand(new ConfigValue(this));
 
-                this.injector.injectMembers(marketCommand);
-
                 BukkitFrame bukkitFrame = new BukkitFrame(this);
 
                 bukkitFrame.registerCommands(marketCommand);
 
-                bukkitFrame.getCommandMap().forEach((s, bukkitCommand) -> {
-                    System.out.println(s);
-                    System.out.println(bukkitCommand);
-                });
-
                 this.categoryManager.registerCategories(
                         this.categoriesConfiguration.getConfigurationSection("categories")
                 );
-                System.out.println(this.categoryManager.getCategoryMap());
-
-                try {
-                    PreparedStatement statement = this.sqlConnection.findConnection().prepareStatement("SELECT 1");
-                    ResultSet resultSet = statement.executeQuery();
-                    if (resultSet.next()) {
-                        System.out.println("result of test query: " + resultSet.getInt(1));
-                    }
-                } catch (SQLException t) {
-                    t.printStackTrace();
-                }
             } catch (Throwable t) {
                 t.printStackTrace();
             }
-
         });
 
     }
