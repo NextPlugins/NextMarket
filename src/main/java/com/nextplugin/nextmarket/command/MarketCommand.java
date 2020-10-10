@@ -1,6 +1,5 @@
 package com.nextplugin.nextmarket.command;
 
-import com.google.inject.Inject;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
@@ -69,10 +68,9 @@ public class MarketCommand {
         double maxValue = configValue.maximumAnnouncementValue();
         double minValue = configValue.minimumAnnouncementValue();
 
-        if (value > maxValue) {
+        if (maxValue != -1 && value > maxValue) {
             player.sendMessage(configValue.maximumValueReachedMessage());
-        }
-        if (value < minValue) {
+        }else if (value < minValue) {
             player.sendMessage(configValue.minimumValueNotReachedMessage());
         }
 

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ConfigValue {
 
-    private FileConfiguration config;
+    private final FileConfiguration config;
 
     private final double minimumAnnouncementValue;
     private final double maximumAnnouncementValue;
@@ -47,8 +47,8 @@ public class ConfigValue {
                         .stream()
                         .map(this::translateColor)
                         .collect(Collectors.toList());
-        maximumValueReachedMessage = getTranslatedString("messages.maximum-value-reached");
-        minimumValueNotReachedMessage = getTranslatedString("messages.minimum-value-not-reached");
+        maximumValueReachedMessage = getTranslatedString("messages.maximum-value-reached").replace("%valor%", String.valueOf(maximumAnnouncementValue));
+        minimumValueNotReachedMessage = getTranslatedString("messages.minimum-value-not-reached").replace("%valor%", String.valueOf(minimumAnnouncementValue));
         offlinePlayerMessage = getTranslatedString("messages.player-offline");
         expiredItemMessage = getTranslatedString("messages.expired-item");
         boughtAnItemMessage = getTranslatedString("messages.bought-a-item");
