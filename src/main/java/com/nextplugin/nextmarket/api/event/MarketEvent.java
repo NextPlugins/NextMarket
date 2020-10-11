@@ -17,5 +17,4 @@ public abstract class MarketEvent extends Event {
         return handlerList;
     }
 
-
 }

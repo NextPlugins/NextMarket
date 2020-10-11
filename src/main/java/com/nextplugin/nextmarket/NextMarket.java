@@ -95,11 +95,6 @@ public final class NextMarket extends JavaPlugin {
 
     }
 
-    @Override
-    public void onDisable() {
-
-    }
-
     private void loadCategoriesConfiguration() {
         saveResource("categories.yml", false);
 
