@@ -1,5 +1,6 @@
 package com.nextplugin.nextmarket.sql.provider.document;
 
+import com.nextplugin.nextmarket.sql.provider.document.parser.DocumentParser;
 import org.apache.commons.lang.math.NumberUtils;
 
 import java.util.HashMap;
@@ -22,12 +23,8 @@ public class Document {
         return NumberUtils.createNumber(this.getString(key));
     }
 
-    public <T> T deserialize(Serializer<T> serializer) {
-        return serializer.deserialize(this);
-    }
-
-    public Map<String, Object> asMap() {
-        return valueMap;
+    public <T> T parse(DocumentParser<T> documentParser) {
+        return documentParser.parse(this);
     }
 
 }

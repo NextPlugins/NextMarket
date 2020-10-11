@@ -3,14 +3,14 @@ package com.nextplugin.nextmarket.sql;
 import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.sql.provider.DatabaseProvider;
-import com.nextplugin.nextmarket.sql.provider.document.impl.MarketItemSerializer;
+import com.nextplugin.nextmarket.sql.provider.document.parser.impl.MarketItemDocumentParser;
 import com.nextplugin.nextmarket.util.ItemStackUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Singleton
-public class MarketDAO extends DatabaseProvider {
+public final class MarketDAO extends DatabaseProvider {
 
     public void createTable() {
         update("create table if not exists `market_items` (" +
@@ -25,10 +25,7 @@ public class MarketDAO extends DatabaseProvider {
     public List<MarketItem> findAllMarketItemList() {
         return queryMany("select * from `market_items`")
                 .stream()
-                .map(document -> {
-                    System.out.println("document: " + document.asMap());
-                    return document.deserialize(MarketItemSerializer.getInstance());
-                })
+                .map(document -> document.parse(MarketItemDocumentParser.getInstance()))
                 .collect(Collectors.toList());
     }
 
