@@ -13,56 +13,75 @@ import java.util.stream.Collectors;
 @Getter
 public class ConfigValue {
 
-    private final FileConfiguration config;
+    private static final ConfigValue instance = new ConfigValue();
 
-    private final double minimumAnnouncementValue;
-    private final double maximumAnnouncementValue;
-    private final double announcementPrice;
-    private final int announcementSecondsDelay;
-    private final int announcementExpireTime;
+    private final FileConfiguration configuration = NextMarket.getInstance().getConfig();
 
-    private final String announcementMessage;
-    private final List<String> commandMessage;
-    private final String maximumValueReachedMessage;
-    private final String minimumValueNotReachedMessage;
-    private final String offlinePlayerMessage;
-    private final String expiredItemMessage;
-    private final String boughtAnItemMessage;
-    private final String soldAItemMessage;
-    private final String announcedAItemMessage;
-    private final String insufficientMoneyMessage;
+    private final double minimumAnnouncementValue = configuration.getDouble("announcement.minimum-value");
+    private final double maximumAnnouncementValue = configuration.getDouble("announcement.maximum-value");
+    private final double announcementPrice = configuration.getDouble("announcement.price");
+    private final int announcementSecondsDelay = configuration.getInt("announcement.delay");
+    private final int announcementExpireTime = configuration.getInt("announcement.expire-time");
 
-    public ConfigValue(NextMarket market) {
-        config = market.getConfig();
+    private final String announcementMessage = translateMessage("announcement.message");
+    private final List<String> commandMessage = translateMessageList("command-message");
+    private final String maximumValueReachedMessage = translateMessage("messages.maximum-value-reached")
+            .replace("%valor%", String.valueOf(maximumAnnouncementValue));
+    private final String minimumValueNotReachedMessage = translateMessage("messages.minimum-value-not-reached")
+            .replace("%valor%", String.valueOf(minimumAnnouncementValue));
+    private final String offlinePlayerMessage = translateMessage("messages.player-offline");
+    private final String expiredItemMessage = translateMessage("messages.expired-item");
+    private final String boughtAnItemMessage = translateMessage("messages.bought-a-item");
+    private final String soldAItemMessage = translateMessage("messages.sold-a-item");
+    private final String announcedAItemMessage = translateMessage("messages.announced-a-item");
+    private final String insufficientMoneyMessage = translateMessage("messages.insufficient-money");
 
-        minimumAnnouncementValue = config.getDouble("announcement.minimum-value");
+//    public ConfigValue(NextMarket market) {
+//        configuration = market.getConfig();
+//
+//        minimumAnnouncementValue = configuration.getDouble("announcement.minimum-value");
+//
+//        maximumAnnouncementValue = configuration.getDouble("announcement.maximum-value");
+//        announcementPrice = configuration.getDouble("announcement.price");
+//        announcementSecondsDelay = configuration.getInt("announcement.delay");
+//        announcementExpireTime = configuration.getInt("announcement.expire-time");
+//
+//        announcementMessage = translateMessage("announcement.message");
+//        commandMessage = translateMessageList("command-message");
+//        maximumValueReachedMessage = translateMessage("messages.maximum-value-reached").replace("%valor%", String.valueOf(maximumAnnouncementValue));
+//        minimumValueNotReachedMessage = translateMessage("messages.minimum-value-not-reached").replace("%valor%", String.valueOf(minimumAnnouncementValue));
+//        offlinePlayerMessage = translateMessage("messages.player-offline");
+//        expiredItemMessage = translateMessage("messages.expired-item");
+//        boughtAnItemMessage = translateMessage("messages.bought-a-item");
+//        soldAItemMessage = translateMessage("messages.sold-a-item");
+//        announcedAItemMessage = translateMessage("messages.announced-a-item");
+//        insufficientMoneyMessage = translateMessage("messages.insufficient-money");
+//    }
 
-        maximumAnnouncementValue = config.getDouble("announcement.maximum-value");
-        announcementPrice = config.getDouble("announcement.price");
-        announcementSecondsDelay = config.getInt("announcement.delay");
-        announcementExpireTime = config.getInt("announcement.expire-time");
-
-        announcementMessage = getTranslatedString("announcement.message");
-        commandMessage = config.getStringList("command-message")
-                        .stream()
-                        .map(this::translateColor)
-                        .collect(Collectors.toList());
-        maximumValueReachedMessage = getTranslatedString("messages.maximum-value-reached").replace("%valor%", String.valueOf(maximumAnnouncementValue));
-        minimumValueNotReachedMessage = getTranslatedString("messages.minimum-value-not-reached").replace("%valor%", String.valueOf(minimumAnnouncementValue));
-        offlinePlayerMessage = getTranslatedString("messages.player-offline");
-        expiredItemMessage = getTranslatedString("messages.expired-item");
-        boughtAnItemMessage = getTranslatedString("messages.bought-a-item");
-        soldAItemMessage = getTranslatedString("messages.sold-a-item");
-        announcedAItemMessage = getTranslatedString("messages.announced-a-item");
-        insufficientMoneyMessage = getTranslatedString("messages.insufficient-money");
+    public static <T> T get(ValueSupplier<T> supplier) {
+        return supplier.get(ConfigValue.instance);
     }
 
     private String translateColor(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    private String getTranslatedString(String key) {
-        return translateColor(config.getString(key));
+    private String translateMessage(String key) {
+        return translateColor(configuration.getString(key));
+    }
+
+    private List<String> translateMessageList(String key) {
+        return configuration.getStringList(key)
+                .stream()
+                .map(this::translateColor)
+                .collect(Collectors.toList());
+    }
+
+    @FunctionalInterface
+    public interface ValueSupplier<T> {
+
+        T get(ConfigValue configValue);
+
     }
 
 }

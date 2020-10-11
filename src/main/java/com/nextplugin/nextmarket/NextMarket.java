@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.nextplugin.nextmarket.command.MarketCommand;
-import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.connection.mysql.MySQLConnection;
@@ -15,16 +14,12 @@ import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
-import me.saiintbrisson.minecraft.command.message.MessageType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -77,7 +72,7 @@ public final class NextMarket extends JavaPlugin {
             try {
                 this.injector.injectMembers(this);
 
-                MarketCommand marketCommand = new MarketCommand(new ConfigValue(this));
+                MarketCommand marketCommand = new MarketCommand();
 
                 BukkitFrame bukkitFrame = new BukkitFrame(this);
 
