@@ -60,6 +60,7 @@ public class DatabaseProvider {
                     for (int index = 1; index <= setMetaData.getColumnCount(); index++) {
                         String name = setMetaData.getColumnName(index);
 
+                        System.out.println("insert: " + name + " with: " + set.getObject(index));
                         document.insert(name, set.getObject(index));
                     }
 

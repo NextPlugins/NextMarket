@@ -1,13 +1,15 @@
 package com.nextplugin.nextmarket.api.item;
 
+import com.nextplugin.nextmarket.configuration.ConfigValue;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Builder
@@ -15,25 +17,26 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class MarketItem {
 
-    private final String sellerName;
+    private final UUID sellerId;
 
     private final ItemStack itemStack;
     private final double price;
 
-    private final Date createTime;
-    private final String destination;
+    @Builder.Default private final Date createTime = new Date();
+    private final UUID destinationId;
 
-    public Player getSeller() {
-        return Bukkit.getPlayer(this.sellerName);
+    public OfflinePlayer getSeller() {
+        return Bukkit.getOfflinePlayer(this.sellerId);
     }
 
-    public Player getDestination() {
-        return this.destination != null ? Bukkit.getPlayer(this.destination) : null;
+    public OfflinePlayer getDestination() {
+        return this.destinationId != null ? Bukkit.getOfflinePlayer(this.destinationId) : null;
     }
 
-    public boolean isExpired(long expireSeconds) {
+    public boolean isExpired() {
+        long expireTime = ConfigValue.get(ConfigValue::announcementExpireTime);
         long time = this.createTime.getTime();
-        return (time + TimeUnit.SECONDS.toMillis(expireSeconds)) <= System.currentTimeMillis();
+        return (time + TimeUnit.SECONDS.toMillis(expireTime)) <= System.currentTimeMillis();
     }
 
 }
