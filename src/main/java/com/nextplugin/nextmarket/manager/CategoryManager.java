@@ -40,7 +40,7 @@ public final class CategoryManager {
     }
 
     public Optional<Category> findCategoryByFilter(Predicate<Category> filter) {
-         return this.categoryMap.values().stream().filter(filter).findFirst();
+        return this.categoryMap.values().stream().filter(filter).findFirst();
     }
 
 }

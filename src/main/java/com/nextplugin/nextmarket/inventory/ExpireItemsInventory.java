@@ -3,10 +3,8 @@ package com.nextplugin.nextmarket.inventory;
 import com.henryfabio.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.inventoryapi.enums.InventoryLine;
 import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
-import com.henryfabio.inventoryapi.inventory.single.SingleInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
-import com.henryfabio.inventoryapi.viewer.single.SingleViewer;
 
 import java.util.List;
 

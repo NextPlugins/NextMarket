@@ -3,7 +3,6 @@ package com.nextplugin.nextmarket.sql.provider;
 import com.google.inject.Inject;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.provider.document.Document;
-import com.zaxxer.hikari.HikariDataSource;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

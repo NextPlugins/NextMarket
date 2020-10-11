@@ -14,5 +14,4 @@ public final class MarketItemManager {
     @Inject private MarketDAO marketDAO;
 
 
-
 }

@@ -33,4 +33,5 @@ public class AnnouncedItemsInventory extends PagedInventory {
     public List<InventoryItem> getPagesItems(PagedViewer viewer) {
         return null;
     }
+
 }

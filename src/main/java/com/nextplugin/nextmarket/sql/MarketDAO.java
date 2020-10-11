@@ -5,7 +5,6 @@ import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.sql.provider.DatabaseProvider;
 import com.nextplugin.nextmarket.sql.provider.document.impl.MarketItemSerializer;
 import com.nextplugin.nextmarket.util.ItemStackUtil;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.stream.Collectors;

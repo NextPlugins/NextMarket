@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Material;
 
-import java.util.List;
 import java.util.Set;
 
 @Builder

@@ -4,7 +4,6 @@ import com.nextplugin.nextmarket.NextMarket;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
