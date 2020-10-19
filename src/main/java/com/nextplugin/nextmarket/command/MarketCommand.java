@@ -21,6 +21,7 @@ public class MarketCommand {
             description = "Comando principal do sistema de mercado.",
             target = CommandTarget.PLAYER
     )
+
     public void marketCommand(Context<Player> context) {
         Player player = context.getSender();
 

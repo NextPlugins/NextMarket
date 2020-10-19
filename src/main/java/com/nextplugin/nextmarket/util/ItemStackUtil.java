@@ -21,6 +21,7 @@ public final class ItemStackUtil {
     public static String serialize(ItemStack itemStack) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+
             dataOutput.writeObject(itemStack);
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (IOException e) {
@@ -32,6 +33,7 @@ public final class ItemStackUtil {
     public static ItemStack deserialize(String value) {
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(value));
              BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
+
             return (ItemStack) dataInput.readObject();
         } catch (Exception e) {
             e.printStackTrace();
