@@ -65,3 +65,7 @@ processResources {
         filter ReplaceTokens, tokens: [version: version]
     }
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

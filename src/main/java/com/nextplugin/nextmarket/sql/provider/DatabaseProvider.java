@@ -1,7 +1,6 @@
 package com.nextplugin.nextmarket.sql.provider;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.provider.document.Document;
 

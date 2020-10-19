@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.henryfabio.inventoryapi.manager.InventoryManager;
 import com.nextplugin.nextmarket.command.MarketCommand;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.manager.MarketItemManager;
@@ -88,6 +89,9 @@ public final class NextMarket extends JavaPlugin {
                 MarketCommand marketCommand = new MarketCommand();
                 this.injector.injectMembers(marketCommand);
                 bukkitFrame.registerCommands(marketCommand);
+
+                InventoryManager.enable(this);
+
             } catch (Throwable t) {
                 t.printStackTrace();
             }

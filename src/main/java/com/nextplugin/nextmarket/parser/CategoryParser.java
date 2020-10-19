@@ -26,7 +26,8 @@ public final class CategoryParser {
         return Category.builder()
                 .id(section.getName())
                 .displayName(section.getString("displayName"))
-                .description(section.getString("description"))
+                .inventoryName(section.getString("inventoryName"))
+                .description(section.getStringList("description"))
                 .icon(this.categoryIconParser.parseSection(section.getConfigurationSection("icon")))
                 .allowedMaterials(parseMaterialsSection(section))
                 .build();

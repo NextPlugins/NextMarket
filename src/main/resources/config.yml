@@ -9,9 +9,9 @@ connection:
     file: "market.sql"
 
 announcement:
-  message: "&2&lMERCADO &7{jogador} &fanunciou um item por &a{amount}"
+  message: "&2&lMERCADO &7%player%&f anunciou um item por &a%amount%"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
-  # novo item, um novo anúncio, do contário, o item será anunciado sem destaque.
+  # novo item, um novo anúncio, do contrário, o item será anunciado sem destaque.
   delay: 600
   # Preço por anúncio (-1 para desativar)
   price: -1
@@ -35,10 +35,12 @@ command-message:
 
 messages:
   maximum-value-reached: '&cVocê inseriu um valor muito alto.'
-  minimum-value-not-reached: '&cVocê precisa por um valor acima de %valor%.'
+  minimum-value-not-reached: '&cVocê precisa por um valor acima de %amount%.'
   player-offline: '&cEste jogador encontra-se offline.'
-  expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados &cpara coletar.'
+  expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados&c para coletar.'
   bought-a-item: '&aVocê comprou um item do mercado.'
-  sold-a-item: '&aVocê vendeu um item por &f%valor% &ano mercado.'
-  announced-a-item: '&aVocê anunciou um item por &f%valor% &ano mercado.'
+  sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
+  announced-a-item: '&aVocê anunciou um item por &f%amount% &ano mercado.'
+  announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%amount% &ano mercado pessoal de &f%player%&a.'
   insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'
+  invalid-item: '&cEste item não pertence a nenhuma categoria.'
