@@ -87,6 +87,7 @@ categories:
       - '&7categoria:'
       - ''
       - '&f▪ Livros'
+      - '&f▪ Lápis Lazuli'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -95,6 +96,7 @@ categories:
       inventorySlot: 13
     allowedMaterials:
       - "BOOK"
+      - "LAPIS_ORE"
   pocoes:
     inventoryName: "Poções"
     displayName: "&aPoções &8(%amount%)"
@@ -111,6 +113,8 @@ categories:
       inventorySlot: 14
     allowedMaterials:
       - "POTION"
+      - "SPLASH_POTION"
+      - "LINGERING_POTION"
   redstone:
     inventoryName: "Redstone"
     displayName: "&aRedstone &8(%amount%)"
@@ -156,6 +160,7 @@ categories:
       inventorySlot: 16
     allowedMaterials:
       - "OBSIDIAN"
+      - "ENDER_STONE"
       - "BEDROCK"
   monstros:
     inventoryName: "Monstros"
@@ -174,6 +179,8 @@ categories:
       inventorySlot: 19
     allowedMaterials:
       - "MOB_SPAWNER"
+      - "MONSTER_EGG"
+      - "MONSTER_EGGS"
   cabecas:
     inventoryName: "Cabeças"
     displayName: "&aCabeças &8(%amount%)"
@@ -207,7 +214,6 @@ categories:
       - '&f▪ Bloco de Ouro'
       - '&f▪ Barras de Ferro'
       - '&f▪ Bloco de Ferro'
-      - '&f▪ Lápis-Lazúli'
       - '&f▪ Bloco de Lápis-Lazúli'
       - ''
       - '&aClique para abrir.'
@@ -224,8 +230,9 @@ categories:
       - "GOLD_BLOCK"
       - "IRON_INGOT"
       - "IRON_BLOCK"
-      - "LAPIS_ORE"
+      - "LAPIS_BLOCK"
   especiais:
+    ## Não mecher por enquanto
     inventoryName: "Especiais"
     displayName: "&aItens Especiais &8(%amount%)"
     description:
