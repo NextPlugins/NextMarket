@@ -85,12 +85,9 @@ public class MarketCommand {
         }
 
         ItemStack itemInMainHand = player.getInventory().getItemInHand();
-
         if (itemInMainHand == null || itemInMainHand.getType() == Material.AIR) {
-
             player.sendMessage(ConfigValue.get(ConfigValue::invalidItem));
             return;
-
         }
 
         if (target != null) {

@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.text.DecimalFormat;
-import java.util.Random;
 
 /**
  * @author Henry Fábio

@@ -46,10 +46,7 @@ public final class MarketInventory extends GlobalInventory {
             CategoryIcon icon = category.getIcon();
 
             List<String> lore = new ArrayList<>();
-
-            for (String string : category.getDescription()) {
-                lore.add(string.replace("&", "§"));
-            }
+            for (String string : category.getDescription()) lore.add(string.replace("&", "§"));
 
             List<MarketItem> collect = marketDAO.findAllMarketItemList()
                     .stream()
@@ -69,7 +66,6 @@ public final class MarketInventory extends GlobalInventory {
             editor.setItem(icon.getPosition(), new InventoryItem(itemStack).addDefaultCallback(click -> {
 
                 CategoryInventory categoryInventory = new CategoryInventory(marketDAO, categoryManager);
-
                 categoryInventory.openInventory(click.getPlayer(), viewer -> viewer.setProperty("category", category.getId()));
 
             }));

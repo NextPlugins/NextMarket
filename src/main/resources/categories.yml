@@ -16,11 +16,14 @@ inventory:
     lines: 6
 
 categories:
-  # ID
   armas:
+    # Identificador do inventário (apenas para o plugin diferenciar cada um)
     inventoryName: "Armas"
+
+    # Nome do inventário (o que irá aparecer in-game)
     displayName: "&aArmas &8(%amount%)"
-    description:
+
+    description: # Descrição da categoria
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
@@ -28,11 +31,13 @@ categories:
       - '&f▪ Arco'
       - ''
       - '&aClique para abrir.'
-    icon:
+
+    icon: # Icone da categoria
       material: DIAMOND_SWORD
       data: 0
       inventorySlot: 10
-    allowedMaterials:
+
+    allowedMaterials: # Materiais permitidos na categoria
       - "DIAMOND_SWORD"
       - "BOW"
   armaduras:
