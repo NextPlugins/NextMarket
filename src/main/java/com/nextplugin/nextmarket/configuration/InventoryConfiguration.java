@@ -33,6 +33,9 @@ public class InventoryConfiguration implements ConfigImplementation {
     private final String announcedInventoryTitle = configuration.getString("inventory.announced.title");
     private final int announcedInventoryLines = configuration.getInt("inventory.announced.lines");
 
+    private final String privateInventoryTitle = configuration.getString("inventory.private.title");
+    private final int privateInventoryLines = configuration.getInt("inventory.private.lines");
+
     private final Button personalMarketButton = this.buttonParser.parseSection(configuration
             .getConfigurationSection("inventory.main.buttons.personalMarket"));
 

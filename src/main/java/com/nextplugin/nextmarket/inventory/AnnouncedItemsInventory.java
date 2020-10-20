@@ -1,6 +1,5 @@
 package com.nextplugin.nextmarket.inventory;
 
-import com.google.inject.Inject;
 import com.henryfabio.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.inventoryapi.enums.InventoryLine;
 import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
@@ -24,16 +23,16 @@ import java.util.List;
 
 public class AnnouncedItemsInventory extends PagedInventory {
 
-    @Inject
-    private MarketDAO marketDAO;
+    private final MarketDAO marketDAO;
     private final MarketCache marketCache;
 
-    public AnnouncedItemsInventory(MarketCache marketCache) {
+    public AnnouncedItemsInventory(MarketDAO marketDAO, MarketCache marketCache) {
         super("nextmarket.announced",
                 InventoryConfiguration.get(InventoryConfiguration::announcedInventoryTitle),
                 InventoryLine.valueOf(InventoryConfiguration.get(InventoryConfiguration::announcedInventoryLines)));
 
         this.marketCache = marketCache;
+        this.marketDAO = marketDAO;
     }
 
     @Override

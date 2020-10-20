@@ -9,6 +9,7 @@ import com.henryfabio.inventoryapi.manager.InventoryManager;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.command.MarketCommand;
+import com.nextplugin.nextmarket.listeners.MarketEvents;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.manager.MarketItemManager;
 import com.nextplugin.nextmarket.sql.MarketDAO;
@@ -20,9 +21,11 @@ import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -55,6 +58,7 @@ public final class NextMarket extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         loadCategoriesConfiguration();
+        registerEvents();
 
         PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
         this.dependencyLoader = dependencyManager.loadAllDependencies();
@@ -134,6 +138,11 @@ public final class NextMarket extends JavaPlugin {
             marketCache.getMarketCache().add(marketItem);
         }
 
+    }
+
+    private void registerEvents() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new MarketEvents(), this);
     }
 
 }

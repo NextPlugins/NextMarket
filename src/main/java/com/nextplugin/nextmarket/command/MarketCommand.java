@@ -9,6 +9,7 @@ import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.AnnouncedItemsInventory;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
+import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.NumberUtil;
@@ -64,6 +65,9 @@ public class MarketCommand {
 
     @Command(name = "mercado.pessoal")
     public void viewPersonalMarket(Context<Player> context) {
+
+        PrivateMarketInventory privateMarketInventory = new PrivateMarketInventory(marketCache);
+        privateMarketInventory.openInventory(context.getSender());
 
         // TODO inventário do mercado pessoal.
 
@@ -196,7 +200,7 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketCache);
+        AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketDAO, marketCache);
         announcedItemsInventory.openInventory(player);
 
         // TODO inventário de itens anunciados.
