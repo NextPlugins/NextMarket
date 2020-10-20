@@ -1,13 +1,10 @@
 package com.nextplugin.nextmarket.command;
 
 import com.google.inject.Inject;
-import com.henryfabio.inventoryapi.editor.InventoryEditor;
-import com.henryfabio.inventoryapi.enums.InventoryLine;
-import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
-import com.henryfabio.inventoryapi.item.InventoryItem;
-import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
+import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.event.MarketItemCreateEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
+import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
@@ -23,16 +20,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MarketCommand {
 
+    @Inject private MarketCache marketCache;
     @Inject private MarketDAO marketDAO;
     @Inject private CategoryManager categoryManager;
-
 
     @Command(
             name = "mercado",
@@ -41,7 +38,6 @@ public class MarketCommand {
             description = "Comando principal do sistema de mercado.",
             target = CommandTarget.PLAYER
     )
-
     public void marketCommand(Context<Player> context) {
         Player player = context.getSender();
 
@@ -57,14 +53,17 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        MarketInventory marketInventory = new MarketInventory(categoryManager, marketDAO);
-
+        MarketInventory marketInventory = new MarketInventory(categoryManager, marketCache);
         marketInventory.openInventory(player);
+
+        player.sendMessage(ConfigValue.get(ConfigValue::oppeningInventory));
 
     }
 
     @Command(name = "mercado.pessoal")
     public void viewPersonalMarket(Context<Player> context) {
+
+        // TODO inventário do mercado pessoal.
 
     }
 
@@ -86,42 +85,54 @@ public class MarketCommand {
 
         ItemStack itemInMainHand = player.getInventory().getItemInHand();
 
-        if (itemInMainHand == null || itemInMainHand.getType() == Material.AIR) {
+        final Collection<Category> categories = categoryManager.getCategoryMap().values();
+
+        List<Material> allowedMaterials = new ArrayList<>();
+
+        for (Category category : categories) {
+            allowedMaterials.addAll(category.getAllowedMaterials());
+        }
+
+        if (itemInMainHand == null ||
+                itemInMainHand.getType() == Material.AIR ||
+                allowedMaterials.contains(itemInMainHand.getType())) {
 
             player.sendMessage(ConfigValue.get(ConfigValue::invalidItem));
             return;
 
         }
 
+        MarketItem marketItem;
+
         if (target != null) {
 
-            MarketItem marketItem = new MarketItem(
+            marketItem = new MarketItem(
                     player.getUniqueId(),
-                    player.getItemInHand(),
+                    itemInMainHand,
                     value,
                     new Date(),
                     target.getUniqueId()
             );
 
-            marketDAO.insertMarketItem(marketItem);
-            player.getInventory().remove(itemInMainHand);
+            marketCache.addItem(marketItem);
+            player.setItemInHand(null);
+            player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemInPersonalMarket)
                     .replace("%amount%", NumberUtil.formatNumber(value))
                     .replace("%player%", target.getName()));
 
-            Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
-
         } else {
-            MarketItem marketItem = new MarketItem(
+            marketItem = new MarketItem(
                     player.getUniqueId(),
-                    player.getItemInHand(),
+                    itemInMainHand,
                     value,
                     new Date(),
                     null
             );
 
-            marketDAO.insertMarketItem(marketItem);
-            player.getInventory().remove(itemInMainHand);
+            marketCache.addItem(marketItem);
+            player.setItemInHand(null);
+            player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemMessage)
                     .replace("%amount%", NumberUtil.formatNumber(value)));
 
@@ -135,9 +146,8 @@ public class MarketCommand {
                 });
             }
 
-            Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
-
         }
+        Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
 
     }
 
@@ -147,6 +157,9 @@ public class MarketCommand {
 
         ExpireItemsInventory expireItemsInventory = new ExpireItemsInventory();
         expireItemsInventory.openInventory(player);
+
+        // TODO inventário de itens expirados.
+
     }
 
     @Command(name = "mercado.anunciados")
@@ -154,42 +167,8 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        new PagedInventory("announced.inventory", "Mercado", InventoryLine.SIX) {
+        // TODO inventário de itens anunciados.
 
-            @Override
-            protected void onCreate(PagedViewer viewer) {
-
-            }
-
-            @Override
-            protected void onOpen(PagedViewer viewer, InventoryEditor editor) {
-
-            }
-
-            @Override
-            protected void onUpdate(PagedViewer viewer, InventoryEditor editor) {
-
-            }
-
-            @Override
-            public List<InventoryItem> getPagesItems(PagedViewer viewer) {
-
-                List<InventoryItem> items = new LinkedList<>();
-
-                List<MarketItem> collect = marketDAO.findAllMarketItemList()
-                        .stream()
-                        .filter(marketItem -> marketItem.getSellerId().equals(player.getUniqueId()))
-                        .collect(Collectors.toList());
-
-                for (MarketItem marketItem : collect) {
-
-                    items.add(new InventoryItem(marketItem.getItemStack()));
-
-                }
-
-                return items;
-            }
-        }.openInventory(player);
     }
 
 }

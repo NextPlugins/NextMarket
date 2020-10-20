@@ -44,3 +44,4 @@ messages:
   announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%amount% &ano mercado pessoal de &f%player%&a.'
   insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
+  oppening-inventory: '&aAbrindo categorias do Mercado...'

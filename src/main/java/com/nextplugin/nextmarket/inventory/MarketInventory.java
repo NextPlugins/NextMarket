@@ -7,16 +7,15 @@ import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
 import com.nextplugin.nextmarket.api.category.icon.CategoryIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
+import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.manager.CategoryManager;
-import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.ItemBuilder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Henry Fábio
@@ -25,9 +24,9 @@ import java.util.stream.Collectors;
 public final class MarketInventory extends GlobalInventory {
 
     private final CategoryManager categoryManager;
-    private final MarketDAO marketDAO;
+    private final MarketCache marketCache;
 
-    public MarketInventory(CategoryManager categoryManager, MarketDAO marketDAO) {
+    public MarketInventory(CategoryManager categoryManager, MarketCache marketCache) {
 
         super("nextmarket.market",
                 InventoryConfiguration.get(InventoryConfiguration::mainInventoryTitle),
@@ -35,7 +34,7 @@ public final class MarketInventory extends GlobalInventory {
         );
 
         this.categoryManager = categoryManager;
-        this.marketDAO = marketDAO;
+        this.marketCache = marketCache;
     }
 
     @Override
@@ -47,28 +46,34 @@ public final class MarketInventory extends GlobalInventory {
 
             List<String> lore = new ArrayList<>();
 
-            for (String string : category.getDescription()) {
-                lore.add(string.replace("&", "§"));
+            List<MarketItem> collect = new ArrayList<>();
+            for (MarketItem marketItem : marketCache.getMarketCache()) {
+                if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())) {
+                    collect.add(marketItem);
+                }
             }
 
-            List<MarketItem> collect = marketDAO.findAllMarketItemList()
-                    .stream()
-                    .filter(marketItem -> category.getAllowedMaterials().contains(marketItem.getItemStack().getType()))
-                    .collect(Collectors.toList());
+            String suffix = collect.size() > 1 ? " itens" : " item";
+
+            for (String string : category.getDescription()) {
+                lore.add(string
+                        .replace("&", "§")
+                        .replace("%amount%", collect.size() + suffix));
+            }
 
             ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
                     .amount(1)
                     .durability(icon.getItemStack().getDurability())
                     .name(category.getDisplayName()
                             .replace("&", "§")
-                            .replace("%amount%", collect.size() + ""))
+                            .replace("%amount%", collect.size() + suffix))
                     .lore(lore)
                     .flag(ItemFlag.values())
                     .build();
 
             editor.setItem(icon.getPosition(), new InventoryItem(itemStack).addDefaultCallback(click -> {
 
-                CategoryInventory categoryInventory = new CategoryInventory(marketDAO, categoryManager);
+                CategoryInventory categoryInventory = new CategoryInventory(marketCache, categoryManager);
 
                 categoryInventory.openInventory(click.getPlayer(), viewer -> viewer.setProperty("category", category.getId()));
 

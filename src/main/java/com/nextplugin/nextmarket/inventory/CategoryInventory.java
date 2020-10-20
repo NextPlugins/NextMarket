@@ -7,19 +7,14 @@ import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
 import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.item.MarketItem;
+import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.manager.CategoryManager;
-import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.ItemBuilder;
-import com.nextplugin.nextmarket.util.NumberUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,14 +24,14 @@ import java.util.List;
  */
 public final class CategoryInventory extends PagedInventory {
 
-    private final MarketDAO marketDAO;
+    private final MarketCache marketCache;
     private final CategoryManager categoryManager;
 
-    public CategoryInventory(MarketDAO marketDAO, CategoryManager categoryManager) {
+    public CategoryInventory(MarketCache marketCache, CategoryManager categoryManager) {
         super("nextmarket.category",
                 InventoryConfiguration.get(InventoryConfiguration::categoryInventoryTitle),
                 InventoryLine.valueOf(InventoryConfiguration.get(InventoryConfiguration::categoryInventoryLines)));
-        this.marketDAO = marketDAO;
+        this.marketCache = marketCache;
         this.categoryManager = categoryManager;
     }
 
@@ -77,9 +72,8 @@ public final class CategoryInventory extends PagedInventory {
 
         Category category = categoryManager.getCategoryMap().get(viewer.getProperty("category").toString());
 
-        for (MarketItem marketItem : marketDAO.findAllMarketItemList()) {
+        for (MarketItem marketItem : this.marketCache.getMarketCache()) {
 
-            assert category != null;
             if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())) {
 
                 ItemStack itemStack = marketItem.getItemStack();

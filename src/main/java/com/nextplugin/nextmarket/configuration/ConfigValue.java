@@ -37,6 +37,7 @@ public class ConfigValue implements ConfigImplementation {
     private final String announcedAItemInPersonalMarket = translateMessage("messages.announced-a-item-in-personal-market");
     private final String insufficientMoneyMessage = translateMessage("messages.insufficient-money");
     private final String invalidItem = translateMessage("messages.invalid-item");
+    private final String oppeningInventory = translateMessage("messages.oppening-inventory");
 
     public static <T> T get(ValueSupplier<T> supplier) {
         return supplier.get(ConfigValue.instance);
