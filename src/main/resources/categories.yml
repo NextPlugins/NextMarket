@@ -11,6 +11,8 @@ inventory:
     buttons:
       personalMarket:
         displayName: "&aMercado pessoal"
+        # Não mecher aqui :d
+        menu: "pessoal"
         description:
           - '&7Clique para ver os itens que estão vendendo para você'
         icon:
@@ -19,6 +21,7 @@ inventory:
           inventorySlot: 48
       announcedItems:
         displayName: "&aItens Anunciados"
+        menu: "anunciados"
         description:
           - '&7Clique para ver os seus itens anunciados no mercado'
         icon:

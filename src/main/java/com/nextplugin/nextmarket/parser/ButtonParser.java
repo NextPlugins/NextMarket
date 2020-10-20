@@ -16,6 +16,7 @@ public final class ButtonParser {
 
     public Button parseSection(ConfigurationSection section) {
         return Button.builder()
+                .menu(section.getString("menu"))
                 .displayName(section.getString("displayName"))
                 .description(section.getStringList("description"))
                 .icon(this.menuIconParser.parseSection(section.getConfigurationSection("icon")))

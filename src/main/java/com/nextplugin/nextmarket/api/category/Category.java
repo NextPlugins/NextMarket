@@ -1,6 +1,6 @@
 package com.nextplugin.nextmarket.api.category;
 
-import com.nextplugin.nextmarket.api.category.icon.CategoryIcon;
+import com.nextplugin.nextmarket.api.item.MenuIcon;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Material;
@@ -17,7 +17,7 @@ public final class Category {
     private final String inventoryName;
     private final List<String> description;
 
-    private final CategoryIcon icon;
+    private final MenuIcon icon;
     private final Set<Material> allowedMaterials;
 
 }

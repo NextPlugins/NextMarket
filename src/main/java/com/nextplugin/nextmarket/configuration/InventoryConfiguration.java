@@ -33,10 +33,10 @@ public class InventoryConfiguration implements ConfigImplementation {
     private final String announcedInventoryTitle = configuration.getString("inventory.announced.title");
     private final int announcedInventoryLines = configuration.getInt("inventory.announced.lines");
 
-    private final Button personalMarketItem = this.buttonParser.parseSection(configuration
+    private final Button personalMarketButton = this.buttonParser.parseSection(configuration
             .getConfigurationSection("inventory.main.buttons.personalMarket"));
 
-    private final Button announcedItem = this.buttonParser.parseSection(configuration
+    private final Button announcedButton = this.buttonParser.parseSection(configuration
             .getConfigurationSection("inventory.main.buttons.announcedItems"));
 
     public static <T> T get(CategorySupplier<T> supplier) {

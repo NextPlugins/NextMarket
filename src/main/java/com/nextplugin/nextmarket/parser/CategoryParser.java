@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public final class CategoryParser {
 
     @Inject @Named("main") private Logger logger;
-    @Inject private CategoryIconParser categoryIconParser;
+    @Inject private MenuIconParser menuIconParser;
 
     public Category parseSection(ConfigurationSection section) {
         return Category.builder()
@@ -28,7 +28,7 @@ public final class CategoryParser {
                 .displayName(section.getString("displayName"))
                 .inventoryName(section.getString("inventoryName"))
                 .description(section.getStringList("description"))
-                .icon(this.categoryIconParser.parseSection(section.getConfigurationSection("icon")))
+                .icon(this.menuIconParser.parseSection(section.getConfigurationSection("icon")))
                 .allowedMaterials(parseMaterialsSection(section))
                 .build();
     }

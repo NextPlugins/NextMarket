@@ -5,6 +5,7 @@ import com.henryfabio.inventoryapi.enums.InventoryLine;
 import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
+import com.nextplugin.nextmarket.api.button.Button;
 import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
@@ -39,6 +40,27 @@ public final class MarketInventory extends GlobalInventory {
 
     @Override
     protected void onCreate(InventoryEditor editor) {
+
+        List<Button> buttons = new ArrayList<>();
+        buttons.add(InventoryConfiguration.get(InventoryConfiguration::announcedButton));
+        buttons.add(InventoryConfiguration.get(InventoryConfiguration::personalMarketButton));
+
+        for (Button button : buttons) {
+            List<String> lore = new ArrayList<>();
+
+            for (String string : button.getDescription()) lore.add(string.replace("&", "§"));
+
+            ItemStack item = ItemBuilder.create(button.getIcon().getItemStack().getType())
+                    .amount(1)
+                    .durability(button.getIcon().getItemStack().getDurability())
+                    .name(button.getDisplayName())
+                    .lore(lore)
+                    .flag(ItemFlag.values())
+                    .build();
+
+            editor.setItem(button.getIcon().getPosition(), new InventoryItem(item)
+                    .addDefaultCallback(click -> click.getPlayer().performCommand("mercado " + button.getMenu())));
+        }
 
         categoryManager.getCategoryMap().forEach((s, category) -> {
 
