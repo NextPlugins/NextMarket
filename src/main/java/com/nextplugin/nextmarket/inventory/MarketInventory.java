@@ -5,7 +5,7 @@ import com.henryfabio.inventoryapi.enums.InventoryLine;
 import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
-import com.nextplugin.nextmarket.api.category.icon.CategoryIcon;
+import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
@@ -42,7 +42,7 @@ public final class MarketInventory extends GlobalInventory {
 
         categoryManager.getCategoryMap().forEach((s, category) -> {
 
-            CategoryIcon icon = category.getIcon();
+            MenuIcon icon = category.getIcon();
 
             List<String> lore = new ArrayList<>();
 

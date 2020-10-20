@@ -29,12 +29,9 @@ import java.util.List;
 
 public class MarketCommand {
 
-    @Inject
-    private MarketCache marketCache;
-    @Inject
-    private MarketDAO marketDAO;
-    @Inject
-    private CategoryManager categoryManager;
+    @Inject private MarketCache marketCache;
+    @Inject private MarketDAO marketDAO;
+    @Inject private CategoryManager categoryManager;
 
     @Command(
             name = "mercado",

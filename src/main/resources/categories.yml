@@ -10,7 +10,21 @@ inventory:
     lines: 5
     buttons:
       personalMarket:
+        displayName: "&aMercado pessoal"
+        description:
+          - '&7Clique para ver os itens que estão vendendo para você'
+        icon:
+          material: CHEST
+          data: 0
+          inventorySlot: 48
       announcedItems:
+        displayName: "&aItens Anunciados"
+        description:
+          - '&7Clique para ver os seus itens anunciados no mercado'
+        icon:
+          material: EYE_OF_ENDER
+          data: 0
+          inventorySlot: 50
   category: # Inventário onde será exibido os itens daquela categoria
     title: "Categoria: %category_name%"
     lines: 6

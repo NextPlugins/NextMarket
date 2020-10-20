@@ -1,6 +1,11 @@
 package com.nextplugin.nextmarket.configuration;
 
+import com.google.inject.Inject;
 import com.nextplugin.nextmarket.NextMarket;
+import com.nextplugin.nextmarket.api.button.Button;
+import com.nextplugin.nextmarket.api.item.MenuIcon;
+import com.nextplugin.nextmarket.parser.ButtonParser;
+import com.nextplugin.nextmarket.parser.MenuIconParser;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.bukkit.ChatColor;
@@ -12,6 +17,8 @@ import java.util.stream.Collectors;
 @Accessors(fluent = true)
 @Getter
 public class InventoryConfiguration implements ConfigImplementation {
+
+    @Inject private ButtonParser buttonParser;
 
     private static final InventoryConfiguration instance = new InventoryConfiguration();
 
@@ -25,6 +32,12 @@ public class InventoryConfiguration implements ConfigImplementation {
 
     private final String announcedInventoryTitle = configuration.getString("inventory.announced.title");
     private final int announcedInventoryLines = configuration.getInt("inventory.announced.lines");
+
+    private final Button personalMarketItem = this.buttonParser.parseSection(configuration
+            .getConfigurationSection("inventory.main.buttons.personalMarket"));
+
+    private final Button announcedItem = this.buttonParser.parseSection(configuration
+            .getConfigurationSection("inventory.main.buttons.announcedItems"));
 
     public static <T> T get(CategorySupplier<T> supplier) {
         return supplier.get(InventoryConfiguration.instance);
