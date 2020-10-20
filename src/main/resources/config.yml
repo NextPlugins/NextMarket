@@ -22,6 +22,16 @@ announcement:
   # Valor máximo para colocar itens no mercado (-1 para desativar)
   maximum-value: -1
 
+limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar itens, é preciso ter pelo menos uma delas)
+  # Limite para membros comuns
+  default: 3
+  # Limite para o jogador com a permissão 'nextmarket.vip1'
+  vip1: 5
+  # Limite para o jogador com a permissão 'nextmarket.vip2'
+  vip2: 7
+  # Limite para o jogador com a permissão 'nextmarket.vip3'
+  vip3: 9
+
 command-message:
   - '&2&lMERCADO &f- Ajuda'
   - ''
@@ -36,12 +46,16 @@ command-message:
 messages:
   maximum-value-reached: '&cVocê inseriu um valor muito alto.'
   minimum-value-not-reached: '&cVocê precisa por um valor acima de %amount%.'
+  no-permission: '&cVocê não tem permissão para anunciar um item no mercado.'
+  out-of-bounds: '&cVocê atingiu o limite de items no mercado (%limit%)'
   player-offline: '&cEste jogador encontra-se offline.'
+  cancell-a-sell: '&cVocê cancelou a venda deste item'
   expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados&c para coletar.'
   bought-a-item: '&aVocê comprou um item do mercado.'
   sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
-  announced-a-item: '&aVocê anunciou um item por &f%amount% &ano mercado.'
-  announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%amount% &ano mercado pessoal de &f%player%&a.'
+  announced-a-item: '&aVocê anunciou um item por &f%price% &ano mercado.'
+  announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%price% &ano mercado pessoal de &f%player%&a.'
   insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
   oppening-inventory: '&aAbrindo categorias do Mercado...'
+  full-inventory: '&cSeu inventário está cheio, cancelando operação'

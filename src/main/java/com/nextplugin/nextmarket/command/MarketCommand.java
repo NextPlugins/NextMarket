@@ -6,6 +6,7 @@ import com.nextplugin.nextmarket.api.event.MarketItemCreateEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
+import com.nextplugin.nextmarket.inventory.AnnouncedItemsInventory;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.manager.CategoryManager;
@@ -17,6 +18,7 @@ import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,9 +29,12 @@ import java.util.List;
 
 public class MarketCommand {
 
-    @Inject private MarketCache marketCache;
-    @Inject private MarketDAO marketDAO;
-    @Inject private CategoryManager categoryManager;
+    @Inject
+    private MarketCache marketCache;
+    @Inject
+    private MarketDAO marketDAO;
+    @Inject
+    private CategoryManager categoryManager;
 
     @Command(
             name = "mercado",
@@ -56,7 +61,7 @@ public class MarketCommand {
         MarketInventory marketInventory = new MarketInventory(categoryManager, marketCache);
         marketInventory.openInventory(player);
 
-        player.sendMessage(ConfigValue.get(ConfigValue::oppeningInventory));
+        player.sendMessage(ConfigValue.get(ConfigValue::oppeningInventoryMessage));
 
     }
 
@@ -95,11 +100,38 @@ public class MarketCommand {
 
         if (itemInMainHand == null ||
                 itemInMainHand.getType() == Material.AIR ||
-                allowedMaterials.contains(itemInMainHand.getType())) {
+                !allowedMaterials.contains(itemInMainHand.getType())) {
 
-            player.sendMessage(ConfigValue.get(ConfigValue::invalidItem));
+            player.sendMessage(ConfigValue.get(ConfigValue::invalidItemMessage));
             return;
 
+        }
+
+        int itemsInMarket = (int) marketCache.getMarketCache()
+                .stream()
+                .filter(marketItem -> marketItem.getSellerId().equals(player.getUniqueId()))
+                .count();
+
+        int playerLimit = 0;
+
+        ConfigurationSection limitConfiguration = ConfigValue.get(ConfigValue::sellLimit);
+        for (String permission : limitConfiguration.getKeys(false)) {
+
+            if (player.hasPermission("nextmarket." + permission)) {
+
+                playerLimit = limitConfiguration.getInt(permission);
+            }
+        }
+
+        if (playerLimit == 0) {
+            player.sendMessage(ConfigValue.get(ConfigValue::noPermissionMessage));
+            return;
+        }
+
+        if (itemsInMarket == playerLimit) {
+            player.sendMessage(ConfigValue.get(ConfigValue::outOfBoundsMessage)
+                    .replace("%limit%", String.valueOf(playerLimit)));
+            return;
         }
 
         MarketItem marketItem;
@@ -118,7 +150,7 @@ public class MarketCommand {
             player.setItemInHand(null);
             player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemInPersonalMarket)
-                    .replace("%amount%", NumberUtil.formatNumber(value))
+                    .replace("%amount%", NumberUtil.letterFormat(value))
                     .replace("%player%", target.getName()));
 
         } else {
@@ -134,21 +166,21 @@ public class MarketCommand {
             player.setItemInHand(null);
             player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemMessage)
-                    .replace("%amount%", NumberUtil.formatNumber(value)));
+                    .replace("%price%", NumberUtil.letterFormat(value)));
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 onlinePlayer.sendMessage(new String[]{
                         "",
                         ConfigValue.get(ConfigValue::announcementMessage)
                                 .replace("%player%", player.getName())
-                                .replace("%amount%", NumberUtil.formatNumber(value)),
+                                .replace("%price%", NumberUtil.letterFormat(value)),
                         ""
                 });
             }
 
         }
-        Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
 
+        Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
     }
 
     @Command(name = "mercado.expirados")
@@ -167,8 +199,10 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        // TODO inventário de itens anunciados.
+        AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketCache);
+        announcedItemsInventory.openInventory(player);
 
+        // TODO inventário de itens anunciados.
     }
 
 }

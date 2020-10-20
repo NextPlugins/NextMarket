@@ -11,9 +11,11 @@ import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.util.ItemBuilder;
+import com.nextplugin.nextmarket.util.NumberUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +55,7 @@ public final class CategoryInventory extends PagedInventory {
 
         editor.setItem(49, new InventoryItem(
                 new ItemBuilder(Material.ARROW)
-                        .name("§aVoltar")
+                        .name("§cVoltar")
                         .flag(ItemFlag.values())
                         .build())
                 .addDefaultCallback(click -> viewer.openBackInventory()));
@@ -74,14 +76,25 @@ public final class CategoryInventory extends PagedInventory {
 
         for (MarketItem marketItem : this.marketCache.getMarketCache()) {
 
-            if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())) {
+            if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
+                    && !marketItem.isExpired()) {
 
-                ItemStack itemStack = marketItem.getItemStack();
+                ItemStack itemStack = marketItem.getItemStack().clone();
+                ItemMeta itemMeta = itemStack.getItemMeta();
+
+                List<String> lore = itemMeta.getLore();
+                lore.add("");
+                lore.add("§7Valor: &a$" + NumberUtil.letterFormat(marketItem.getPrice()));
+
+                itemMeta.setLore(lore);
+                itemStack.setItemMeta(itemMeta);
+
                 items.add(new InventoryItem(itemStack));
 
             }
 
         }
+
         return items;
     }
 }

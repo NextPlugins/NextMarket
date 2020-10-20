@@ -14,6 +14,9 @@ inventory:
   category: # Inventário onde será exibido os itens daquela categoria
     title: "Categoria: %category_name%"
     lines: 6
+  announced: # Inventário de itens que você anunciou
+    title: "Seus itens no mercado"
+    lines: 6
 
 categories:
   armas:

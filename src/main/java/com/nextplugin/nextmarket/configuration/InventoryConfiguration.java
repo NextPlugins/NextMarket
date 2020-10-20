@@ -23,6 +23,9 @@ public class InventoryConfiguration implements ConfigImplementation {
     private final String categoryInventoryTitle = configuration.getString("inventory.category.title");
     private final int categoryInventoryLines = configuration.getInt("inventory.category.lines");
 
+    private final String announcedInventoryTitle = configuration.getString("inventory.announced.title");
+    private final int announcedInventoryLines = configuration.getInt("inventory.announced.lines");
+
     public static <T> T get(CategorySupplier<T> supplier) {
         return supplier.get(InventoryConfiguration.instance);
     }
