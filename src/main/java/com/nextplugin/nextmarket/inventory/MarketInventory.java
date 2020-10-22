@@ -10,13 +10,16 @@ import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
+import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.util.ItemBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Henry Fábio
@@ -25,9 +28,10 @@ import java.util.List;
 public final class MarketInventory extends GlobalInventory {
 
     private final CategoryManager categoryManager;
+    private final ButtonManager buttonManager;
     private final MarketCache marketCache;
 
-    public MarketInventory(CategoryManager categoryManager, MarketCache marketCache) {
+    public MarketInventory(CategoryManager categoryManager, ButtonManager buttonManager, MarketCache marketCache) {
 
         super("nextmarket.market",
                 InventoryConfiguration.get(InventoryConfiguration::mainInventoryTitle),
@@ -35,6 +39,7 @@ public final class MarketInventory extends GlobalInventory {
         );
 
         this.categoryManager = categoryManager;
+        this.buttonManager = buttonManager;
         this.marketCache = marketCache;
     }
 
@@ -42,8 +47,8 @@ public final class MarketInventory extends GlobalInventory {
     protected void onCreate(InventoryEditor editor) {
 
         List<Button> buttons = new ArrayList<>();
-        buttons.add(InventoryConfiguration.get(InventoryConfiguration::announcedButton));
-        buttons.add(InventoryConfiguration.get(InventoryConfiguration::personalMarketButton));
+        buttons.add(buttonManager.getButtonMap().get("pessoal"));
+        buttons.add(buttonManager.getButtonMap().get("anunciados"));
 
         for (Button button : buttons) {
             List<String> lore = new ArrayList<>();
@@ -53,8 +58,8 @@ public final class MarketInventory extends GlobalInventory {
             ItemStack item = ItemBuilder.create(button.getIcon().getItemStack().getType())
                     .amount(1)
                     .durability(button.getIcon().getItemStack().getDurability())
-                    .name(button.getDisplayName())
-                    .lore(lore)
+                    .name(ChatColor.translateAlternateColorCodes('&', button.getDisplayName()))
+                    .lore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()))
                     .flag(ItemFlag.values())
                     .build();
 
@@ -70,7 +75,9 @@ public final class MarketInventory extends GlobalInventory {
 
             List<MarketItem> collect = new ArrayList<>();
             for (MarketItem marketItem : marketCache.getMarketCache()) {
-                if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())) {
+                if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
+                        && !marketItem.isExpired()
+                        && marketItem.getDestinationId() != null) {
                     collect.add(marketItem);
                 }
             }
@@ -78,9 +85,7 @@ public final class MarketInventory extends GlobalInventory {
             String suffix = collect.size() > 1 ? " itens" : " item";
 
             for (String string : category.getDescription()) {
-                lore.add(string
-                        .replace("&", "§")
-                        .replace("%amount%", collect.size() + suffix));
+                lore.add(ChatColor.translateAlternateColorCodes('&', string.replace("%amount%", collect.size() + suffix)));
             }
 
             ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
@@ -97,7 +102,7 @@ public final class MarketInventory extends GlobalInventory {
 
                 CategoryInventory categoryInventory = new CategoryInventory(marketCache, categoryManager);
 
-                categoryInventory.openInventory(click.getPlayer(), viewer -> viewer.setProperty("category", category.getId()));
+                categoryInventory.openInventory(click.getPlayer(), viewerProperty -> viewerProperty.setProperty("category", category.getId()));
 
             }));
 
@@ -107,6 +112,8 @@ public final class MarketInventory extends GlobalInventory {
 
     @Override
     protected void onOpen(IViewer viewer, InventoryEditor editor) {
+
+        this.updateInventory(viewer);
 
     }
 

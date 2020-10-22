@@ -35,7 +35,7 @@ public class ConfigValue implements ConfigImplementation {
     private final String noPermissionMessage = translateMessage("messages.no-permission");
     private final String outOfBoundsMessage = translateMessage("messages.out-of-bounds");
     private final String offlinePlayerMessage = translateMessage("messages.player-offline");
-    private final String cancellAnSellMessage = translateMessage("messages.cancell-a-sell");
+    private final String cancelAnSellMessage = translateMessage("messages.cancel-a-sell");
     private final String expiredItemMessage = translateMessage("messages.expired-item");
     private final String boughtAnItemMessage = translateMessage("messages.bought-a-item");
     private final String soldAItemMessage = translateMessage("messages.sold-a-item");
@@ -43,7 +43,7 @@ public class ConfigValue implements ConfigImplementation {
     private final String announcedAItemInPersonalMarket = translateMessage("messages.announced-a-item-in-personal-market");
     private final String insufficientMoneyMessage = translateMessage("messages.insufficient-money");
     private final String invalidItemMessage = translateMessage("messages.invalid-item");
-    private final String oppeningInventoryMessage = translateMessage("messages.oppening-inventory");
+    private final String openingInventoryMessage = translateMessage("messages.opening-inventory");
     private final String fullInventoryMessage = translateMessage("messages.full-inventory");
 
     public static <T> T get(ValueSupplier<T> supplier) {

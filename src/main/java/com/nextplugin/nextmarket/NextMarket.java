@@ -10,6 +10,7 @@ import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.command.MarketCommand;
 import com.nextplugin.nextmarket.listeners.MarketEvents;
+import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.manager.MarketItemManager;
 import com.nextplugin.nextmarket.sql.MarketDAO;
@@ -49,6 +50,7 @@ public final class NextMarket extends JavaPlugin {
 
     @Inject private CategoryManager categoryManager;
     @Inject private MarketItemManager marketItemManager;
+    @Inject private ButtonManager buttonManager;
 
     public static NextMarket getInstance() {
         return getPlugin(NextMarket.class);
@@ -58,7 +60,6 @@ public final class NextMarket extends JavaPlugin {
     public void onLoad() {
         saveDefaultConfig();
         loadCategoriesConfiguration();
-        registerEvents();
 
         PluginDependencyManager dependencyManager = new PDMBuilder(this).build();
         this.dependencyLoader = dependencyManager.loadAllDependencies();
@@ -92,6 +93,10 @@ public final class NextMarket extends JavaPlugin {
                         this.categoriesConfiguration.getConfigurationSection("categories")
                 );
 
+                this.buttonManager.registerButtons(
+                        this.categoriesConfiguration.getConfigurationSection("inventory.main.buttons")
+                );
+
                 this.marketDAO.createTable();
 
                 BukkitFrame bukkitFrame = new BukkitFrame(this);
@@ -105,6 +110,8 @@ public final class NextMarket extends JavaPlugin {
                 this.injector.injectMembers(marketCacheTransfer);
 
                 loadCacheSystem();
+
+                registerEvents();
 
             } catch (Throwable t) {
                 t.printStackTrace();
@@ -142,7 +149,9 @@ public final class NextMarket extends JavaPlugin {
 
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new MarketEvents(), this);
+        MarketEvents marketEvents = new MarketEvents();
+        this.injector.injectMembers(marketEvents);
+        pluginManager.registerEvents(marketEvents, this);
     }
 
 }

@@ -18,8 +18,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnnouncedItemsInventory extends PagedInventory {
 
@@ -50,7 +52,10 @@ public class AnnouncedItemsInventory extends PagedInventory {
                         .name("§cVoltar")
                         .flag(ItemFlag.values())
                         .build())
-                .addDefaultCallback(click -> viewer.openBackInventory()));
+                .addDefaultCallback(click -> {
+                    viewer.openBackInventory();
+                    viewer.getCustomInventory().updateInventory(click.getPlayer());
+                }));
 
     }
 
@@ -70,15 +75,24 @@ public class AnnouncedItemsInventory extends PagedInventory {
             ItemStack itemStack = marketItem.getItemStack().clone();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            List<String> lore = itemMeta.getLore();
-            lore.add("");
-            lore.add("§7Valor: §a$" + NumberUtil.letterFormat(marketItem.getPrice()));
+            List<String> lore;
 
-            if (marketItem.getDestinationId() != null) {
+            if (itemMeta.hasLore())
+                lore = itemMeta.getLore();
+            else
+                lore = new ArrayList<>();
 
-                lore.add("§7Destinatário: §a" + marketItem.getDestination().getName());
+            lore.addAll(InventoryConfiguration.get(InventoryConfiguration::announcedInventoryItemLore)
+                    .stream()
+                    .map(s -> s.replace("%price%", NumberUtil.formatNumber(marketItem.getPrice())))
+                    .collect(Collectors.toList()));
 
+            if (marketItem.getDestinationId() != null){
+                lore.add("");
+                lore.add("§fDestinatário:§a " + marketItem.getDestination().getName());
             }
+
+            lore.add("");
 
             lore.add("§7Clique para remover do mercado");
 
@@ -98,7 +112,8 @@ public class AnnouncedItemsInventory extends PagedInventory {
                 marketDAO.deleteMarketItem(marketItem);
 
                 inventory.addItem(marketItem.getItemStack());
-                click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancellAnSellMessage));
+                click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancelAnSellMessage));
+                click.updateInventory();
 
             });
 

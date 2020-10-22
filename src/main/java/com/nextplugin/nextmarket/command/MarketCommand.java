@@ -10,6 +10,7 @@ import com.nextplugin.nextmarket.inventory.AnnouncedItemsInventory;
 import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
+import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.NumberUtil;
@@ -33,6 +34,7 @@ public class MarketCommand {
     @Inject private MarketCache marketCache;
     @Inject private MarketDAO marketDAO;
     @Inject private CategoryManager categoryManager;
+    @Inject private ButtonManager buttonManager;
 
     @Command(
             name = "mercado",
@@ -56,10 +58,10 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        MarketInventory marketInventory = new MarketInventory(categoryManager, marketCache);
+        MarketInventory marketInventory = new MarketInventory(categoryManager, buttonManager, marketCache);
         marketInventory.openInventory(player);
 
-        player.sendMessage(ConfigValue.get(ConfigValue::oppeningInventoryMessage));
+        player.sendMessage(ConfigValue.get(ConfigValue::openingInventoryMessage));
 
     }
 
