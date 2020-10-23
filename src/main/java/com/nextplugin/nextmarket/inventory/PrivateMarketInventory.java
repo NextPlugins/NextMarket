@@ -20,8 +20,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Henry Fábio
@@ -68,14 +70,24 @@ public final class PrivateMarketInventory extends PagedInventory {
         List<InventoryItem> items = new LinkedList<>();
 
         for (MarketItem marketItem : this.marketCache.getMarketCache()) {
-            if (!marketItem.getDestinationId().equals(viewer.getPlayer().getUniqueId())) continue;
+            if (marketItem.getDestinationId() == null || !marketItem.getDestinationId().equals(viewer.getPlayer().getUniqueId())) continue;
 
             ItemStack itemStack = marketItem.getItemStack().clone();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            List<String> lore = itemMeta.getLore();
-            lore.add("");
-            lore.add("§7Valor: §a$" + NumberUtil.letterFormat(marketItem.getPrice()));
+            List<String> lore;
+
+            if (itemMeta.hasLore())
+                lore = itemMeta.getLore();
+            else
+                lore = new ArrayList<>();
+
+            lore.addAll(InventoryConfiguration.get(InventoryConfiguration::categoryInventoryItemLore)
+                    .stream()
+                    .map(s -> s
+                            .replace("%seller%", marketItem.getSeller().getName())
+                            .replace("%price%", NumberUtil.formatNumber(marketItem.getPrice())))
+                    .collect(Collectors.toList()));
 
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);

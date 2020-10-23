@@ -153,7 +153,7 @@ public class MarketCommand {
             player.setItemInHand(null);
             player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemInPersonalMarket)
-                    .replace("%amount%", NumberUtil.letterFormat(value))
+                    .replace("%price%", NumberUtil.letterFormat(value))
                     .replace("%player%", target.getName()));
 
         } else {

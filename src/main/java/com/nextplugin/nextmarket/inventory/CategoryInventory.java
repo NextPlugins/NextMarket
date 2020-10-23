@@ -69,6 +69,8 @@ public final class CategoryInventory extends PagedInventory {
     @Override
     protected void onUpdate(PagedViewer viewer, InventoryEditor editor) {
 
+
+
     }
 
     @Override

@@ -9,7 +9,7 @@ connection:
     file: "market.sql"
 
 announcement:
-  message: "&2&lMERCADO &7%player%&f anunciou um item por &a%amount%"
+  message: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
   # novo item, um novo anúncio, do contrário, o item será anunciado sem destaque.
   delay: 600
@@ -35,10 +35,11 @@ limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar it
 command-message:
   - '&2&lMERCADO &f- Ajuda'
   - ''
-  - '&a/mercado &7- Exibe essa mensagem.'
-  - '&a/mercado ver &7- Abra o mercado.'
+  - '&a/mercado &7- Exibe a mensagem de ajuda.'
+  - '&a/mercado ver &7- Abra o menu de categorias do mercado.'
   - '&a/mercado vender <valor> &7- Venda o item que está segurando.'
   - '&a/mercado vender <valor> (jogador) &7- Venda o item para um jogador em específico.'
+  - '&a/mercado pessoal &7- Veja os itens que foram anunciados especialmente para você.'
   - '&a/mercado expirados &7- Veja seus itens que foram expirados e removidos do mercado.'
   - '&a/mercado anunciados &7- Veja seus itens anunciados.'
   - ''

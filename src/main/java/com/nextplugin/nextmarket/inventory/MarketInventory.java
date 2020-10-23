@@ -6,6 +6,7 @@ import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
 import com.nextplugin.nextmarket.api.button.Button;
+import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
@@ -43,8 +44,23 @@ public final class MarketInventory extends GlobalInventory {
         this.marketCache = marketCache;
     }
 
+    public List<MarketItem> getItemsInCategory(Category category){
+        List<MarketItem> collect = new ArrayList<>();
+        for (MarketItem marketItem : marketCache.getMarketCache()) {
+            if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
+                    && !marketItem.isExpired()
+                    && marketItem.getDestinationId() != null) {
+                collect.add(marketItem);
+                return collect;
+            }
+        }
+        return collect;
+    }
+
     @Override
     protected void onCreate(InventoryEditor editor) {
+
+        setUpdateTime(3);
 
         List<Button> buttons = new ArrayList<>();
         buttons.add(buttonManager.getButtonMap().get("pessoal"));
@@ -73,19 +89,10 @@ public final class MarketInventory extends GlobalInventory {
 
             List<String> lore = new ArrayList<>();
 
-            List<MarketItem> collect = new ArrayList<>();
-            for (MarketItem marketItem : marketCache.getMarketCache()) {
-                if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
-                        && !marketItem.isExpired()
-                        && marketItem.getDestinationId() != null) {
-                    collect.add(marketItem);
-                }
-            }
-
-            String suffix = collect.size() > 1 ? " itens" : " item";
+            String suffix = getItemsInCategory(category).size() > 1 ? " itens" : " item";
 
             for (String string : category.getDescription()) {
-                lore.add(ChatColor.translateAlternateColorCodes('&', string.replace("%amount%", collect.size() + suffix)));
+                lore.add(ChatColor.translateAlternateColorCodes('&', string.replace("%amount%", getItemsInCategory(category).size() + suffix)));
             }
 
             ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
@@ -93,7 +100,7 @@ public final class MarketInventory extends GlobalInventory {
                     .durability(icon.getItemStack().getDurability())
                     .name(category.getDisplayName()
                             .replace("&", "§")
-                            .replace("%amount%", collect.size() + suffix))
+                            .replace("%amount%", getItemsInCategory(category).size() + suffix))
                     .lore(lore)
                     .flag(ItemFlag.values())
                     .build();
