@@ -94,7 +94,7 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
             lore.add("");
 
-            lore.add("§7Clique para remover do mercado");
+            lore.add("§aClique para remover do mercado");
 
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);

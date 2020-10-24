@@ -56,7 +56,7 @@ messages:
   sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
   announced-a-item: '&aVocê anunciou um item por &f%price% &ano mercado.'
   announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%price% &ano mercado pessoal de &f%player%&a.'
-  insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'
+  insufficient-money: '&cVocê precisa de mais %difference% para comprar este item.'
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
   opening-inventory: '&aAbrindo categorias do Mercado...'
   full-inventory: '&cSeu inventário está cheio, cancelando operação'

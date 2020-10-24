@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
 
     pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
     pdm 'com.zaxxer:HikariCP:3.4.5'

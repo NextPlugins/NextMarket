@@ -8,12 +8,14 @@ import com.henryfabio.inventoryapi.inventory.single.SingleInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
 import com.henryfabio.inventoryapi.viewer.single.SingleViewer;
+import com.nextplugin.nextmarket.api.event.MarketItemSellEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.util.ItemBuilder;
 import com.nextplugin.nextmarket.util.NumberUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -95,7 +97,7 @@ public final class PrivateMarketInventory extends PagedInventory {
             InventoryItem inventoryItem = new InventoryItem(itemStack);
             inventoryItem.addDefaultCallback(click -> {
 
-                // TODO buy item processor
+                Bukkit.getServer().getPluginManager().callEvent(new MarketItemSellEvent(click.getPlayer(), marketItem));
 
             });
 

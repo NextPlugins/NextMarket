@@ -9,6 +9,7 @@ import com.henryfabio.inventoryapi.manager.InventoryManager;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.command.MarketCommand;
+import com.nextplugin.nextmarket.hook.VaultHook;
 import com.nextplugin.nextmarket.listeners.MarketEvents;
 import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
@@ -112,6 +113,7 @@ public final class NextMarket extends JavaPlugin {
                 loadCacheSystem();
 
                 registerEvents();
+                registerVault();
 
             } catch (Throwable t) {
                 t.printStackTrace();
@@ -152,6 +154,10 @@ public final class NextMarket extends JavaPlugin {
         MarketEvents marketEvents = new MarketEvents();
         this.injector.injectMembers(marketEvents);
         pluginManager.registerEvents(marketEvents, this);
+    }
+
+    private void registerVault(){
+        new VaultHook();
     }
 
 }

@@ -44,24 +44,78 @@ public final class MarketInventory extends GlobalInventory {
         this.marketCache = marketCache;
     }
 
-    public List<MarketItem> getItemsInCategory(Category category){
-        List<MarketItem> collect = new ArrayList<>();
-        for (MarketItem marketItem : marketCache.getMarketCache()) {
-            if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
-                    && !marketItem.isExpired()
-                    && marketItem.getDestinationId() != null) {
-                collect.add(marketItem);
-                return collect;
-            }
-        }
-        return collect;
-    }
-
     @Override
     protected void onCreate(InventoryEditor editor) {
 
         setUpdateTime(3);
 
+        setButtonsInMenu(editor);
+        setItemsInMenu(editor);
+
+    }
+
+    @Override
+    protected void onOpen(IViewer viewer, InventoryEditor editor) {
+
+        this.updateInventory(viewer);
+
+    }
+
+    @Override
+    protected void onUpdate(InventoryEditor editor) {
+
+        setItemsInMenu(editor);
+
+    }
+
+    public void setItemsInMenu(InventoryEditor editor){
+        categoryManager.getCategoryMap().forEach((s, category) -> {
+
+            MenuIcon icon = category.getIcon();
+
+            List<String> lore = new ArrayList<>();
+
+            List<MarketItem> collect = new ArrayList<>();
+            for (MarketItem marketItem : marketCache.getMarketCache()) {
+                if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
+                        && !marketItem.isExpired()
+                        && marketItem.getDestinationId() == null) {
+                    collect.add(marketItem);
+                }
+            }
+
+            int size = collect.size();
+
+            String suffix = size > 1 ? " itens" : " item";
+
+            for (String string : category.getDescription()) {
+                lore.add(ChatColor.translateAlternateColorCodes('&', string.replace("%amount%", size + suffix)));
+            }
+
+            ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
+                    .amount(1)
+                    .durability(icon.getItemStack().getDurability())
+                    .name(category.getDisplayName()
+                            .replace("&", "§")
+                            .replace("%amount%", size + suffix))
+                    .lore(lore)
+                    .flag(ItemFlag.values())
+                    .build();
+
+            editor.setItem(icon.getPosition(), new InventoryItem(itemStack).addDefaultCallback(click -> {
+
+                CategoryInventory categoryInventory = new CategoryInventory(marketCache, categoryManager);
+
+                categoryInventory.openInventory(click.getPlayer(), viewerProperty -> viewerProperty.setProperty("category", category.getId()));
+
+            }));
+
+            collect.forEach(marketItem -> System.out.println(marketItem.toString()));
+
+        });
+    }
+
+    public void setButtonsInMenu(InventoryEditor editor){
         List<Button> buttons = new ArrayList<>();
         buttons.add(buttonManager.getButtonMap().get("pessoal"));
         buttons.add(buttonManager.getButtonMap().get("anunciados"));
@@ -82,51 +136,6 @@ public final class MarketInventory extends GlobalInventory {
             editor.setItem(button.getIcon().getPosition(), new InventoryItem(item)
                     .addDefaultCallback(click -> click.getPlayer().performCommand("mercado " + button.getMenu())));
         }
-
-        categoryManager.getCategoryMap().forEach((s, category) -> {
-
-            MenuIcon icon = category.getIcon();
-
-            List<String> lore = new ArrayList<>();
-
-            String suffix = getItemsInCategory(category).size() > 1 ? " itens" : " item";
-
-            for (String string : category.getDescription()) {
-                lore.add(ChatColor.translateAlternateColorCodes('&', string.replace("%amount%", getItemsInCategory(category).size() + suffix)));
-            }
-
-            ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
-                    .amount(1)
-                    .durability(icon.getItemStack().getDurability())
-                    .name(category.getDisplayName()
-                            .replace("&", "§")
-                            .replace("%amount%", getItemsInCategory(category).size() + suffix))
-                    .lore(lore)
-                    .flag(ItemFlag.values())
-                    .build();
-
-            editor.setItem(icon.getPosition(), new InventoryItem(itemStack).addDefaultCallback(click -> {
-
-                CategoryInventory categoryInventory = new CategoryInventory(marketCache, categoryManager);
-
-                categoryInventory.openInventory(click.getPlayer(), viewerProperty -> viewerProperty.setProperty("category", category.getId()));
-
-            }));
-
-        });
-
-    }
-
-    @Override
-    protected void onOpen(IViewer viewer, InventoryEditor editor) {
-
-        this.updateInventory(viewer);
-
-    }
-
-    @Override
-    protected void onUpdate(InventoryEditor editor) {
-
     }
 
 }
