@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.henryfabio.inventoryapi.manager.InventoryManager;
-import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.command.MarketCommand;
 import com.nextplugin.nextmarket.hook.VaultHook;
@@ -18,7 +17,6 @@ import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.connection.mysql.MySQLConnection;
 import com.nextplugin.nextmarket.sql.connection.sqlite.SQLiteConnection;
-import com.nextplugin.nextmarket.task.MarketCacheTransferTask;
 import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -31,7 +29,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Timer;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -46,7 +43,6 @@ public final class NextMarket extends JavaPlugin {
     private SQLConnection sqlConnection;
 
     @Inject private MarketDAO marketDAO;
-    @Inject private MarketCacheTransferTask marketCacheTransfer;
     @Inject private MarketCache marketCache;
 
     @Inject private CategoryManager categoryManager;
@@ -108,18 +104,19 @@ public final class NextMarket extends JavaPlugin {
 
                 InventoryManager.enable(this);
 
-                this.injector.injectMembers(marketCacheTransfer);
-
-                loadCacheSystem();
-
                 registerEvents();
                 registerVault();
+                loadItems();
 
             } catch (Throwable t) {
                 t.printStackTrace();
             }
         });
 
+    }
+
+    private void loadItems() {
+        marketDAO.findAllMarketItemList().forEach(marketCache::addItem);
     }
 
     private void loadCategoriesConfiguration() {
@@ -137,16 +134,6 @@ public final class NextMarket extends JavaPlugin {
             this.sqlConnection = new SQLiteConnection();
             this.sqlConnection.configure(connectionSection.getConfigurationSection("sqlite"));
         }
-    }
-
-    private void loadCacheSystem(){
-        Timer timer = new Timer();
-        timer.schedule(marketCacheTransfer, 0, 15 * 1000L);
-
-        for (MarketItem marketItem : marketDAO.findAllMarketItemList()) {
-            marketCache.getMarketCache().add(marketItem);
-        }
-
     }
 
     private void registerEvents() {
