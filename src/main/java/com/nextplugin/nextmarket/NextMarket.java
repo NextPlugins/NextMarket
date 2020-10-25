@@ -17,6 +17,7 @@ import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.connection.mysql.MySQLConnection;
 import com.nextplugin.nextmarket.sql.connection.sqlite.SQLiteConnection;
+import com.nextplugin.nextmarket.task.MarketTransferQueue;
 import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -101,6 +102,8 @@ public final class NextMarket extends JavaPlugin {
                 MarketCommand marketCommand = new MarketCommand();
                 this.injector.injectMembers(marketCommand);
                 bukkitFrame.registerCommands(marketCommand);
+
+                this.injector.injectMembers(MarketTransferQueue.getInstance());
 
                 InventoryManager.enable(this);
 

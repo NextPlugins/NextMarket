@@ -1,6 +1,7 @@
 package com.nextplugin.nextmarket.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -50,7 +51,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        meta.setDisplayName(name);
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         return this;
     }
 

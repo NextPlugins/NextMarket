@@ -14,10 +14,12 @@ import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.NumberUtil;
+import com.nextplugin.nextmarket.util.TextUtil;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -31,10 +33,14 @@ import java.util.List;
 
 public class MarketCommand {
 
-    @Inject private MarketCache marketCache;
-    @Inject private MarketDAO marketDAO;
-    @Inject private CategoryManager categoryManager;
-    @Inject private ButtonManager buttonManager;
+    @Inject
+    private MarketCache marketCache;
+    @Inject
+    private MarketDAO marketDAO;
+    @Inject
+    private CategoryManager categoryManager;
+    @Inject
+    private ButtonManager buttonManager;
 
     @Command(
             name = "mercado",
@@ -47,9 +53,7 @@ public class MarketCommand {
         Player player = context.getSender();
 
         List<String> messages = ConfigValue.get(ConfigValue::commandMessage);
-        for (String message : messages) {
-            player.sendMessage(message);
-        }
+        messages.forEach(player::sendMessage);
 
     }
 
@@ -70,8 +74,6 @@ public class MarketCommand {
 
         PrivateMarketInventory privateMarketInventory = new PrivateMarketInventory(marketCache);
         privateMarketInventory.openInventory(context.getSender());
-
-        // TODO inventário do mercado pessoal.
 
     }
 
@@ -171,14 +173,16 @@ public class MarketCommand {
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemMessage)
                     .replace("%price%", NumberUtil.letterFormat(value)));
 
+            String announcementMessage = ConfigValue.get(ConfigValue::announcementMessage)
+                    .replace("%price%", NumberUtil.letterFormat(value))
+                    .replace("%player%", player.getName());
+
+            TextComponent text = TextUtil.sendItemTooltipMessage(announcementMessage, marketItem.getItemStack());
+
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendMessage(new String[]{
-                        "",
-                        ConfigValue.get(ConfigValue::announcementMessage)
-                                .replace("%player%", player.getName())
-                                .replace("%price%", NumberUtil.letterFormat(value)),
-                        ""
-                });
+                onlinePlayer.sendMessage("");
+                onlinePlayer.spigot().sendMessage(text);
+                onlinePlayer.sendMessage("");
             }
 
         }
@@ -193,8 +197,6 @@ public class MarketCommand {
         ExpireItemsInventory expireItemsInventory = new ExpireItemsInventory();
         expireItemsInventory.openInventory(player);
 
-        // TODO inventário de itens expirados.
-
     }
 
     @Command(name = "mercado.anunciados")
@@ -205,7 +207,6 @@ public class MarketCommand {
         AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketDAO, marketCache);
         announcedItemsInventory.openInventory(player);
 
-        // TODO inventário de itens anunciados.
     }
 
 }

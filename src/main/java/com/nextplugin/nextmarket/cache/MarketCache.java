@@ -18,11 +18,15 @@ public class MarketCache {
 
     public void addItem(MarketItem marketItem) {
         this.marketCache.add(marketItem);
+
+        System.out.println("Inserting item " + marketItem.getItemStack().getType().toString() + " from cache and queueing same");
         MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.INSERT));
     }
 
     public void removeItem(MarketItem marketItem) {
         this.marketCache.remove(marketItem);
+
+        System.out.println("Deleting item " + marketItem.getItemStack().getType().toString() + " from cache and queueing same");
         MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.DELETE));
     }
 

@@ -9,6 +9,7 @@ import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.event.MarketItemBuyEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
+import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.util.ItemBuilder;
@@ -17,6 +18,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -57,18 +59,24 @@ public final class CategoryInventory extends PagedInventory {
     @Override
     protected void onOpen(PagedViewer viewer, InventoryEditor editor) {
 
-        editor.setItem(49, new InventoryItem(
+        editor.setItem(48, new InventoryItem(
                 new ItemBuilder(Material.ARROW)
-                        .name("§cVoltar")
+                        .name("&cVoltar")
                         .flag(ItemFlag.values())
                         .build())
                 .addDefaultCallback(click -> viewer.openBackInventory()));
 
-        final Category category = categoryManager.getCategoryMap().get(viewer.getProperty("category").toString());
+        Category category = categoryManager.getCategoryMap().get(viewer.getProperty("category").toString());
 
-        final ItemStack itemStack = category.getIcon().getItemStack();
+        ItemStack itemStack = category.getIcon().getItemStack();
 
-        editor.setItem(53, new InventoryItem(itemStack).addDefaultCallback(click -> viewer.updatePagesItems()));
+        editor.setItem(49, new InventoryItem(
+                new ItemBuilder(itemStack.getType())
+                        .name("&aAtualizar Categoria")
+                        .lore("§fClique aqui para atualizar a lista de itens desta categoria.")
+                        .flag(ItemFlag.values())
+                        .build())
+                .addDefaultCallback(click -> viewer.updatePagesItems()));
 
     }
 
@@ -112,10 +120,25 @@ public final class CategoryInventory extends PagedInventory {
 
                 items.add(new InventoryItem(itemStack).addDefaultCallback(click -> {
 
-                    // TODO temporary for tests
+                    if (click.getPlayer().getUniqueId().equals(marketItem.getSellerId())) {
+
+                        PlayerInventory inventory = click.getPlayer().getInventory();
+                        if (inventory.firstEmpty() == -1) {
+                            click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::fullInventoryMessage));
+                            return;
+                        }
+
+                        this.marketCache.removeItem(marketItem);
+
+                        inventory.addItem(marketItem.getItemStack());
+                        click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancelAnSellMessage));
+                        click.updateInventory();
+                        return;
+
+                    }
 
                     Bukkit.getPluginManager().callEvent(new MarketItemBuyEvent(viewer.getPlayer(), marketItem));
-                    this.updateInventory(viewer);
+                    viewer.updatePagesItems();
 
                 }));
 

@@ -1,11 +1,13 @@
 package com.nextplugin.nextmarket.listeners;
 
 import com.nextplugin.nextmarket.api.event.MarketItemBuyEvent;
+import com.nextplugin.nextmarket.api.event.MarketItemCreateEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.hook.VaultHook;
 import com.nextplugin.nextmarket.sql.MarketDAO;
+import com.nextplugin.nextmarket.util.NumberUtil;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,15 +27,13 @@ public class MarketEvents implements Listener {
     @Inject private MarketCache marketCache;
     @Inject private VaultHook vaultHook;
 
-    // TODO temporary for tests
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBuyEvent(MarketItemBuyEvent event) {
         if (event.isCancelled()) return;
 
         MarketItem marketItem = event.getMarketItem();
         Player player = event.getPlayer();
-        final Player seller = marketItem.getSeller().getPlayer();
+        Player seller = marketItem.getSeller().getPlayer();
         Economy economy = vaultHook.getEconomy();
 
         double balance = economy.getBalance(player);
@@ -47,7 +47,6 @@ public class MarketEvents implements Listener {
             return;
         }
 
-        marketDAO.deleteMarketItem(marketItem);
         marketCache.removeItem(marketItem);
 
         PlayerInventory inventory = player.getInventory();
@@ -58,15 +57,20 @@ public class MarketEvents implements Listener {
 
         player.getInventory().addItem(marketItem.getItemStack());
 
-        final String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
+        String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
         player.sendMessage(boughtAnItem);
 
-        final String soldAItem = ConfigValue.get(ConfigValue::soldAItemMessage);
-        seller.sendMessage(soldAItem);
+        String soldAItem = ConfigValue.get(ConfigValue::soldAItemMessage);
+        seller.sendMessage(soldAItem.replace("%amount%", NumberUtil.letterFormat(marketItem.getPrice())));
 
         economy.bankWithdraw(player.getName(), marketItem.getPrice());
         economy.bankDeposit(seller.getName(), marketItem.getPrice());
 
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onCreateAnnounce(MarketItemCreateEvent event) {
+        // TODO
     }
 
 }

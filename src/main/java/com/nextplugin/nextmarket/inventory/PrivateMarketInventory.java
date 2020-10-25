@@ -55,7 +55,7 @@ public final class PrivateMarketInventory extends PagedInventory {
 
         editor.setItem(49, new InventoryItem(
                 new ItemBuilder(Material.ARROW)
-                        .name("§cVoltar")
+                        .name("&cVoltar")
                         .flag(ItemFlag.values())
                         .build())
                 .addDefaultCallback(click -> viewer.openBackInventory()));

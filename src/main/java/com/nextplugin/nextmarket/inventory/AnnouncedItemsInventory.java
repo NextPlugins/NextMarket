@@ -49,7 +49,7 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
         editor.setItem(49, new InventoryItem(
                 new ItemBuilder(Material.ARROW)
-                        .name("§cVoltar")
+                        .name("&cVoltar")
                         .flag(ItemFlag.values())
                         .build())
                 .addDefaultCallback(click -> {
@@ -109,7 +109,6 @@ public class AnnouncedItemsInventory extends PagedInventory {
                 }
 
                 this.marketCache.removeItem(marketItem);
-                marketDAO.deleteMarketItem(marketItem);
 
                 inventory.addItem(marketItem.getItemStack());
                 click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancelAnSellMessage));
