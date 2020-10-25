@@ -64,12 +64,16 @@ public final class CategoryInventory extends PagedInventory {
                         .build())
                 .addDefaultCallback(click -> viewer.openBackInventory()));
 
+        final Category category = categoryManager.getCategoryMap().get(viewer.getProperty("category").toString());
+
+        final ItemStack itemStack = category.getIcon().getItemStack();
+
+        editor.setItem(53, new InventoryItem(itemStack).addDefaultCallback(click -> viewer.updatePagesItems()));
+
     }
 
     @Override
     protected void onUpdate(PagedViewer viewer, InventoryEditor editor) {
-
-
 
     }
 

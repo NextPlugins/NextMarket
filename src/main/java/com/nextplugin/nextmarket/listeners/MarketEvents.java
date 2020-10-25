@@ -31,8 +31,9 @@ public class MarketEvents implements Listener {
     public void onBuyEvent(MarketItemBuyEvent event) {
         if (event.isCancelled()) return;
 
-        Player player = event.getPlayer();
         MarketItem marketItem = event.getMarketItem();
+        Player player = event.getPlayer();
+        final Player seller = marketItem.getSeller().getPlayer();
         Economy economy = vaultHook.getEconomy();
 
         double balance = economy.getBalance(player);
@@ -57,10 +58,14 @@ public class MarketEvents implements Listener {
 
         player.getInventory().addItem(marketItem.getItemStack());
 
-        String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
+        final String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
         player.sendMessage(boughtAnItem);
 
+        final String soldAItem = ConfigValue.get(ConfigValue::soldAItemMessage);
+        seller.sendMessage(soldAItem);
+
         economy.bankWithdraw(player.getName(), marketItem.getPrice());
+        economy.bankDeposit(seller.getName(), marketItem.getPrice());
 
     }
 
