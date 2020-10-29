@@ -9,7 +9,6 @@ import com.nextplugin.nextmarket.api.event.MarketItemRemoveEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
-import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.ItemBuilder;
 import com.nextplugin.nextmarket.util.NumberUtil;
 import org.bukkit.Bukkit;
@@ -75,33 +74,33 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
             List<String> lore;
 
-            if (itemMeta.hasLore())
-                lore = itemMeta.getLore();
-            else
-                lore = new ArrayList<>();
+            lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
 
             lore.addAll(InventoryConfiguration.get(InventoryConfiguration::announcedInventoryItemLore)
                     .stream()
                     .map(s -> s.replace("%price%", NumberUtil.formatNumber(marketItem.getPrice())))
                     .collect(Collectors.toList()));
 
-            if (marketItem.getDestinationId() != null){
+            if (marketItem.getDestinationId() != null) {
                 lore.add("");
                 lore.add("§fDestinatário:§a " + marketItem.getDestination().getName());
             }
 
             lore.add("");
 
-            lore.add("§aClique para remover do mercado");
+            String collectMessage = marketItem.isExpired()
+                    ? "§cEste item expirou clique para coleta-lo"
+                    : "§aClique para remover do mercado";
+
+            lore.add(collectMessage);
 
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
             InventoryItem inventoryItem = new InventoryItem(itemStack);
             inventoryItem.addDefaultCallback(click -> {
-
                 Bukkit.getPluginManager().callEvent(new MarketItemRemoveEvent(click.getPlayer(), marketItem));
-
+                viewer.updatePagesItems();
             });
 
             items.add(inventoryItem);

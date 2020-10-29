@@ -42,8 +42,7 @@ command-message:
   - '&a/mercado vender <valor> &7- Venda o item que está segurando.'
   - '&a/mercado vender <valor> (jogador) &7- Venda o item para um jogador em específico.'
   - '&a/mercado pessoal &7- Veja os itens que foram anunciados especialmente para você.'
-  - '&a/mercado expirados &7- Veja seus itens que foram expirados e removidos do mercado.'
-  - '&a/mercado anunciados &7- Veja seus itens anunciados.'
+  - '&a/mercado anunciados &7- Veja seus itens anunciados e expirados.'
   - ''
 
 messages:

@@ -95,11 +95,7 @@ public final class PrivateMarketInventory extends PagedInventory {
             itemStack.setItemMeta(itemMeta);
 
             InventoryItem inventoryItem = new InventoryItem(itemStack);
-            inventoryItem.addDefaultCallback(click -> {
-
-                Bukkit.getServer().getPluginManager().callEvent(new MarketItemSellEvent(click.getPlayer(), marketItem));
-
-            });
+            inventoryItem.addDefaultCallback(click -> Bukkit.getServer().getPluginManager().callEvent(new MarketItemSellEvent(click.getPlayer(), marketItem)));
 
             items.add(inventoryItem);
 

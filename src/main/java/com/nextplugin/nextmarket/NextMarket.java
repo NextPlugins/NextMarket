@@ -110,7 +110,6 @@ public final class NextMarket extends JavaPlugin {
                 InventoryManager.enable(this);
 
                 registerEvents();
-                registerVault();
                 loadItems();
 
             } catch (Exception exception) {
@@ -120,8 +119,15 @@ public final class NextMarket extends JavaPlugin {
 
     }
 
+    @Override
+    public void onDisable() {
+
+        // run last queue updates
+        MarketTransferQueue.getInstance().updateAll();
+    }
+
     private void loadItems() {
-        marketDAO.findAllMarketItemList().forEach(marketCache::addItem);
+        marketDAO.findAllMarketItemList().forEach(marketItem -> marketCache.addItem(marketItem, false));
     }
 
     private void loadCategoriesConfiguration() {
@@ -146,10 +152,6 @@ public final class NextMarket extends JavaPlugin {
         MarketEventListener marketEventListener = new MarketEventListener();
         this.injector.injectMembers(marketEventListener);
         pluginManager.registerEvents(marketEventListener, this);
-    }
-
-    private void registerVault() {
-        vaultHook.registerEconomy();
     }
 
 }

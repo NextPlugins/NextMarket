@@ -16,11 +16,11 @@ public class MarketCache {
 
     private List<MarketItem> marketCache = new LinkedList<>();
 
-    public void addItem(MarketItem marketItem) {
+    public void addItem(MarketItem marketItem, boolean newItem) {
         this.marketCache.add(marketItem);
 
         System.out.println("Inserting item " + marketItem.getItemStack().getType().toString() + " from cache and queueing same");
-        MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.INSERT));
+        if (newItem) MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.INSERT));
     }
 
     public void removeItem(MarketItem marketItem) {

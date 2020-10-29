@@ -30,13 +30,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class MarketEventListener implements Listener {
 
-    @Inject private MarketCache marketCache;
-    @Inject private VaultHook vaultHook;
+    @Inject
+    private MarketCache marketCache;
 
-    Economy economy = vaultHook.getEconomy();
+    Economy economy = new VaultHook().getEconomy();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBuyItem(MarketItemBuyEvent event) {
+
         if (event.isCancelled()) return;
 
         MarketItem marketItem = event.getMarketItem();
@@ -47,20 +48,29 @@ public class MarketEventListener implements Listener {
         if (balance < marketItem.getPrice()) {
 
             String insufficientMoney = ConfigValue.get(ConfigValue::insufficientMoneyMessage)
-                    .replace("%difference%", String.valueOf(balance - marketItem.getPrice()));
+                    .replace("%difference%", String.valueOf(marketItem.getPrice() - balance));
 
             player.sendMessage(insufficientMoney);
             return;
         }
 
-        marketCache.removeItem(marketItem);
-
-        ItemStack itemStack = marketItem.getItemStack();
-
+        ItemStack itemStack = marketItem.getItemStack().clone();
         PlayerInventory inventory = player.getInventory();
         if (inventory.firstEmpty() == -1) {
             player.getPlayer().sendMessage(ConfigValue.get(ConfigValue::fullInventoryMessage));
             return;
+        }
+
+        int sellTime = ConfigValue.get(ConfigValue::sellTiming);
+        if (sellTime != -1) {
+
+            NBTItem nbtItem = new NBTItem(itemStack, true);
+
+            long currentTimeMillis = System.currentTimeMillis();
+            long sellTimeMillis = TimeUnit.SECONDS.toMillis(sellTime);
+
+            nbtItem.setLong("sellTiming", currentTimeMillis + sellTimeMillis);
+
         }
 
         player.getInventory().addItem(itemStack);
@@ -68,21 +78,8 @@ public class MarketEventListener implements Listener {
         String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
         player.sendMessage(boughtAnItem);
 
-        economy.bankWithdraw(player.getName(), marketItem.getPrice());
-
-        int sellTime = ConfigValue.get(ConfigValue::sellTiming);
-
-        if(sellTime != -1){
-
-            NBTItem nbtItem = new NBTItem(itemStack);
-
-            long currentTimeMillis = System.currentTimeMillis();
-
-            long sellTimeMillis = TimeUnit.SECONDS.toMillis(sellTime);
-
-            nbtItem.setLong("sellTiming", currentTimeMillis + sellTimeMillis);
-
-        }
+        economy.withdrawPlayer(player, marketItem.getPrice());
+        marketCache.removeItem(marketItem);
 
         Bukkit.getPluginManager().callEvent(new MarketItemSellEvent(marketItem.getSeller().getPlayer(), marketItem));
 
@@ -91,19 +88,21 @@ public class MarketEventListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onCreateAnnounce(MarketItemCreateEvent event) {
 
+        if (event.isCancelled()) return;
+
         MarketItem marketItem = event.getMarketItem();
         Player player = event.getPlayer();
 
         double price = marketItem.getPrice();
 
         String priceSimpleFormatted = "%price%";
-        String priceLetterFormatted = "%price%";
+        String priceLetterFormatted = "%priceFormatted%";
 
         if (marketItem.getDestinationId() != null) {
 
             Player destination = marketItem.getDestination().getPlayer();
 
-            marketCache.addItem(marketItem);
+            marketCache.addItem(marketItem, true);
             player.setItemInHand(null);
             player.updateInventory();
             player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemInPersonalMarket)
@@ -134,12 +133,13 @@ public class MarketEventListener implements Listener {
 
         }
 
-        marketCache.addItem(marketItem);
-
+        marketCache.addItem(marketItem, true);
     }
 
     @EventHandler
     public void onRemoveAnnounce(MarketItemRemoveEvent event) {
+
+        if (event.isCancelled()) return;
 
         MarketItem marketItem = event.getMarketItem();
         Player player = event.getPlayer();
@@ -164,12 +164,16 @@ public class MarketEventListener implements Listener {
         MarketItem marketItem = event.getMarketItem();
         Player player = event.getPlayer();
 
-        String soldAItem = ConfigValue.get(ConfigValue::soldAItemMessage);
-        player.sendMessage(soldAItem
-                .replace("%amount%", NumberUtil.formatNumber(marketItem.getPrice())
-                        .replace("%amountFormatted%", NumberUtil.letterFormat(marketItem.getPrice()))));
+        if (player != null) {
 
-        economy.bankDeposit(player.getName(), marketItem.getPrice());
+            String soldAItem = ConfigValue.get(ConfigValue::soldAItemMessage);
+            player.sendMessage(soldAItem
+                    .replace("%amount%", NumberUtil.formatNumber(marketItem.getPrice())
+                            .replace("%amountFormatted%", NumberUtil.letterFormat(marketItem.getPrice()))));
+
+        }
+
+        economy.depositPlayer(player, marketItem.getPrice());
 
     }
 

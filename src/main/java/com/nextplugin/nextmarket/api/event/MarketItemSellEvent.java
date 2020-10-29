@@ -8,10 +8,9 @@ import org.bukkit.event.Cancellable;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class MarketItemSellEvent extends MarketEvent implements Cancellable {
+public class MarketItemSellEvent extends MarketEvent {
 
     private final Player player;
     private final MarketItem marketItem;
-    private boolean cancelled;
 
 }

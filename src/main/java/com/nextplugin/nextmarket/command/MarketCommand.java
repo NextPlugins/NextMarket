@@ -7,7 +7,6 @@ import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.inventory.AnnouncedItemsInventory;
-import com.nextplugin.nextmarket.inventory.ExpireItemsInventory;
 import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
 import com.nextplugin.nextmarket.manager.ButtonManager;
@@ -91,7 +90,6 @@ public class MarketCommand {
         final Collection<Category> categories = categoryManager.getCategoryMap().values();
 
         List<Material> allowedMaterials = new ArrayList<>();
-
         for (Category category : categories) {
             allowedMaterials.addAll(category.getAllowedMaterials());
         }
@@ -103,6 +101,15 @@ public class MarketCommand {
             player.sendMessage(ConfigValue.get(ConfigValue::invalidItemMessage));
             return;
 
+        }
+
+        long sellTiming = NBTItem.convertItemtoNBT(itemInMainHand).getLong("sellTiming");
+        long currentTime = System.currentTimeMillis();
+
+        if (sellTiming != 0 && sellTiming < currentTime) {
+            player.sendMessage(ConfigValue.get(ConfigValue::inSellTiming)
+                    .replace("%timeRemaining%", TimeUtil.format(sellTiming - currentTime)));
+            return;
         }
 
         int itemsInMarket = (int) marketCache.getMarketCache()
@@ -132,21 +139,8 @@ public class MarketCommand {
             return;
         }
 
-        long sellTiming = new NBTItem(itemInMainHand).getLong("sellTiming");
-
-        long currentTime = System.currentTimeMillis();
-
-        if(sellTiming < currentTime){
-
-            player.sendMessage(ConfigValue.get(ConfigValue::inSellTiming)
-                    .replace("%timeRemaining%", TimeUtil.format(sellTiming - currentTime)));
-            return;
-        }
-
         MarketItem marketItem;
-
         if (target != null) {
-
             marketItem = new MarketItem(
                     player.getUniqueId(),
                     itemInMainHand,
@@ -154,7 +148,6 @@ public class MarketCommand {
                     new Date(),
                     target.getUniqueId()
             );
-
         } else {
             marketItem = new MarketItem(
                     player.getUniqueId(),
@@ -163,19 +156,9 @@ public class MarketCommand {
                     new Date(),
                     null
             );
-
         }
 
         Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
-    }
-
-    @Command(name = "mercado.expirados")
-    public void viewMarketExpiredItems(Context<Player> context) {
-        Player player = context.getSender();
-
-        ExpireItemsInventory expireItemsInventory = new ExpireItemsInventory();
-        expireItemsInventory.openInventory(player);
-
     }
 
     @Command(name = "mercado.anunciados")
