@@ -6,7 +6,6 @@ import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
 import com.nextplugin.nextmarket.api.button.Button;
-import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;

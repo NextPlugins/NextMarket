@@ -21,6 +21,8 @@ announcement:
   minimum-value: 100
   # Valor máximo para colocar itens no mercado (-1 para desativar)
   maximum-value: -1
+  # Tempo de venda, usado para negar o jogador de vender este item por X segundos depois de realizar a compra do mesmo (-1 para desativar)
+  sell-timing: 300
 
 limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar itens, é preciso ter pelo menos uma delas)
   # Limite para membros comuns
@@ -60,3 +62,4 @@ messages:
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
   opening-inventory: '&aAbrindo categorias do Mercado...'
   full-inventory: '&cSeu inventário está cheio, cancelando operação'
+  in-sell-timing: '&cVocê precisa esperar %timeRemaining%, para poder vender este item.'

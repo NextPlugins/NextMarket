@@ -8,9 +8,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 @Singleton
 public class VaultHook {
 
-    private final Economy economy;
+    private Economy economy;
 
-    public VaultHook() {
+    public void registerEconomy() {
         RegisteredServiceProvider<Economy> rsp = NextMarket.getInstance().getServer().getServicesManager().getRegistration(Economy.class);
         economy = rsp.getProvider();
     }

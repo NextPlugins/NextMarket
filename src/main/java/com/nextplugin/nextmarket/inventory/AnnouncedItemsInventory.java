@@ -5,17 +5,17 @@ import com.henryfabio.inventoryapi.enums.InventoryLine;
 import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
+import com.nextplugin.nextmarket.api.event.MarketItemRemoveEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
-import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.util.ItemBuilder;
 import com.nextplugin.nextmarket.util.NumberUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -25,16 +25,14 @@ import java.util.stream.Collectors;
 
 public class AnnouncedItemsInventory extends PagedInventory {
 
-    private final MarketDAO marketDAO;
     private final MarketCache marketCache;
 
-    public AnnouncedItemsInventory(MarketDAO marketDAO, MarketCache marketCache) {
+    public AnnouncedItemsInventory(MarketCache marketCache) {
         super("nextmarket.announced",
                 InventoryConfiguration.get(InventoryConfiguration::announcedInventoryTitle),
                 InventoryLine.valueOf(InventoryConfiguration.get(InventoryConfiguration::announcedInventoryLines)));
 
         this.marketCache = marketCache;
-        this.marketDAO = marketDAO;
     }
 
     @Override
@@ -61,7 +59,7 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
     @Override
     protected void onUpdate(PagedViewer viewer, InventoryEditor editor) {
-
+        // Unused
     }
 
     @Override
@@ -102,17 +100,7 @@ public class AnnouncedItemsInventory extends PagedInventory {
             InventoryItem inventoryItem = new InventoryItem(itemStack);
             inventoryItem.addDefaultCallback(click -> {
 
-                PlayerInventory inventory = click.getPlayer().getInventory();
-                if (inventory.firstEmpty() == -1) {
-                    click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::fullInventoryMessage));
-                    return;
-                }
-
-                this.marketCache.removeItem(marketItem);
-
-                inventory.addItem(marketItem.getItemStack());
-                click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancelAnSellMessage));
-                click.updateInventory();
+                Bukkit.getPluginManager().callEvent(new MarketItemRemoveEvent(click.getPlayer(), marketItem));
 
             });
 

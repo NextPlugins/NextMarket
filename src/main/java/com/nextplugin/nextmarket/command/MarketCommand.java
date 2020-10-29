@@ -12,14 +12,12 @@ import com.nextplugin.nextmarket.inventory.MarketInventory;
 import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
 import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
-import com.nextplugin.nextmarket.sql.MarketDAO;
-import com.nextplugin.nextmarket.util.NumberUtil;
-import com.nextplugin.nextmarket.util.TextUtil;
+import com.nextplugin.nextmarket.util.TimeUtil;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,14 +31,9 @@ import java.util.List;
 
 public class MarketCommand {
 
-    @Inject
-    private MarketCache marketCache;
-    @Inject
-    private MarketDAO marketDAO;
-    @Inject
-    private CategoryManager categoryManager;
-    @Inject
-    private ButtonManager buttonManager;
+    @Inject private MarketCache marketCache;
+    @Inject private CategoryManager categoryManager;
+    @Inject private ButtonManager buttonManager;
 
     @Command(
             name = "mercado",
@@ -139,6 +132,17 @@ public class MarketCommand {
             return;
         }
 
+        long sellTiming = new NBTItem(itemInMainHand).getLong("sellTiming");
+
+        long currentTime = System.currentTimeMillis();
+
+        if(sellTiming < currentTime){
+
+            player.sendMessage(ConfigValue.get(ConfigValue::inSellTiming)
+                    .replace("%timeRemaining%", TimeUtil.format(sellTiming - currentTime)));
+            return;
+        }
+
         MarketItem marketItem;
 
         if (target != null) {
@@ -151,13 +155,6 @@ public class MarketCommand {
                     target.getUniqueId()
             );
 
-            marketCache.addItem(marketItem);
-            player.setItemInHand(null);
-            player.updateInventory();
-            player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemInPersonalMarket)
-                    .replace("%price%", NumberUtil.letterFormat(value))
-                    .replace("%player%", target.getName()));
-
         } else {
             marketItem = new MarketItem(
                     player.getUniqueId(),
@@ -166,24 +163,6 @@ public class MarketCommand {
                     new Date(),
                     null
             );
-
-            marketCache.addItem(marketItem);
-            player.setItemInHand(null);
-            player.updateInventory();
-            player.sendMessage(ConfigValue.get(ConfigValue::announcedAItemMessage)
-                    .replace("%price%", NumberUtil.letterFormat(value)));
-
-            String announcementMessage = ConfigValue.get(ConfigValue::announcementMessage)
-                    .replace("%price%", NumberUtil.letterFormat(value))
-                    .replace("%player%", player.getName());
-
-            TextComponent text = TextUtil.sendItemTooltipMessage(announcementMessage, marketItem.getItemStack());
-
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendMessage("");
-                onlinePlayer.spigot().sendMessage(text);
-                onlinePlayer.sendMessage("");
-            }
 
         }
 
@@ -204,7 +183,7 @@ public class MarketCommand {
 
         Player player = context.getSender();
 
-        AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketDAO, marketCache);
+        AnnouncedItemsInventory announcedItemsInventory = new AnnouncedItemsInventory(marketCache);
         announcedItemsInventory.openInventory(player);
 
     }

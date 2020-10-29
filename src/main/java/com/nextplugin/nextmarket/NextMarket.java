@@ -9,7 +9,7 @@ import com.henryfabio.inventoryapi.manager.InventoryManager;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.command.MarketCommand;
 import com.nextplugin.nextmarket.hook.VaultHook;
-import com.nextplugin.nextmarket.listeners.MarketEvents;
+import com.nextplugin.nextmarket.listener.MarketEventListener;
 import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.manager.MarketItemManager;
@@ -50,6 +50,8 @@ public final class NextMarket extends JavaPlugin {
     @Inject private MarketItemManager marketItemManager;
     @Inject private ButtonManager buttonManager;
 
+    @Inject private VaultHook vaultHook;
+
     public static NextMarket getInstance() {
         return getPlugin(NextMarket.class);
     }
@@ -74,8 +76,8 @@ public final class NextMarket extends JavaPlugin {
                         bind(SQLConnection.class).toInstance(instance.sqlConnection);
                     }
                 });
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -111,8 +113,8 @@ public final class NextMarket extends JavaPlugin {
                 registerVault();
                 loadItems();
 
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -141,13 +143,13 @@ public final class NextMarket extends JavaPlugin {
 
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        MarketEvents marketEvents = new MarketEvents();
-        this.injector.injectMembers(marketEvents);
-        pluginManager.registerEvents(marketEvents, this);
+        MarketEventListener marketEventListener = new MarketEventListener();
+        this.injector.injectMembers(marketEventListener);
+        pluginManager.registerEvents(marketEventListener, this);
     }
 
-    private void registerVault(){
-        new VaultHook();
+    private void registerVault() {
+        vaultHook.registerEconomy();
     }
 
 }

@@ -15,7 +15,7 @@ public class CacheQueue<T> {
     private final LinkedBlockingQueue<T> queue = new LinkedBlockingQueue<>();
 
     @Setter private Consumer<T> removalAction;
-    private transient BukkitTask updateTask;
+    private BukkitTask updateTask;
 
     @Setter private long updatePeriod;
     @Setter private TimeUnit timeUnit;
@@ -34,10 +34,9 @@ public class CacheQueue<T> {
         return true;
     }
 
-    public boolean startQueue() {
-        if (updateTask != null) return false;
+    public void startQueue() {
+        if (updateTask != null) return;
         updateTask = createTask(true);
-        return true;
     }
 
     public void addItem(T item) {
