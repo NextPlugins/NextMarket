@@ -3,7 +3,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java'
 
 apply plugin: 'me.bristermitten.pdm'
-apply plugin: "com.palantir.git-version"
+apply plugin: 'com.palantir.git-version'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 def gitDetails = versionDetails.call()
 
@@ -14,6 +15,7 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 jar.dependsOn project.tasks.getByName('pdm')
+jar.dependsOn project.tasks.getByName('shadowJar')
 
 repositories {
     mavenCentral()
@@ -39,7 +41,8 @@ dependencies {
     pdm 'com.google.guava:guava:27.1-jre'
     pdm 'com.google.guava:guava-testlib:27.1-jre'
     pdm 'org.ow2.asm:asm:8.0.1'
-    pdm 'de.tr7zw:item-nbt-api:2.5.0'
+
+    compile 'de.tr7zw:item-nbt-api-plugin:2.5.0'
 
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
@@ -55,8 +58,13 @@ buildscript {
     dependencies {
         classpath 'me.bristermitten:pdm-gradle:0.0.28'
         classpath 'com.palantir.gradle.gitversion:gradle-git-version:0.12.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
     }
 
+}
+
+shadowJar {
+    relocate 'de.tr7zw.changeme.nbtapi', 'com.nextplugin.nextmarket'
 }
 
 jar {

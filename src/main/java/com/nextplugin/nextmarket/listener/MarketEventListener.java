@@ -10,7 +10,7 @@ import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.hook.VaultHook;
 import com.nextplugin.nextmarket.util.NumberUtil;
 import com.nextplugin.nextmarket.util.TextUtil;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -69,11 +69,15 @@ public class MarketEventListener implements Listener {
             long currentTimeMillis = System.currentTimeMillis();
             long sellTimeMillis = TimeUnit.SECONDS.toMillis(sellTime);
 
-            nbtItem.setLong("sellTiming", currentTimeMillis + sellTimeMillis);
+            long totalTime = currentTimeMillis + sellTimeMillis;
+
+            nbtItem.setLong("sellTiming", totalTime);
+
+            player.getInventory().addItem(nbtItem.getItem());
+
+            System.out.println(nbtItem.getLong("sellTiming"));
 
         }
-
-        player.getInventory().addItem(itemStack);
 
         String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
         player.sendMessage(boughtAnItem);

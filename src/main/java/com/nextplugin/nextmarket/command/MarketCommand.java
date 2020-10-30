@@ -12,7 +12,7 @@ import com.nextplugin.nextmarket.inventory.PrivateMarketInventory;
 import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
 import com.nextplugin.nextmarket.util.TimeUtil;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
@@ -103,62 +103,74 @@ public class MarketCommand {
 
         }
 
-        long sellTiming = NBTItem.convertItemtoNBT(itemInMainHand).getLong("sellTiming");
+        NBTItem nbtItem = new NBTItem(itemInMainHand);
+
+        long sellTiming = nbtItem.getLong("sellTiming");
         long currentTime = System.currentTimeMillis();
 
-        if (sellTiming != 0 && sellTiming < currentTime) {
+        if (!(sellTiming <= currentTime)) {
+
+            long totalTime = sellTiming - currentTime;
+
             player.sendMessage(ConfigValue.get(ConfigValue::inSellTiming)
-                    .replace("%timeRemaining%", TimeUtil.format(sellTiming - currentTime)));
-            return;
-        }
+                    .replace("%timeRemaining%", TimeUtil.format(totalTime)));
 
-        int itemsInMarket = (int) marketCache.getMarketCache()
-                .stream()
-                .filter(marketItem -> marketItem.getSellerId().equals(player.getUniqueId()))
-                .count();
+            System.out.println(totalTime);
 
-        int playerLimit = 0;
-
-        ConfigurationSection limitConfiguration = ConfigValue.get(ConfigValue::sellLimit);
-        for (String permission : limitConfiguration.getKeys(false)) {
-
-            if (player.hasPermission("nextmarket." + permission)) {
-
-                playerLimit = limitConfiguration.getInt(permission);
-            }
-        }
-
-        if (playerLimit == 0) {
-            player.sendMessage(ConfigValue.get(ConfigValue::noPermissionMessage));
-            return;
-        }
-
-        if (itemsInMarket == playerLimit) {
-            player.sendMessage(ConfigValue.get(ConfigValue::outOfBoundsMessage)
-                    .replace("%limit%", String.valueOf(playerLimit)));
-            return;
-        }
-
-        MarketItem marketItem;
-        if (target != null) {
-            marketItem = new MarketItem(
-                    player.getUniqueId(),
-                    itemInMainHand,
-                    value,
-                    new Date(),
-                    target.getUniqueId()
-            );
         } else {
-            marketItem = new MarketItem(
-                    player.getUniqueId(),
-                    itemInMainHand,
-                    value,
-                    new Date(),
-                    null
-            );
+
+            nbtItem.clearCustomNBT();
+
+            int itemsInMarket = (int) marketCache.getMarketCache()
+                    .stream()
+                    .filter(marketItem -> marketItem.getSellerId().equals(player.getUniqueId()))
+                    .count();
+
+            int playerLimit = 0;
+
+            ConfigurationSection limitConfiguration = ConfigValue.get(ConfigValue::sellLimit);
+            for (String permission : limitConfiguration.getKeys(false)) {
+
+                if (player.hasPermission("nextmarket." + permission)) {
+
+                    playerLimit = limitConfiguration.getInt(permission);
+                }
+            }
+
+            if (playerLimit == 0) {
+                player.sendMessage(ConfigValue.get(ConfigValue::noPermissionMessage));
+                return;
+            }
+
+            if (itemsInMarket == playerLimit) {
+                player.sendMessage(ConfigValue.get(ConfigValue::outOfBoundsMessage)
+                        .replace("%limit%", String.valueOf(playerLimit)));
+                return;
+            }
+
+            MarketItem marketItem;
+            if (target != null) {
+                marketItem = new MarketItem(
+                        player.getUniqueId(),
+                        itemInMainHand,
+                        value,
+                        new Date(),
+                        target.getUniqueId()
+                );
+            } else {
+                marketItem = new MarketItem(
+                        player.getUniqueId(),
+                        itemInMainHand,
+                        value,
+                        new Date(),
+                        null
+                );
+            }
+
+            Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
+
         }
 
-        Bukkit.getServer().getPluginManager().callEvent(new MarketItemCreateEvent(player, marketItem));
     }
 
     @Command(name = "mercado.anunciados")
