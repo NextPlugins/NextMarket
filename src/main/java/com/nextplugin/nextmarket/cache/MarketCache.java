@@ -14,17 +14,17 @@ import java.util.List;
 @Singleton
 public class MarketCache {
 
-    private List<MarketItem> marketCache = new LinkedList<>();
+    private List<MarketItem> cache = new LinkedList<>();
 
     public void addItem(MarketItem marketItem, boolean newItem) {
-        this.marketCache.add(marketItem);
+        this.cache.add(marketItem);
 
-        System.out.println("Inserting item " + marketItem.getItemStack().getType().toString() + " from cache and queueing same");
+        System.out.println("Inserting item " + marketItem.getItemStack().getType().toString() + " to cache and queueing same");
         if (newItem) MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.INSERT));
     }
 
     public void removeItem(MarketItem marketItem) {
-        this.marketCache.remove(marketItem);
+        this.cache.remove(marketItem);
 
         System.out.println("Deleting item " + marketItem.getItemStack().getType().toString() + " from cache and queueing same");
         MarketTransferQueue.getInstance().addItem(new QueuedMarketItem(marketItem, QueueItemOperation.DELETE));

@@ -66,7 +66,7 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
         List<InventoryItem> items = new LinkedList<>();
 
-        for (MarketItem marketItem : this.marketCache.getMarketCache()) {
+        for (MarketItem marketItem : this.marketCache.getCache()) {
             if (!marketItem.getSellerId().equals(viewer.getPlayer().getUniqueId())) continue;
 
             ItemStack itemStack = marketItem.getItemStack().clone();

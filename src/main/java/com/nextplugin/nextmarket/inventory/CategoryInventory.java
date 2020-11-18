@@ -6,7 +6,7 @@ import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
 import com.nextplugin.nextmarket.api.category.Category;
-import com.nextplugin.nextmarket.api.event.MarketItemBuyEvent;
+import com.nextplugin.nextmarket.api.event.MarketItemBuyedEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
@@ -92,7 +92,7 @@ public final class CategoryInventory extends PagedInventory {
 
         Category category = categoryManager.getCategoryMap().get(viewer.getProperty("category").toString());
 
-        for (MarketItem marketItem : this.marketCache.getMarketCache()) {
+        for (MarketItem marketItem : this.marketCache.getCache()) {
 
             if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
                     && !marketItem.isExpired()
@@ -137,7 +137,7 @@ public final class CategoryInventory extends PagedInventory {
 
                     }
 
-                    Bukkit.getPluginManager().callEvent(new MarketItemBuyEvent(viewer.getPlayer(), marketItem));
+                    Bukkit.getPluginManager().callEvent(new MarketItemBuyedEvent(viewer.getPlayer(), marketItem));
                     viewer.updatePagesItems();
 
                 }));

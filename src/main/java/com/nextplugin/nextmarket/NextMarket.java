@@ -7,6 +7,7 @@ import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.henryfabio.inventoryapi.manager.InventoryManager;
 import com.nextplugin.nextmarket.cache.MarketCache;
+import com.nextplugin.nextmarket.cache.PlayerAnnouncementDelay;
 import com.nextplugin.nextmarket.command.MarketCommand;
 import com.nextplugin.nextmarket.hook.VaultHook;
 import com.nextplugin.nextmarket.listener.MarketEventListener;
@@ -45,6 +46,7 @@ public final class NextMarket extends JavaPlugin {
 
     @Inject private MarketDAO marketDAO;
     @Inject private MarketCache marketCache;
+    @Inject private PlayerAnnouncementDelay playerCache;
 
     @Inject private CategoryManager categoryManager;
     @Inject private MarketItemManager marketItemManager;
@@ -149,8 +151,8 @@ public final class NextMarket extends JavaPlugin {
 
     private void registerEvents() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        MarketEventListener marketEventListener = new MarketEventListener();
-        this.injector.injectMembers(marketEventListener);
+        MarketEventListener marketEventListener = new MarketEventListener(marketCache, playerCache);
+
         pluginManager.registerEvents(marketEventListener, this);
     }
 

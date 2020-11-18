@@ -75,7 +75,7 @@ public final class MarketInventory extends GlobalInventory {
             List<String> lore = new ArrayList<>();
 
             List<MarketItem> collect = new ArrayList<>();
-            for (MarketItem marketItem : marketCache.getMarketCache()) {
+            for (MarketItem marketItem : marketCache.getCache()) {
                 if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
                         && !marketItem.isExpired()
                         && marketItem.getDestinationId() == null) {

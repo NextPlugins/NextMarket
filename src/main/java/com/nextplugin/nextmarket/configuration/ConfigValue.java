@@ -25,7 +25,6 @@ public class ConfigValue implements ConfigImplementation {
     private final double announcementPrice = configuration.getDouble("announcement.price");
     private final int announcementSecondsDelay = configuration.getInt("announcement.delay");
     private final int announcementExpireTime = configuration.getInt("announcement.expire-time");
-    private final int sellTiming = configuration.getInt("announcement.sell-timing");
 
     private final String announcementMessage = translateMessage("announcement.message");
     private final List<String> commandMessage = translateMessageList("command-message");

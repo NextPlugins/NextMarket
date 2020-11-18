@@ -2,16 +2,12 @@ package com.nextplugin.nextmarket.inventory;
 
 import com.henryfabio.inventoryapi.editor.InventoryEditor;
 import com.henryfabio.inventoryapi.enums.InventoryLine;
-import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.inventory.paged.PagedInventory;
-import com.henryfabio.inventoryapi.inventory.single.SingleInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
-import com.henryfabio.inventoryapi.viewer.single.SingleViewer;
 import com.nextplugin.nextmarket.api.event.MarketItemSellEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
-import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.util.ItemBuilder;
 import com.nextplugin.nextmarket.util.NumberUtil;
@@ -19,7 +15,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -71,7 +66,7 @@ public final class PrivateMarketInventory extends PagedInventory {
     public List<InventoryItem> getPagesItems(PagedViewer viewer) {
         List<InventoryItem> items = new LinkedList<>();
 
-        for (MarketItem marketItem : this.marketCache.getMarketCache()) {
+        for (MarketItem marketItem : this.marketCache.getCache()) {
             if (marketItem.getDestinationId() == null || !marketItem.getDestinationId().equals(viewer.getPlayer().getUniqueId())) continue;
 
             ItemStack itemStack = marketItem.getItemStack().clone();

@@ -42,8 +42,6 @@ dependencies {
     pdm 'com.google.guava:guava-testlib:27.1-jre'
     pdm 'org.ow2.asm:asm:8.0.1'
 
-    compile 'de.tr7zw:item-nbt-api-plugin:2.5.0'
-
     def lombokDependency = 'org.projectlombok:lombok:1.18.12'
     compileOnly lombokDependency
     annotationProcessor lombokDependency

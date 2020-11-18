@@ -1,16 +1,13 @@
 package com.nextplugin.nextmarket.listener;
 
-import com.nextplugin.nextmarket.api.event.MarketItemBuyEvent;
-import com.nextplugin.nextmarket.api.event.MarketItemCreateEvent;
-import com.nextplugin.nextmarket.api.event.MarketItemRemoveEvent;
-import com.nextplugin.nextmarket.api.event.MarketItemSellEvent;
+import com.nextplugin.nextmarket.api.event.*;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
+import com.nextplugin.nextmarket.cache.PlayerAnnouncementDelay;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
 import com.nextplugin.nextmarket.hook.VaultHook;
 import com.nextplugin.nextmarket.util.NumberUtil;
 import com.nextplugin.nextmarket.util.TextUtil;
-import de.tr7zw.nbtapi.NBTItem;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -21,30 +18,31 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import javax.inject.Inject;
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author Yuhtin
  * Github: https://github.com/Yuhtin
  */
 public class MarketEventListener implements Listener {
 
-    @Inject
-    private MarketCache marketCache;
-
     Economy economy = new VaultHook().getEconomy();
 
+    private final MarketCache marketCache;
+    private final PlayerAnnouncementDelay playerCache;
+
+    public MarketEventListener(MarketCache marketCache, PlayerAnnouncementDelay playerCache) {
+        this.marketCache = marketCache;
+        this.playerCache = playerCache;
+    }
+
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onBuyItem(MarketItemBuyEvent event) {
+    public void onBuyingItem(MarketItemBuyingEvent event) {
 
         if (event.isCancelled()) return;
 
-        MarketItem marketItem = event.getMarketItem();
         Player player = event.getPlayer();
+        MarketItem marketItem = event.getMarketItem();
 
         double balance = economy.getBalance(player);
-
         if (balance < marketItem.getPrice()) {
 
             String insufficientMoney = ConfigValue.get(ConfigValue::insufficientMoneyMessage)
@@ -54,33 +52,26 @@ public class MarketEventListener implements Listener {
             return;
         }
 
-        ItemStack itemStack = marketItem.getItemStack().clone();
         PlayerInventory inventory = player.getInventory();
         if (inventory.firstEmpty() == -1) {
             player.getPlayer().sendMessage(ConfigValue.get(ConfigValue::fullInventoryMessage));
             return;
         }
 
-        int sellTime = ConfigValue.get(ConfigValue::sellTiming);
-        if (sellTime != -1) {
+        Bukkit.getPluginManager().callEvent(new MarketItemBuyedEvent(player, marketItem));
+    }
 
-            NBTItem nbtItem = new NBTItem(itemStack, true);
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onBuyItem(MarketItemBuyedEvent event) {
 
-            long currentTimeMillis = System.currentTimeMillis();
-            long sellTimeMillis = TimeUnit.SECONDS.toMillis(sellTime);
-
-            long totalTime = currentTimeMillis + sellTimeMillis;
-
-            nbtItem.setLong("sellTiming", totalTime);
-
-            player.getInventory().addItem(nbtItem.getItem());
-
-            System.out.println(nbtItem.getLong("sellTiming"));
-
-        }
+        Player player = event.getPlayer();
+        MarketItem marketItem = event.getMarketItem();
+        ItemStack itemStack = marketItem.getItemStack().clone();
 
         String boughtAnItem = ConfigValue.get(ConfigValue::boughtAnItemMessage);
         player.sendMessage(boughtAnItem);
+
+        player.getInventory().addItem(itemStack);
 
         economy.withdrawPlayer(player, marketItem.getPrice());
         marketCache.removeItem(marketItem);
@@ -129,10 +120,14 @@ public class MarketEventListener implements Listener {
 
             TextComponent text = TextUtil.sendItemTooltipMessage(announcementMessage, marketItem.getItemStack());
 
-            for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendMessage("");
-                onlinePlayer.spigot().sendMessage(text);
-                onlinePlayer.sendMessage("");
+            if (!playerCache.inDelay(player)) {
+                playerCache.putDelay(player, ConfigValue.get(ConfigValue::announcementSecondsDelay));
+
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendMessage("");
+                    onlinePlayer.spigot().sendMessage(text);
+                    onlinePlayer.sendMessage("");
+                }
             }
 
         }
