@@ -59,3 +59,4 @@ messages:
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
   opening-inventory: '&aAbrindo categorias do Mercado...'
   full-inventory: '&cSeu inventário está cheio, cancelando operação'
+  selling-for-you: '&cVocê não pode vender um item para você mesmo'

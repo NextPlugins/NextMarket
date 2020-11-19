@@ -46,6 +46,7 @@ public class ConfigValue implements ConfigImplementation {
     private final String openingInventoryMessage = translateMessage("messages.opening-inventory");
     private final String fullInventoryMessage = translateMessage("messages.full-inventory");
     private final String inSellTiming = translateMessage("messages.in-sell-timing");
+    private final String sellingForYou = translateMessage("messages.selling-for-you");
 
     public static <T> T get(ValueSupplier<T> supplier) {
         return supplier.get(ConfigValue.instance);

@@ -7,6 +7,7 @@ import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.paged.PagedViewer;
 import com.nextplugin.nextmarket.api.category.Category;
 import com.nextplugin.nextmarket.api.event.MarketItemBuyedEvent;
+import com.nextplugin.nextmarket.api.event.MarketItemRemoveEvent;
 import com.nextplugin.nextmarket.api.item.MarketItem;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.ConfigValue;
@@ -123,17 +124,7 @@ public final class CategoryInventory extends PagedInventory {
 
                     if (click.getPlayer().getUniqueId().equals(marketItem.getSellerId())) {
 
-                        PlayerInventory inventory = click.getPlayer().getInventory();
-                        if (inventory.firstEmpty() == -1) {
-                            click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::fullInventoryMessage));
-                            return;
-                        }
-
-                        this.marketCache.removeItem(marketItem);
-
-                        inventory.addItem(marketItem.getItemStack());
-                        click.getPlayer().sendMessage(ConfigValue.get(ConfigValue::cancelAnSellMessage));
-                        click.updateInventory();
+                        Bukkit.getPluginManager().callEvent(new MarketItemRemoveEvent(click.getPlayer(), marketItem));
                         return;
 
                     }

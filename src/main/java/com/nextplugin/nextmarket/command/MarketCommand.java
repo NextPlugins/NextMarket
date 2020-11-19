@@ -71,6 +71,10 @@ public class MarketCommand {
     public void announceItemOnMarket(Context<Player> context, double value, @Optional Player target) {
 
         Player player = context.getSender();
+        if (target == player) {
+            player.sendMessage(ConfigValue.get(ConfigValue::sellingForYou));
+            return;
+        }
 
         double maxValue = ConfigValue.get(ConfigValue::maximumAnnouncementValue);
         double minValue = ConfigValue.get(ConfigValue::minimumAnnouncementValue);
