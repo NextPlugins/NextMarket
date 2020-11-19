@@ -9,9 +9,9 @@ connection:
     file: "market.sql"
 
 announcement:
-  message: "&2&lMERCADO &7{jogador} &fanunciou um item por &a{amount}"
+  message: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%"
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
-  # novo item, um novo anúncio, do contário, o item será anunciado sem destaque.
+  # novo item, um novo anúncio, do contrário, o item será anunciado sem destaque.
   delay: 600
   # Preço por anúncio (-1 para desativar)
   price: -1
@@ -22,23 +22,41 @@ announcement:
   # Valor máximo para colocar itens no mercado (-1 para desativar)
   maximum-value: -1
 
+limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar itens, é preciso ter pelo menos uma delas)
+  # Limite para membros comuns
+  default: 3
+  # Limite para o jogador com a permissão 'nextmarket.vip1'
+  vip1: 5
+  # Limite para o jogador com a permissão 'nextmarket.vip2'
+  vip2: 7
+  # Limite para o jogador com a permissão 'nextmarket.vip3'
+  vip3: 9
+
 command-message:
   - '&2&lMERCADO &f- Ajuda'
   - ''
-  - '&a/mercado &7- Exibe essa mensagem.'
-  - '&a/mercado ver &7- Abra o mercado.'
+  - '&a/mercado &7- Exibe a mensagem de ajuda.'
+  - '&a/mercado ver &7- Abra o menu de categorias do mercado.'
   - '&a/mercado vender <valor> &7- Venda o item que está segurando.'
   - '&a/mercado vender <valor> (jogador) &7- Venda o item para um jogador em específico.'
-  - '&a/mercado expirados &7- Veja seus itens que foram expirados e removidos do mercado.'
-  - '&a/mercado anunciados &7- Veja seus itens anunciados.'
+  - '&a/mercado pessoal &7- Veja os itens que foram anunciados especialmente para você.'
+  - '&a/mercado anunciados &7- Veja seus itens anunciados e expirados.'
   - ''
 
 messages:
   maximum-value-reached: '&cVocê inseriu um valor muito alto.'
-  minimum-value-not-reached: '&cVocê precisa por um valor acima de %valor%.'
+  minimum-value-not-reached: '&cVocê precisa por um valor acima de %amount%.'
+  no-permission: '&cVocê não tem permissão para anunciar um item no mercado.'
+  out-of-bounds: '&cVocê atingiu o limite de items no mercado (%limit%)'
   player-offline: '&cEste jogador encontra-se offline.'
-  expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados &cpara coletar.'
+  cancel-a-sell: '&cVocê cancelou a venda deste item'
+  expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados&c para coletar.'
   bought-a-item: '&aVocê comprou um item do mercado.'
-  sold-a-item: '&aVocê vendeu um item por &f%valor% &ano mercado.'
-  announced-a-item: '&aVocê anunciou um item por &f%valor% &ano mercado.'
-  insufficient-money: '&cVocê não tem dinheiro suficiente para comprar este item :(.'
+  sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
+  announced-a-item: '&aVocê anunciou um item por &f%price% &ano mercado.'
+  announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%price% &ano mercado pessoal de &f%player%&a.'
+  insufficient-money: '&cVocê precisa de mais %difference% para comprar este item.'
+  invalid-item: '&cEste item não pertence a nenhuma categoria.'
+  opening-inventory: '&aAbrindo categorias do Mercado...'
+  full-inventory: '&cSeu inventário está cheio, cancelando operação'
+  selling-for-you: '&cVocê não pode vender um item para você mesmo'

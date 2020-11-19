@@ -20,14 +20,15 @@ import java.util.stream.Collectors;
 public final class CategoryParser {
 
     @Inject @Named("main") private Logger logger;
-    @Inject private CategoryIconParser categoryIconParser;
+    @Inject private MenuIconParser menuIconParser;
 
     public Category parseSection(ConfigurationSection section) {
         return Category.builder()
                 .id(section.getName())
                 .displayName(section.getString("displayName"))
-                .description(section.getString("description"))
-                .icon(this.categoryIconParser.parseSection(section.getConfigurationSection("icon")))
+                .inventoryName(section.getString("inventoryName"))
+                .description(section.getStringList("description"))
+                .icon(this.menuIconParser.parseSection(section.getConfigurationSection("icon")))
                 .allowedMaterials(parseMaterialsSection(section))
                 .build();
     }

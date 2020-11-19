@@ -6,20 +6,273 @@
 
 inventory:
   main: # Inventário principal onde serão exibidas todas as categorias
-    title: "&8Mercado"
-    lines: 6
-  category: # Inventário onde será exibido os itens daquela categoria
-    title: "&8Categoria: {category_name}"
+    title: "Categorias do Mercado"
     lines: 5
+    buttons:
+      personalMarket:
+        displayName: "&aMercado pessoal"
+        # Não mexer aqui :d
+        menu: "pessoal"
+        description:
+          - '&7Clique para ver os itens que estão vendendo para você'
+        icon:
+          material: CHEST
+          data: 0
+          inventorySlot: 39
+      announcedItems:
+        displayName: "&aItens Anunciados"
+        menu: "anunciados"
+        description:
+          - '&7Clique para ver os seus itens anunciados no mercado'
+        icon:
+          material: EYE_OF_ENDER
+          data: 0
+          inventorySlot: 41
+  category: # Inventário onde será exibido os itens daquela categoria
+    title: "Categoria: %category_name%"
+    lines: 6
+    lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
+      - ''
+      - '&fVendedor:&7 %seller%'
+      - '&fPreço:&7 %price%'
+  announced: # Inventário de itens que você anunciou
+    title: "Seus itens no mercado"
+    lines: 6
+    lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
+      - ''
+      - '&fPreço:&7 %price%'
+  private:
+    title: "Mercado pessoal"
+    lines: 6
+    lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
+      - ''
+      - '&fVendedor:&7 %seller%'
+      - '&fPreço:&7 %price%'
 
 categories:
-  # ID
-  spawners:
-    displayName: "Gerador de Monstros"
-    description: "Compre geradores de monstros nesta categoria!"
+  armas:
+    # Identificador do inventário (nome do inventário)
+    inventoryName: "Armas"
+    # Nome do ícone da categoria
+    displayName: "&aArmas &8(%amount%)"
+    description: # Descrição da categoria
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Espadas de diamante'
+      - '&f▪ Arco'
+      - ''
+      - '&aClique para abrir.'
+    icon: # Ícone da categoria
+      material: DIAMOND_SWORD
+      data: 0
+      inventorySlot: 10
+    allowedMaterials: # Materiais permitidos na categoria
+      - "DIAMOND_SWORD"
+      - "BOW"
+  armaduras:
+    inventoryName: "Armaduras"
+    displayName: "&aArmaduras &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Elmos de Diamante'
+      - '&f▪ Peitorais de Diamante'
+      - '&f▪ Calças de Diamante'
+      - '&f▪ Botas de Diamante'
+      - ''
+      - '&aClique para abrir.'
     icon:
-      material: MOB_SPAWNER
+      material: DIAMOND_CHESTPLATE
       data: 0
       inventorySlot: 11
     allowedMaterials:
+      - "DIAMOND_HELMET"
+      - "DIAMOND_CHESTPLATE"
+      - "DIAMOND_LEGGINGS"
+      - "DIAMOND_BOOTS"
+  ferramentas:
+    inventoryName: "Ferramentas"
+    displayName: "&aFerramentas &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Picaretas de Diamante'
+      - '&f▪ Machados de Diamante'
+      - '&f▪ Pás de Diamante'
+      - '&f▪ Enxadas de Diamante'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: DIAMOND_PICKAXE
+      data: 0
+      inventorySlot: 12
+    allowedMaterials:
+      - "DIAMOND_PICKAXE"
+      - "DIAMOND_AXE"
+      - "DIAMOND_SPADE"
+      - "DIAMOND_HOE"
+  livros:
+    inventoryName: "Livros"
+    displayName: "&aLivros de Encantamento &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Livros'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: BOOK
+      data: 0
+      inventorySlot: 13
+    allowedMaterials:
+      - "BOOK"
+  pocoes:
+    inventoryName: "Poções"
+    displayName: "&aPoções &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Qualquer tipo de poção'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: POTION
+      data: 0
+      inventorySlot: 14
+    allowedMaterials:
+      - "POTION"
+  redstone:
+    inventoryName: "Redstone"
+    displayName: "&aRedstone &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Dinamite'
+      - '&f▪ Redstone'
+      - '&f▪ Bloco de Redstone'
+      - '&f▪ Tocha de Redstone'
+      - '&f▪ Repetidor de Redstone'
+      - '&f▪ Comparador de Redstone'
+      - '&f▪ Liberador'
+      - '&f▪ Ejetor'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: REDSTONE
+      data: 0
+      inventorySlot: 15
+    allowedMaterials:
+      - "TNT"
+      - "REDSTONE"
+      - "REDSTONE_BLOCK"
+      - "DROPPER"
+      - "DISPENSER"
+  protecao:
+    inventoryName: "Blocos de Proteção"
+    displayName: "&aBlocos de Proteção &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Obsidiana'
+      - '&f▪ Pedra do Fim'
+      - '&f▪ Rocha Matriz'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: BEDROCK
+      data: 0
+      inventorySlot: 16
+    allowedMaterials:
+      - "OBSIDIAN"
+      - "BEDROCK"
+  monstros:
+    inventoryName: "Monstros"
+    displayName: "&aMonstros &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Invocar'
+      - '&f▪ Geradores de Monstros'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: MOB_SPAWNER
+      data: 0
+      inventorySlot: 19
+    allowedMaterials:
       - "MOB_SPAWNER"
+  cabecas:
+    inventoryName: "Cabeças"
+    displayName: "&aCabeças &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Cabeças de Monstros'
+      - '&f▪ Cabeças de Jogadores'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: SKULL_ITEM
+      data: 3
+      inventorySlot: 20
+    allowedMaterials:
+      - "SKULL"
+      - "SKULL_ITEM"
+  minerios:
+    inventoryName: "Minérios"
+    displayName: "&aMinérios &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Esmeralda'
+      - '&f▪ Bloco de Esmeralda'
+      - '&f▪ Diamante'
+      - '&f▪ Bloco de Diamante'
+      - '&f▪ Barras de Ouro'
+      - '&f▪ Bloco de Ouro'
+      - '&f▪ Barras de Ferro'
+      - '&f▪ Bloco de Ferro'
+      - '&f▪ Lápis-Lazúli'
+      - '&f▪ Bloco de Lápis-Lazúli'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: DIAMOND_ORE
+      data: 0
+      inventorySlot: 21
+    allowedMaterials:
+      - "EMERALD"
+      - "EMERALD_BLOCK"
+      - "DIAMOND"
+      - "DIAMOND_BLOCK"
+      - "GOLD_INGOT"
+      - "GOLD_BLOCK"
+      - "IRON_INGOT"
+      - "IRON_BLOCK"
+      - "LAPIS_ORE"
+  especiais:
+    inventoryName: "Especiais"
+    displayName: "&aItens Especiais &8(%amount%)"
+    description:
+      - '&7Itens que você encontra nesta'
+      - '&7categoria:'
+      - ''
+      - '&f▪ Qualquer item especial'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: NETHER_STAR
+      data: 0
+      inventorySlot: 22
+    allowedMaterials:
+      - "NETHER_STAR"

@@ -1,4 +1,4 @@
-package com.nextplugin.nextmarket.api.category.icon;
+package com.nextplugin.nextmarket.api.item;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
  */
 @Builder
 @Data
-public final class CategoryIcon {
+public final class MenuIcon {
 
     private final ItemStack itemStack;
     private final int position;

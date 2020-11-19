@@ -5,9 +5,16 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.henryfabio.inventoryapi.manager.InventoryManager;
+import com.nextplugin.nextmarket.cache.MarketCache;
+import com.nextplugin.nextmarket.cache.PlayerAnnouncementDelay;
 import com.nextplugin.nextmarket.command.MarketCommand;
-import com.nextplugin.nextmarket.configuration.ConfigValue;
+import com.nextplugin.nextmarket.hook.VaultHook;
+import com.nextplugin.nextmarket.listener.MarketEventListener;
+import com.nextplugin.nextmarket.manager.ButtonManager;
 import com.nextplugin.nextmarket.manager.CategoryManager;
+import com.nextplugin.nextmarket.manager.MarketItemManager;
+import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.connection.mysql.MySQLConnection;
 import com.nextplugin.nextmarket.sql.connection.sqlite.SQLiteConnection;
@@ -15,16 +22,14 @@ import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
-import me.saiintbrisson.minecraft.command.message.MessageType;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
@@ -34,11 +39,19 @@ public final class NextMarket extends JavaPlugin {
     private CompletableFuture<Void> dependencyLoader;
 
     private Injector injector;
-    private FileConfiguration categoriesConfiguration;
 
+    private FileConfiguration categoriesConfiguration;
     private SQLConnection sqlConnection;
-    @Inject
-    private CategoryManager categoryManager;
+
+    @Inject private MarketDAO marketDAO;
+    @Inject private MarketCache marketCache;
+    @Inject private PlayerAnnouncementDelay playerCache;
+
+    @Inject private CategoryManager categoryManager;
+    @Inject private MarketItemManager marketItemManager;
+    @Inject private ButtonManager buttonManager;
+
+    @Inject private VaultHook vaultHook;
 
     public static NextMarket getInstance() {
         return getPlugin(NextMarket.class);
@@ -64,8 +77,8 @@ public final class NextMarket extends JavaPlugin {
                         bind(SQLConnection.class).toInstance(instance.sqlConnection);
                     }
                 });
-            } catch (Throwable t) {
-                t.printStackTrace();
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -77,17 +90,29 @@ public final class NextMarket extends JavaPlugin {
             try {
                 this.injector.injectMembers(this);
 
-                MarketCommand marketCommand = new MarketCommand(new ConfigValue(this));
-
-                BukkitFrame bukkitFrame = new BukkitFrame(this);
-
-                bukkitFrame.registerCommands(marketCommand);
-
                 this.categoryManager.registerCategories(
                         this.categoriesConfiguration.getConfigurationSection("categories")
                 );
-            } catch (Throwable t) {
-                t.printStackTrace();
+
+                this.buttonManager.registerButtons(
+                        this.categoriesConfiguration.getConfigurationSection("inventory.main.buttons")
+                );
+
+                this.marketDAO.createTable();
+
+                BukkitFrame bukkitFrame = new BukkitFrame(this);
+
+                MarketCommand marketCommand = new MarketCommand();
+                this.injector.injectMembers(marketCommand);
+                bukkitFrame.registerCommands(marketCommand);
+
+                InventoryManager.enable(this);
+
+                registerEvents();
+                loadItems();
+
+            } catch (Exception exception) {
+                exception.printStackTrace();
             }
         });
 
@@ -96,6 +121,12 @@ public final class NextMarket extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        // run last queue updates
+        marketCache.getMarketTransferQueue().updateAll();
+    }
+
+    private void loadItems() {
+        marketDAO.findAllMarketItemList().forEach(marketItem -> marketCache.addItem(marketItem, false));
     }
 
     private void loadCategoriesConfiguration() {
@@ -109,10 +140,20 @@ public final class NextMarket extends JavaPlugin {
     private void configureSQLConnection() {
         ConfigurationSection connectionSection = getConfig().getConfigurationSection("connection");
         this.sqlConnection = new MySQLConnection();
+
         if (!sqlConnection.configure(connectionSection.getConfigurationSection("mysql"))) {
+
             this.sqlConnection = new SQLiteConnection();
             this.sqlConnection.configure(connectionSection.getConfigurationSection("sqlite"));
+
         }
+    }
+
+    private void registerEvents() {
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        MarketEventListener marketEventListener = new MarketEventListener(marketCache, playerCache);
+
+        pluginManager.registerEvents(marketEventListener, this);
     }
 
 }
