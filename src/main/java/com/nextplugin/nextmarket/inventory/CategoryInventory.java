@@ -54,6 +54,7 @@ public final class CategoryInventory extends PagedInventory {
         viewer.setNextPageItemSlot(45);
         viewer.setPreviousPageItemSlot(53);
 
+        setUpdateTime(25);
     }
 
     @Override
@@ -82,7 +83,7 @@ public final class CategoryInventory extends PagedInventory {
 
     @Override
     protected void onUpdate(PagedViewer viewer, InventoryEditor editor) {
-
+        viewer.updatePagesItems();
     }
 
     @Override

@@ -46,8 +46,6 @@ public final class MarketInventory extends GlobalInventory {
     @Override
     protected void onCreate(InventoryEditor editor) {
 
-        setUpdateTime(3);
-
         setButtonsInMenu(editor);
         setItemsInMenu(editor);
 
@@ -62,9 +60,6 @@ public final class MarketInventory extends GlobalInventory {
 
     @Override
     protected void onUpdate(InventoryEditor editor) {
-
-        setItemsInMenu(editor);
-
     }
 
     public void setItemsInMenu(InventoryEditor editor){
@@ -81,10 +76,10 @@ public final class MarketInventory extends GlobalInventory {
                         && marketItem.getDestinationId() == null) {
                     collect.add(marketItem);
                 }
+
             }
 
             int size = collect.size();
-
             String suffix = size > 1 ? " itens" : " item";
 
             for (String string : category.getDescription()) {
@@ -92,7 +87,7 @@ public final class MarketInventory extends GlobalInventory {
             }
 
             ItemStack itemStack = new ItemBuilder(icon.getItemStack().getType())
-                    .amount(1)
+                    .amount(Math.min(size, 64))
                     .durability(icon.getItemStack().getDurability())
                     .name(category.getDisplayName()
                             .replace("&", "§")
