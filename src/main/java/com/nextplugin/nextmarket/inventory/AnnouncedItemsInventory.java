@@ -99,8 +99,10 @@ public class AnnouncedItemsInventory extends PagedInventory {
 
             InventoryItem inventoryItem = new InventoryItem(itemStack);
             inventoryItem.addDefaultCallback(click -> {
+
                 Bukkit.getPluginManager().callEvent(new MarketItemRemoveEvent(click.getPlayer(), marketItem));
                 viewer.updatePagesItems();
+
             });
 
             items.add(inventoryItem);

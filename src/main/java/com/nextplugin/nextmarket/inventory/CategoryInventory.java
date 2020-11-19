@@ -96,6 +96,8 @@ public final class CategoryInventory extends PagedInventory {
 
         for (MarketItem marketItem : this.marketCache.getCache()) {
 
+            if (viewer.getPlayer().getUniqueId().equals(marketItem.getSellerId())) continue;
+
             if (category.getAllowedMaterials().contains(marketItem.getItemStack().getType())
                     && !marketItem.isExpired()
                     && marketItem.getDestinationId() == null) {
@@ -121,13 +123,6 @@ public final class CategoryInventory extends PagedInventory {
                 itemStack.setItemMeta(itemMeta);
 
                 items.add(new InventoryItem(itemStack).addDefaultCallback(click -> {
-
-                    if (click.getPlayer().getUniqueId().equals(marketItem.getSellerId())) {
-
-                        Bukkit.getPluginManager().callEvent(new MarketItemRemoveEvent(click.getPlayer(), marketItem));
-                        return;
-
-                    }
 
                     Bukkit.getPluginManager().callEvent(new MarketItemBuyedEvent(viewer.getPlayer(), marketItem));
                     viewer.updatePagesItems();

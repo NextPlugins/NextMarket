@@ -94,7 +94,7 @@ public final class PrivateMarketInventory extends PagedInventory {
 
                 Bukkit.getServer().getPluginManager().callEvent(new MarketItemSellEvent(click.getPlayer(), marketItem));
                 viewer.updatePagesItems();
-                
+
             });
 
             items.add(inventoryItem);
