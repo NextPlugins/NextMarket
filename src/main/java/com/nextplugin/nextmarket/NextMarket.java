@@ -18,7 +18,6 @@ import com.nextplugin.nextmarket.sql.MarketDAO;
 import com.nextplugin.nextmarket.sql.connection.SQLConnection;
 import com.nextplugin.nextmarket.sql.connection.mysql.MySQLConnection;
 import com.nextplugin.nextmarket.sql.connection.sqlite.SQLiteConnection;
-import com.nextplugin.nextmarket.task.MarketTransferQueue;
 import lombok.Getter;
 import me.bristermitten.pdm.PDMBuilder;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -107,8 +106,6 @@ public final class NextMarket extends JavaPlugin {
                 this.injector.injectMembers(marketCommand);
                 bukkitFrame.registerCommands(marketCommand);
 
-                this.injector.injectMembers(MarketTransferQueue.getInstance());
-
                 InventoryManager.enable(this);
 
                 registerEvents();
@@ -125,7 +122,7 @@ public final class NextMarket extends JavaPlugin {
     public void onDisable() {
 
         // run last queue updates
-        MarketTransferQueue.getInstance().updateAll();
+        marketCache.getMarketTransferQueue().updateAll();
     }
 
     private void loadItems() {
@@ -143,9 +140,12 @@ public final class NextMarket extends JavaPlugin {
     private void configureSQLConnection() {
         ConfigurationSection connectionSection = getConfig().getConfigurationSection("connection");
         this.sqlConnection = new MySQLConnection();
+
         if (!sqlConnection.configure(connectionSection.getConfigurationSection("mysql"))) {
+
             this.sqlConnection = new SQLiteConnection();
             this.sqlConnection.configure(connectionSection.getConfigurationSection("sqlite"));
+
         }
     }
 

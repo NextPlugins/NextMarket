@@ -6,8 +6,8 @@ import com.henryfabio.inventoryapi.inventory.global.GlobalInventory;
 import com.henryfabio.inventoryapi.item.InventoryItem;
 import com.henryfabio.inventoryapi.viewer.IViewer;
 import com.nextplugin.nextmarket.api.button.Button;
-import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.api.item.MarketItem;
+import com.nextplugin.nextmarket.api.item.MenuIcon;
 import com.nextplugin.nextmarket.cache.MarketCache;
 import com.nextplugin.nextmarket.configuration.InventoryConfiguration;
 import com.nextplugin.nextmarket.manager.ButtonManager;
@@ -62,7 +62,7 @@ public final class MarketInventory extends GlobalInventory {
     protected void onUpdate(InventoryEditor editor) {
     }
 
-    public void setItemsInMenu(InventoryEditor editor){
+    public void setItemsInMenu(InventoryEditor editor) {
         categoryManager.getCategoryMap().forEach((s, category) -> {
 
             MenuIcon icon = category.getIcon();
@@ -109,7 +109,7 @@ public final class MarketInventory extends GlobalInventory {
         });
     }
 
-    public void setButtonsInMenu(InventoryEditor editor){
+    public void setButtonsInMenu(InventoryEditor editor) {
         List<Button> buttons = new ArrayList<>();
         buttons.add(buttonManager.getButtonMap().get("pessoal"));
         buttons.add(buttonManager.getButtonMap().get("anunciados"));

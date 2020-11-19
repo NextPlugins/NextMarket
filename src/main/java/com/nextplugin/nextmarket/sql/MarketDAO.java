@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 public final class MarketDAO extends DatabaseProvider {
 
     public void createTable() {
-        update("create table if not exists `market_items` (" +
-                "`seller` char(36) not null, " +
-                "`itemStack` text not null, " +
-                "`price` double not null," +
-                "`created_at` integer(8) not null," +
-                "`destination` char(36)" +
-                ");");
+        update("create table if not exists `market_items` ("
+                + "`seller` char(36) not null, "
+                + "`itemStack` text not null, "
+                + "`price` double not null,"
+                + "`created_at` integer(8) not null,"
+                + "`destination` char(36)"
+                + ");");
     }
 
     public List<MarketItem> findAllMarketItemList() {
