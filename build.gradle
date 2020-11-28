@@ -1,18 +1,20 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-apply plugin: 'java'
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+}
 
-apply plugin: 'me.bristermitten.pdm'
-apply plugin: 'com.palantir.git-version'
-apply plugin: 'com.github.johnrengelman.shadow'
+plugins {
+    id "java"
+    id "me.bristermitten.pdm" version "0.0.29"
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "net.minecrell.plugin-yml.bukkit" version '0.3.0'
+}
 
-def gitDetails = versionDetails.call()
-
-group = 'com.nextplugin'
-version = gitDetails.gitHash
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+group "com.nextplugin.minecraft"
+version "1.0.0"
 
 jar.dependsOn project.tasks.getByName('pdm')
 jar.dependsOn project.tasks.getByName('shadowJar')
@@ -24,57 +26,37 @@ repositories {
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
 
     maven { url = 'https://jitpack.io/' }
-    maven { url = 'https://repo.codemc.org/repository/maven-public/' }
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
-    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
-    pdm 'com.github.HenryFabio:inventory-api:2b163967d1'
-    pdm 'com.zaxxer:HikariCP:3.4.5'
-    pdm 'com.github.SaiintBrisson:command-framework:1.0.0'
-    pdm 'com.google.inject:guice:4.0'
-    pdm 'javax.inject:javax.inject:1'
-    pdm 'javax.inject:javax.inject-tck:1'
-    pdm 'aopalliance:aopalliance:1.0'
-    pdm 'com.google.guava:guava:27.1-jre'
-    pdm 'com.google.guava:guava-testlib:27.1-jre'
-    pdm 'org.ow2.asm:asm:8.0.1'
+    implementation "com.github.HenryFabio:inventory-api:2.0.3"
 
-    def lombokDependency = 'org.projectlombok:lombok:1.18.12'
-    compileOnly lombokDependency
-    annotationProcessor lombokDependency
-}
+    pdm "com.zaxxer:HikariCP:3.4.5"
+    pdm "com.github.SaiintBrisson:command-framework:1.0.0"
+    pdm "com.google.inject:guice-parent:4.2.3"
 
-buildscript {
-
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-
-    dependencies {
-        classpath 'me.bristermitten:pdm-gradle:0.0.28'
-        classpath 'com.palantir.gradle.gitversion:gradle-git-version:0.12.3'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
-    }
-
+    def lombok = "org.projectlombok:lombok:1.18.16"
+    compileOnly lombok
+    annotationProcessor lombok
 }
 
 shadowJar {
+    archiveName("${project.name}-${project.version}.jar")
     relocate 'de.tr7zw.changeme.nbtapi', 'com.nextplugin.nextmarket'
 }
 
-jar {
-    archiveName("${project.name}.jar")
+compileJava {
+    options.encoding = "UTF-8"
+
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
 }
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
         filter ReplaceTokens, tokens: [version: version]
     }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
 }
