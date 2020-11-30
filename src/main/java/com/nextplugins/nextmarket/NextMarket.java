@@ -1,0 +1,102 @@
+package com.nextplugins.nextmarket;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.name.Named;
+import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
+import com.henryfabio.sqlprovider.common.SQLProvider;
+import com.henryfabio.sqlprovider.mysql.MySQLProvider;
+import com.henryfabio.sqlprovider.mysql.configuration.MySQLConfiguration;
+import com.henryfabio.sqlprovider.sqlite.SQLiteProvider;
+import com.henryfabio.sqlprovider.sqlite.configuration.SQLiteConfiguration;
+import com.nextplugins.nextmarket.command.MarketCommand;
+import com.nextplugins.nextmarket.guice.PluginModule;
+import com.nextplugins.nextmarket.manager.CategoryManager;
+import com.nextplugins.nextmarket.manager.MarketManager;
+import com.nextplugins.nextmarket.manager.ProductManager;
+import lombok.Getter;
+import me.bristermitten.pdm.PluginDependencyManager;
+import me.saiintbrisson.bukkit.command.BukkitFrame;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.util.logging.Logger;
+
+/**
+ * @author Henry Fábio
+ */
+public final class NextMarket extends JavaPlugin {
+
+    @Getter private Injector injector;
+    @Getter private SQLProvider sqlProvider;
+
+    @Inject @Named("main") private Logger logger;
+
+    @Inject private MarketManager marketManager;
+    @Inject private CategoryManager categoryManager;
+    @Inject private ProductManager productManager;
+
+    @Getter @Inject @Named("categories") private Configuration categoriesConfiguration;
+
+    @Override
+    public void onLoad() {
+        saveDefaultConfig();
+    }
+
+    @Override
+    public void onEnable() {
+        PluginDependencyManager.of(this).loadAllDependencies().thenRun(() -> {
+            try {
+                InventoryManager.enable(this);
+
+                configureSqlProvider();
+                this.sqlProvider.connect();
+
+                this.injector = PluginModule.of(this).createInjector();
+                this.injector.injectMembers(this);
+
+                marketManager.init();
+                categoryManager.init();
+                productManager.init();
+
+                enableCommandFrame();
+            } catch (Throwable t) {
+                t.printStackTrace();
+                logger.severe("Um erro ocorreu na inicialização do plugin!");
+            }
+        });
+    }
+
+    public static NextMarket getInstance() {
+        return getPlugin(NextMarket.class);
+    }
+
+    private void configureSqlProvider() {
+        FileConfiguration configuration = getConfig();
+        if (configuration.getBoolean("connection.mysql.enable")) {
+            ConfigurationSection mysqlSection = configuration.getConfigurationSection("connection.mysql");
+            sqlProvider = new MySQLProvider(new MySQLConfiguration()
+                    .address(mysqlSection.getString("address"))
+                    .username(mysqlSection.getString("username"))
+                    .password(mysqlSection.getString("password"))
+                    .database(mysqlSection.getString("database"))
+            );
+        } else {
+            ConfigurationSection sqliteSection = configuration.getConfigurationSection("connection.sqlite");
+            sqlProvider = new SQLiteProvider(new SQLiteConfiguration()
+                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
+            );
+        }
+    }
+
+    private void enableCommandFrame() {
+        BukkitFrame bukkitFrame = new BukkitFrame(this);
+        bukkitFrame.registerCommands(
+                injector.getInstance(MarketCommand.class)
+        );
+    }
+
+}

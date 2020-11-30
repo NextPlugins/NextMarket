@@ -8,16 +8,18 @@ buildscript {
 
 plugins {
     id "java"
+
     id "me.bristermitten.pdm" version "0.0.29"
     id "com.github.johnrengelman.shadow" version "5.0.0"
+
     id "net.minecrell.plugin-yml.bukkit" version '0.3.0'
 }
 
-group "com.nextplugin.minecraft"
+group "com.nextplugin"
 version "1.0.0"
 
-jar.dependsOn project.tasks.getByName('pdm')
-jar.dependsOn project.tasks.getByName('shadowJar')
+tasks.jar.dependsOn project.tasks.getByName('pdm')
+tasks.build.dependsOn project.tasks.getByName('shadowJar')
 
 repositories {
     mavenCentral()
@@ -33,19 +35,28 @@ dependencies {
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
     implementation "com.github.HenryFabio:inventory-api:2.0.3"
+    implementation "com.github.HenryFabio:sql-provider:1.0.0"
 
-    pdm "com.zaxxer:HikariCP:3.4.5"
-    pdm "com.github.SaiintBrisson:command-framework:1.0.0"
-    pdm "com.google.inject:guice-parent:4.2.3"
+    pdm "com.github.SaiintBrisson:command-framework:1.1.0"
+
+    pdm "com.google.inject:guice:4.0"
+    pdm "javax.inject:javax.inject:1"
+    pdm "aopalliance:aopalliance:1.0"
+    pdm "org.ow2.asm:asm:8.0.1"
 
     def lombok = "org.projectlombok:lombok:1.18.16"
     compileOnly lombok
     annotationProcessor lombok
 }
 
+bukkit {
+    main = "com.nextplugins.nextmarket.NextMarket"
+}
+
 shadowJar {
     archiveName("${project.name}-${project.version}.jar")
-    relocate 'de.tr7zw.changeme.nbtapi', 'com.nextplugin.nextmarket'
+    relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugin.nextmarket.libs.inventoryapi'
+    relocate 'com.henryfabio.sqlprovider', 'com.nextplugin.nextmarket.libs.sqlprovider'
 }
 
 compileJava {

@@ -50,11 +50,8 @@ inventory:
       - '&fPreço:&7 %price%'
 
 categories:
-  armas:
-    # Identificador do inventário (nome do inventário)
-    inventoryName: "Armas"
-    # Nome do ícone da categoria
-    displayName: "&aArmas &8(%amount%)"
+  weapons:
+    displayName: "&aArmas &8(%amount%)" # Nome da categoria
     description: # Descrição da categoria
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -67,11 +64,12 @@ categories:
       material: DIAMOND_SWORD
       data: 0
       inventorySlot: 10
-    allowedMaterials: # Materiais permitidos na categoria
-      - "DIAMOND_SWORD"
-      - "BOW"
-  armaduras:
-    inventoryName: "Armaduras"
+    configuration:
+      inventoryName: "Armas" # Identificador do inventário (nome do inventário)
+      materials: # Materiais permitidos na categoria
+        - "DIAMOND_SWORD"
+        - "BOW"
+  armors:
     displayName: "&aArmaduras &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -87,13 +85,14 @@ categories:
       material: DIAMOND_CHESTPLATE
       data: 0
       inventorySlot: 11
-    allowedMaterials:
-      - "DIAMOND_HELMET"
-      - "DIAMOND_CHESTPLATE"
-      - "DIAMOND_LEGGINGS"
-      - "DIAMOND_BOOTS"
-  ferramentas:
-    inventoryName: "Ferramentas"
+    configuration:
+      inventoryName: "Armaduras"
+      materials:
+        - "DIAMOND_HELMET"
+        - "DIAMOND_CHESTPLATE"
+        - "DIAMOND_LEGGINGS"
+        - "DIAMOND_BOOTS"
+  tools:
     displayName: "&aFerramentas &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -109,13 +108,14 @@ categories:
       material: DIAMOND_PICKAXE
       data: 0
       inventorySlot: 12
-    allowedMaterials:
-      - "DIAMOND_PICKAXE"
-      - "DIAMOND_AXE"
-      - "DIAMOND_SPADE"
-      - "DIAMOND_HOE"
-  livros:
-    inventoryName: "Livros"
+    configuration:
+      inventoryName: "Ferramentas"
+      materials:
+        - "DIAMOND_PICKAXE"
+        - "DIAMOND_AXE"
+        - "DIAMOND_SPADE"
+        - "DIAMOND_HOE"
+  books:
     displayName: "&aLivros de Encantamento &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -128,10 +128,11 @@ categories:
       material: BOOK
       data: 0
       inventorySlot: 13
-    allowedMaterials:
-      - "BOOK"
-  pocoes:
-    inventoryName: "Poções"
+    configuration:
+      inventoryName: "Livros"
+      materials:
+        - "BOOK"
+  potions:
     displayName: "&aPoções &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -144,10 +145,11 @@ categories:
       material: POTION
       data: 0
       inventorySlot: 14
-    allowedMaterials:
-      - "POTION"
+    configuration:
+      inventoryName: "Poções"
+      materials:
+        - "POTION"
   redstone:
-    inventoryName: "Redstone"
     displayName: "&aRedstone &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -167,14 +169,15 @@ categories:
       material: REDSTONE
       data: 0
       inventorySlot: 15
-    allowedMaterials:
-      - "TNT"
-      - "REDSTONE"
-      - "REDSTONE_BLOCK"
-      - "DROPPER"
-      - "DISPENSER"
-  protecao:
-    inventoryName: "Blocos de Proteção"
+    configuration:
+      inventoryName: "Redstone"
+      materials:
+        - "TNT"
+        - "REDSTONE"
+        - "REDSTONE_BLOCK"
+        - "DROPPER"
+        - "DISPENSER"
+  protection:
     displayName: "&aBlocos de Proteção &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -189,11 +192,12 @@ categories:
       material: BEDROCK
       data: 0
       inventorySlot: 16
-    allowedMaterials:
-      - "OBSIDIAN"
-      - "BEDROCK"
-  monstros:
-    inventoryName: "Monstros"
+    configuration:
+      inventoryName: "Blocos de Proteção"
+      materials:
+        - "OBSIDIAN"
+        - "BEDROCK"
+  monsters:
     displayName: "&aMonstros &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -207,10 +211,11 @@ categories:
       material: MOB_SPAWNER
       data: 0
       inventorySlot: 19
-    allowedMaterials:
-      - "MOB_SPAWNER"
-  cabecas:
-    inventoryName: "Cabeças"
+    configuration:
+      inventoryName: "Monstros"
+      materials:
+        - "MOB_SPAWNER"
+  heads:
     displayName: "&aCabeças &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -224,11 +229,12 @@ categories:
       material: SKULL_ITEM
       data: 3
       inventorySlot: 20
-    allowedMaterials:
-      - "SKULL"
-      - "SKULL_ITEM"
-  minerios:
-    inventoryName: "Minérios"
+    configuration:
+      inventoryName: "Cabeças"
+      materials:
+        - "SKULL"
+        - "SKULL_ITEM"
+  ores:
     displayName: "&aMinérios &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
@@ -250,29 +256,32 @@ categories:
       material: DIAMOND_ORE
       data: 0
       inventorySlot: 21
-    allowedMaterials:
-      - "EMERALD"
-      - "EMERALD_BLOCK"
-      - "DIAMOND"
-      - "DIAMOND_BLOCK"
-      - "GOLD_INGOT"
-      - "GOLD_BLOCK"
-      - "IRON_INGOT"
-      - "IRON_BLOCK"
-      - "LAPIS_ORE"
-  especiais:
-    inventoryName: "Especiais"
+    configuration:
+      inventoryName: "Minérios"
+      materials:
+        - "EMERALD"
+        - "EMERALD_BLOCK"
+        - "DIAMOND"
+        - "DIAMOND_BLOCK"
+        - "GOLD_INGOT"
+        - "GOLD_BLOCK"
+        - "IRON_INGOT"
+        - "IRON_BLOCK"
+        - "LAPIS_ORE"
+  especials:
     displayName: "&aItens Especiais &8(%amount%)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Qualquer item especial'
+      - '&f▪ Poder máximo'
       - ''
       - '&aClique para abrir.'
     icon:
       material: NETHER_STAR
       data: 0
       inventorySlot: 22
-    allowedMaterials:
-      - "NETHER_STAR"
+    configuration:
+      inventoryName: "Especiais"
+      materials:
+        - "NETHER_STAR"
