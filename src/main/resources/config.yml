@@ -57,4 +57,8 @@ messages:
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
   full-inventory: '&cSeu inventário está cheio, cancelando operação'
   selling-for-you: '&cVocê não pode vender um item para você mesmo'
+  category-not-exists: "&cOps, me parece que esta categoria não existe!"
+  unavailable-product: "&COps, me parece que este produto não está mais disponível!"
   announcement: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%"
+  private-announcement: "&2&lMERCADO &7%player%&f colocou um item em seu mercado pessoal!"
+  changed-hand-item: "&cVocê mudou o item de sua mão em quando estava confirmando a ação, por favor, refaça a operação!"

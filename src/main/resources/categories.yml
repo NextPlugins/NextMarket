@@ -33,21 +33,26 @@ inventory:
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&fVendedor:&7 %seller%'
-      - '&fPreço:&7 %price%'
+      - '&7Vendedor: &f%seller%'
+      - '&7Preço: &e%price% coins'
+      - ''
+      - '&aClique para comprar este item!'
   announced: # Inventário de itens que você anunciou
     title: "Seus itens no mercado"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&fPreço:&7 %price%'
+      - '&7Vendedor: &f%seller%'
+      - ''
+      - '&aClique para coletar seu item.'
   private:
     title: "Mercado pessoal"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&fVendedor:&7 %seller%'
-      - '&fPreço:&7 %price%'
+      - '&7Vendedor: &f%seller%'
+      - '&7Preço: &e%price% coins'
+      - ''
 
 categories:
   weapons:
@@ -63,9 +68,10 @@ categories:
     icon: # Ícone da categoria
       material: DIAMOND_SWORD
       data: 0
+      enchant: true
       inventorySlot: 10
     configuration:
-      inventoryName: "Armas" # Identificador do inventário (nome do inventário)
+      inventoryTitle: "Armas" # Identificador do inventário (nome do inventário)
       materials: # Materiais permitidos na categoria
         - "DIAMOND_SWORD"
         - "BOW"
@@ -84,9 +90,10 @@ categories:
     icon:
       material: DIAMOND_CHESTPLATE
       data: 0
+      enchant: true
       inventorySlot: 11
     configuration:
-      inventoryName: "Armaduras"
+      inventoryTitle: "Armaduras"
       materials:
         - "DIAMOND_HELMET"
         - "DIAMOND_CHESTPLATE"
@@ -107,9 +114,10 @@ categories:
     icon:
       material: DIAMOND_PICKAXE
       data: 0
+      enchant: true
       inventorySlot: 12
     configuration:
-      inventoryName: "Ferramentas"
+      inventoryTitle: "Ferramentas"
       materials:
         - "DIAMOND_PICKAXE"
         - "DIAMOND_AXE"
@@ -127,9 +135,10 @@ categories:
     icon:
       material: BOOK
       data: 0
+      enchant: true
       inventorySlot: 13
     configuration:
-      inventoryName: "Livros"
+      inventoryTitle: "Livros"
       materials:
         - "BOOK"
   potions:
@@ -144,9 +153,10 @@ categories:
     icon:
       material: POTION
       data: 0
+      enchant: false
       inventorySlot: 14
     configuration:
-      inventoryName: "Poções"
+      inventoryTitle: "Poções"
       materials:
         - "POTION"
   redstone:
@@ -168,9 +178,10 @@ categories:
     icon:
       material: REDSTONE
       data: 0
+      enchant: false
       inventorySlot: 15
     configuration:
-      inventoryName: "Redstone"
+      inventoryTitle: "Redstone"
       materials:
         - "TNT"
         - "REDSTONE"
@@ -191,9 +202,10 @@ categories:
     icon:
       material: BEDROCK
       data: 0
+      enchant: false
       inventorySlot: 16
     configuration:
-      inventoryName: "Blocos de Proteção"
+      inventoryTitle: "Blocos de Proteção"
       materials:
         - "OBSIDIAN"
         - "BEDROCK"
@@ -210,9 +222,10 @@ categories:
     icon:
       material: MOB_SPAWNER
       data: 0
+      enchant: false
       inventorySlot: 19
     configuration:
-      inventoryName: "Monstros"
+      inventoryTitle: "Monstros"
       materials:
         - "MOB_SPAWNER"
   heads:
@@ -228,9 +241,10 @@ categories:
     icon:
       material: SKULL_ITEM
       data: 3
+      enchant: false
       inventorySlot: 20
     configuration:
-      inventoryName: "Cabeças"
+      inventoryTitle: "Cabeças"
       materials:
         - "SKULL"
         - "SKULL_ITEM"
@@ -255,9 +269,10 @@ categories:
     icon:
       material: DIAMOND_ORE
       data: 0
+      enchant: false
       inventorySlot: 21
     configuration:
-      inventoryName: "Minérios"
+      inventoryTitle: "Minérios"
       materials:
         - "EMERALD"
         - "EMERALD_BLOCK"
@@ -280,8 +295,9 @@ categories:
     icon:
       material: NETHER_STAR
       data: 0
+      enchant: true
       inventorySlot: 22
     configuration:
-      inventoryName: "Especiais"
+      inventoryTitle: "Especiais"
       materials:
         - "NETHER_STAR"

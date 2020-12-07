@@ -11,6 +11,7 @@ import com.nextplugins.nextmarket.manager.ProductManager;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Henry Fábio
@@ -42,7 +43,11 @@ public final class ProductStorage {
     }
 
     public Set<Product> findProductsByCategory(Category category) {
-        return ImmutableSet.copyOf(products.getOrDefault(category, Collections.emptySet()));
+        return ImmutableSet.copyOf(products.getOrDefault(category, Collections.emptySet()).stream()
+                .filter(product -> product.getDestination() == null)
+                .filter(product -> !product.isExpired())
+                .collect(Collectors.toList())
+        );
     }
 
     public Set<Product> findProductsByPlayer(Player player) {

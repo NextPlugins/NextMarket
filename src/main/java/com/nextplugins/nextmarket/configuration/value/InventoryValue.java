@@ -1,7 +1,5 @@
 package com.nextplugins.nextmarket.configuration.value;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.nextplugins.nextmarket.NextMarket;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,7 +23,7 @@ public final class InventoryValue {
 
     private static final InventoryValue instance = new InventoryValue();
 
-    private final Configuration configuration = NextMarket.getInstance().getCategoriesConfiguration();
+    private final Configuration configuration = NextMarket.getInstance().getCategoriesConfig();
 
     private final String mainInventoryTitle = message("inventory.main.title");
     private final int mainInventoryLines = configuration.getInt("inventory.main.lines");

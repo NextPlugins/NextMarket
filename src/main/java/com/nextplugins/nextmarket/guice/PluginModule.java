@@ -6,7 +6,9 @@ import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.henryfabio.sqlprovider.common.SQLProvider;
 import com.nextplugins.nextmarket.NextMarket;
-import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
+import com.nextplugins.nextmarket.inventory.CategoryInventory;
+import com.nextplugins.nextmarket.inventory.ConfirmationInventory;
+import com.nextplugins.nextmarket.inventory.MarketInventory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.configuration.Configuration;
@@ -35,7 +37,7 @@ public class PluginModule extends AbstractModule {
                 .toInstance(nextMarket.getConfig());
         bind(Configuration.class)
                 .annotatedWith(Names.named("categories"))
-                .toInstance(ConfigurationLoader.of("categories.yml").saveResource().create());
+                .toInstance(nextMarket.getCategoriesConfig());
 
         bind(SQLProvider.class)
                 .toInstance(nextMarket.getSqlProvider());

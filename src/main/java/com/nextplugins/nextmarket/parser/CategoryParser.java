@@ -36,6 +36,7 @@ public final class CategoryParser {
                         Material.getMaterial(section.getString("material")),
                         (byte) section.getInt("data")
                 ))
+                .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
     }

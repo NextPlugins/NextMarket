@@ -42,7 +42,11 @@ public final class MessageValue {
     private final String invalidItemMessage = message("messages.invalid-item");
     private final String fullInventoryMessage = message("messages.full-inventory");
     private final String sellingForYou = message("messages.selling-for-you");
+    private final String categoryNotExists = message("messages.category-not-exists");
+    private final String unavailableProduct = message("messages.unavailable-product");
     private final String announcementMessage = message("messages.announcement");
+    private final String privateAnnouncementMessage = message("messages.private-announcement");
+    private final String changedHandItemMessage = message("messages.changed-hand-item");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);

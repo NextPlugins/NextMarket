@@ -10,16 +10,23 @@ import com.henryfabio.sqlprovider.mysql.configuration.MySQLConfiguration;
 import com.henryfabio.sqlprovider.sqlite.SQLiteProvider;
 import com.henryfabio.sqlprovider.sqlite.configuration.SQLiteConfiguration;
 import com.nextplugins.nextmarket.command.MarketCommand;
+import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
 import com.nextplugins.nextmarket.guice.PluginModule;
+import com.nextplugins.nextmarket.hook.EconomyHook;
+import com.nextplugins.nextmarket.listener.ProductBuyListener;
+import com.nextplugins.nextmarket.listener.ProductCreateListener;
+import com.nextplugins.nextmarket.listener.ProductRemoveListener;
 import com.nextplugins.nextmarket.manager.CategoryManager;
-import com.nextplugins.nextmarket.manager.MarketManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
+import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -35,11 +42,13 @@ public final class NextMarket extends JavaPlugin {
 
     @Inject @Named("main") private Logger logger;
 
-    @Inject private MarketManager marketManager;
+    @Inject private EconomyHook economyHook;
+
     @Inject private CategoryManager categoryManager;
     @Inject private ProductManager productManager;
+    @Inject private InventoryRegistry inventoryRegistry;
 
-    @Getter @Inject @Named("categories") private Configuration categoriesConfiguration;
+    @Getter private Configuration categoriesConfig;
 
     @Override
     public void onLoad() {
@@ -50,6 +59,7 @@ public final class NextMarket extends JavaPlugin {
     public void onEnable() {
         PluginDependencyManager.of(this).loadAllDependencies().thenRun(() -> {
             try {
+                this.categoriesConfig = ConfigurationLoader.of("categories.yml").saveResource().create();
                 InventoryManager.enable(this);
 
                 configureSqlProvider();
@@ -58,11 +68,17 @@ public final class NextMarket extends JavaPlugin {
                 this.injector = PluginModule.of(this).createInjector();
                 this.injector.injectMembers(this);
 
-                marketManager.init();
+                economyHook.init();
+
                 categoryManager.init();
                 productManager.init();
+                inventoryRegistry.init();
 
                 enableCommandFrame();
+
+                registerListener(ProductCreateListener.class);
+                registerListener(ProductRemoveListener.class);
+                registerListener(ProductBuyListener.class);
             } catch (Throwable t) {
                 t.printStackTrace();
                 logger.severe("Um erro ocorreu na inicialização do plugin!");
@@ -97,6 +113,10 @@ public final class NextMarket extends JavaPlugin {
         bukkitFrame.registerCommands(
                 injector.getInstance(MarketCommand.class)
         );
+    }
+
+    private void registerListener(Class<? extends Listener> clazz) {
+        Bukkit.getPluginManager().registerEvents(injector.getInstance(clazz), this);
     }
 
 }
