@@ -3,7 +3,6 @@ package com.nextplugins.nextmarket.dao;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.henryfabio.sqlprovider.common.SQLProvider;
-import com.henryfabio.sqlprovider.common.executor.SQLExecutor;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.dao.adapter.ProductAdapter;
 import org.bukkit.Bukkit;
@@ -12,9 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Henry Fábio

@@ -4,8 +4,6 @@ import com.henryfabio.sqlprovider.common.adapter.SQLAdapter;
 import com.henryfabio.sqlprovider.common.result.SimpleResultSet;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.util.ItemStackUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 

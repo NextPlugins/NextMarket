@@ -13,5 +13,4 @@ public final class NextMarketAPI {
     @Getter public static final NextMarketAPI instance = new NextMarketAPI();
 
 
-
 }

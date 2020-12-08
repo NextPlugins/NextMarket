@@ -13,8 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.UUID;
-
 /**
  * @author Henry Fábio
  */
@@ -65,7 +63,7 @@ public final class ProductManager {
         int playerLimit = getPlayerLimit(player);
         if (playerTotalProducts >= playerLimit) {
             player.sendMessage(MessageValue.get(MessageValue::outOfBoundsMessage)
-                .replace("%limit%", String.valueOf(playerLimit))
+                    .replace("%limit%", String.valueOf(playerLimit))
             );
             return null;
         }
