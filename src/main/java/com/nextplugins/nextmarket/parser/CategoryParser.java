@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
+import com.nextplugins.nextmarket.util.ColorUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,11 +21,10 @@ public final class CategoryParser {
     public Category parse(ConfigurationSection section) {
         return Category.builder()
                 .id(section.getName())
-                .displayName(colors(section.getString("displayName")))
+                .displayName(ColorUtils.format(section.getString("displayName")))
                 .description(section.getStringList("description").stream()
-                        .map(this::colors)
-                        .collect(Collectors.toList())
-                )
+                        .map(ColorUtils::format)
+                        .collect(Collectors.toList()))
                 .icon(this.parseCategoryIcon(section.getConfigurationSection("icon")))
                 .configuration(this.parseCategoryConfiguration(section.getConfigurationSection("configuration")))
                 .build();
@@ -34,8 +34,7 @@ public final class CategoryParser {
         return CategoryIcon.builder()
                 .materialData(new MaterialData(
                         Material.getMaterial(section.getString("material")),
-                        (byte) section.getInt("data")
-                ))
+                        (byte) section.getInt("data")))
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
@@ -49,10 +48,6 @@ public final class CategoryParser {
                         .collect(Collectors.toList())
                 )
                 .build();
-    }
-
-    private String colors(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
 }
