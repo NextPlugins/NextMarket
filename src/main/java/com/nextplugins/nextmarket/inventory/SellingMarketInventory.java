@@ -104,7 +104,7 @@ public final class SellingMarketInventory extends PagedInventory {
 
     private void updateCategoryItems(Viewer viewer) {
         ViewerPropertyMap propertyMap = viewer.getPropertyMap();
-        propertyMap.set("products", productStorage.findProductsByPlayer(viewer.getPlayer()));
+        propertyMap.set("products", productStorage.findProductsBySeller(viewer.getPlayer()));
     }
 
     private void addExpiredTag(ItemStack itemStack) {

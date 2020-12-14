@@ -48,11 +48,30 @@ public final class ProductStorage {
         );
     }
 
-    public Set<Product> findProductsByPlayer(Player player) {
+    public Set<Product> findProductsBySeller(UUID uniqueId) {
         Set<Product> playerProducts = new LinkedHashSet<>();
         for (Set<Product> products : products.values()) {
             for (Product product : products) {
-                if (product.getSeller().getUniqueId().equals(player.getUniqueId())) {
+                if (product.getSeller().getUniqueId().equals(uniqueId)) {
+                    playerProducts.add(product);
+                }
+            }
+        }
+        return ImmutableSet.copyOf(playerProducts);
+    }
+
+    public Set<Product> findProductsBySeller(Player player) {
+        return findProductsBySeller(player.getUniqueId());
+    }
+
+    public Set<Product> findProductsByDestination(UUID uniqueId) {
+        Set<Product> playerProducts = new LinkedHashSet<>();
+        for (Set<Product> products : products.values()) {
+            for (Product product : products) {
+                OfflinePlayer destination = product.getDestination();
+                if (destination == null) continue;
+
+                if (destination.getUniqueId().equals(uniqueId)) {
                     playerProducts.add(product);
                 }
             }
@@ -61,18 +80,7 @@ public final class ProductStorage {
     }
 
     public Set<Product> findProductsByDestination(Player player) {
-        Set<Product> playerProducts = new LinkedHashSet<>();
-        for (Set<Product> products : products.values()) {
-            for (Product product : products) {
-                OfflinePlayer destination = product.getDestination();
-                if (destination == null) continue;
-
-                if (destination.getUniqueId().equals(player.getUniqueId())) {
-                    playerProducts.add(product);
-                }
-            }
-        }
-        return ImmutableSet.copyOf(playerProducts);
+        return findProductsByDestination(player.getUniqueId());
     }
 
     public Map<Category, Set<Product>> getProducts() {

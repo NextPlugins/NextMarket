@@ -9,6 +9,7 @@ import com.henryfabio.sqlprovider.mysql.MySQLProvider;
 import com.henryfabio.sqlprovider.mysql.configuration.MySQLConfiguration;
 import com.henryfabio.sqlprovider.sqlite.SQLiteProvider;
 import com.henryfabio.sqlprovider.sqlite.configuration.SQLiteConfiguration;
+import com.nextplugins.nextmarket.api.NextMarketAPI;
 import com.nextplugins.nextmarket.command.MarketCommand;
 import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
 import com.nextplugins.nextmarket.guice.PluginModule;
@@ -81,6 +82,8 @@ public final class NextMarket extends JavaPlugin {
                 registerListener(ProductCreateListener.class);
                 registerListener(ProductRemoveListener.class);
                 registerListener(ProductBuyListener.class);
+
+                this.injector.injectMembers(NextMarketAPI.getInstance());
             } catch (Throwable t) {
                 t.printStackTrace();
                 logger.severe("Um erro ocorreu na inicialização do plugin!");

@@ -56,7 +56,7 @@ public final class ProductManager {
             return null;
         }
 
-        int playerTotalProducts = productStorage.findProductsByPlayer(player).size();
+        int playerTotalProducts = productStorage.findProductsBySeller(player).size();
         int playerLimit = getPlayerLimit(player);
         if (playerTotalProducts >= playerLimit) {
             player.sendMessage(MessageValue.get(MessageValue::outOfBoundsMessage)
