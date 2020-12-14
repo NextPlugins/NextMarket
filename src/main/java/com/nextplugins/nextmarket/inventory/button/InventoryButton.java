@@ -1,4 +1,4 @@
-package com.nextplugins.nextmarket.api.model.button;
+package com.nextplugins.nextmarket.inventory.button;
 
 import lombok.Builder;
 import lombok.Data;

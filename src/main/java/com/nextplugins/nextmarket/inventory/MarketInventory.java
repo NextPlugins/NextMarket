@@ -7,7 +7,7 @@ import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
 import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
-import com.nextplugins.nextmarket.api.model.button.InventoryButton;
+import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.InventoryValue;

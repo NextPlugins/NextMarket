@@ -14,7 +14,7 @@ import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.event.ProductBuyEvent;
 import com.nextplugins.nextmarket.api.event.ProductRemoveEvent;
-import com.nextplugins.nextmarket.api.model.button.InventoryButton;
+import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.api.model.product.Product;

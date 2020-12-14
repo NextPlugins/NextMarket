@@ -1,7 +1,7 @@
 package com.nextplugins.nextmarket.parser;
 
 import com.google.inject.Singleton;
-import com.nextplugins.nextmarket.api.model.button.InventoryButton;
+import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.util.ColorUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
