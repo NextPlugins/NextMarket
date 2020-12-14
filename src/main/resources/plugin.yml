@@ -1,4 +1,0 @@
-name: NextMarket
-version: @version@
-main: com.nextplugin.nextmarket.NextMarket
-authors: [NextPlugins]
