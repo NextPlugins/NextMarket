@@ -15,7 +15,7 @@ plugins {
     id "net.minecrell.plugin-yml.bukkit" version '0.3.0'
 }
 
-group "com.nextplugin"
+group "com.nextplugins"
 version "1.0.0"
 
 tasks.jar.dependsOn project.tasks.getByName('pdm')
@@ -55,8 +55,8 @@ bukkit {
 
 shadowJar {
     archiveName("${project.name}-${project.version}.jar")
-    relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugin.nextmarket.libs.inventoryapi'
-    relocate 'com.henryfabio.sqlprovider', 'com.nextplugin.nextmarket.libs.sqlprovider'
+    relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.nextmarket.libs.inventoryapi'
+    relocate 'com.henryfabio.sqlprovider', 'com.nextplugins.nextmarket.libs.sqlprovider'
 }
 
 compileJava {
