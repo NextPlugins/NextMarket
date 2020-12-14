@@ -6,7 +6,7 @@
 
 inventory:
   main: # Inventário principal onde serão exibidas todas as categorias
-    title: "Categorias do Mercado"
+    title: "&8Categorias do Mercado"
     lines: 5
     buttons:
       personalMarket:
@@ -24,7 +24,7 @@ inventory:
           - '&7Clique para ver os seus itens anunciados no mercado'
         inventorySlot: 41
   category: # Inventário onde será exibido os itens daquela categoria
-    title: "Categoria: %category_name%"
+    title: "&8Categoria: %category_name%"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
@@ -41,7 +41,7 @@ inventory:
           - '&7Clique para atualizar os itens desta categoria!'
         inventorySlot: 39
   selling: # Inventário de itens que você anunciou
-    title: "Seus itens no mercado"
+    title: "&8Seus itens no mercado"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
@@ -55,7 +55,7 @@ inventory:
           - '&7Clique para atualizar os itens do mercado pessoal!'
         inventorySlot: 39
   personal:
-    title: "Mercado pessoal"
+    title: "&8Mercado pessoal"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
