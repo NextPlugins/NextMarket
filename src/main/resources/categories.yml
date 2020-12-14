@@ -43,6 +43,7 @@ inventory:
   selling: # Inventário de itens que você anunciou
     title: "&8Seus itens no mercado"
     lines: 6
+    expiredTag: "&8EXPIRADO" # Tag que será adicionada ao final da lore do item caso ele esteja expirado
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
       - '&aClique para coletar seu item.'

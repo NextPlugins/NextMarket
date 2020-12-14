@@ -22,6 +22,7 @@ import com.nextplugins.nextmarket.storage.ProductStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -74,7 +75,13 @@ public final class SellingMarketInventory extends PagedInventory {
     }
 
     private InventoryItem productInventoryItem(Product product) {
-        return InventoryItem.of(product.toViewItemStack(InventoryValue.get(InventoryValue::announcedInventoryItemLore)))
+        ItemStack itemStack = product.toViewItemStack(InventoryValue.get(InventoryValue::announcedInventoryItemLore));
+
+        if (product.isExpired()) {
+            addExpiredTag(itemStack);
+        }
+
+        return InventoryItem.of(itemStack)
                 .defaultCallback(event -> {
                     Player player = event.getPlayer();
                     inventoryRegistry.getConfirmationInventory().openConfirmation(player,
@@ -98,6 +105,17 @@ public final class SellingMarketInventory extends PagedInventory {
     private void updateCategoryItems(Viewer viewer) {
         ViewerPropertyMap propertyMap = viewer.getPropertyMap();
         propertyMap.set("products", productStorage.findProductsByPlayer(viewer.getPlayer()));
+    }
+
+    private void addExpiredTag(ItemStack itemStack) {
+        String expiredTag = InventoryValue.get(InventoryValue::sellingExpiredTag);
+        if (!expiredTag.isEmpty()) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            List<String> lore = itemMeta.getLore();
+            lore.add(expiredTag);
+            itemMeta.setLore(lore);
+            itemStack.setItemMeta(itemMeta);
+        }
     }
 
 }

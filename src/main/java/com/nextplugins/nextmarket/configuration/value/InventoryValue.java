@@ -34,6 +34,8 @@ public final class InventoryValue {
     private final String privateInventoryTitle = message("inventory.personal.title");
     private final int privateInventoryLines = configuration.getInt("inventory.personal.lines");
 
+    private final String sellingExpiredTag = message("inventory.selling.expiredTag");
+
     private final List<String> categoryInventoryItemLore = messageList("inventory.category.lore");
     private final List<String> announcedInventoryItemLore = messageList("inventory.selling.lore");
     private final List<String> privateInventoryItemLore = messageList("inventory.personal.lore");
