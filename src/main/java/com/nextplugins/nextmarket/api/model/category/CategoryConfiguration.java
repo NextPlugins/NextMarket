@@ -6,9 +6,6 @@ import org.bukkit.Material;
 
 import java.util.List;
 
-/**
- * @author Henry Fábio
- */
 @Builder
 @Data
 public final class CategoryConfiguration {

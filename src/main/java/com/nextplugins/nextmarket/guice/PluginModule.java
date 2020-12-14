@@ -12,9 +12,6 @@ import org.bukkit.configuration.Configuration;
 
 import java.util.logging.Logger;
 
-/**
- * @author Henry Fábio
- */
 @EqualsAndHashCode(callSuper = false)
 @Data(staticConstructor = "of")
 public class PluginModule extends AbstractModule {

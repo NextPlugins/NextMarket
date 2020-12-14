@@ -18,6 +18,7 @@ import com.nextplugins.nextmarket.listener.ProductCreateListener;
 import com.nextplugins.nextmarket.listener.ProductRemoveListener;
 import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
+import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
@@ -32,9 +33,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.logging.Logger;
 
-/**
- * @author Henry Fábio
- */
 public final class NextMarket extends JavaPlugin {
 
     @Getter private Injector injector;
@@ -46,7 +44,9 @@ public final class NextMarket extends JavaPlugin {
 
     @Inject private CategoryManager categoryManager;
     @Inject private ProductManager productManager;
+
     @Inject private InventoryRegistry inventoryRegistry;
+    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
 
     @Getter private Configuration categoriesConfig;
 
@@ -72,7 +72,9 @@ public final class NextMarket extends JavaPlugin {
 
                 categoryManager.init();
                 productManager.init();
+
                 inventoryRegistry.init();
+                inventoryButtonRegistry.init();
 
                 enableCommandFrame();
 
@@ -82,6 +84,7 @@ public final class NextMarket extends JavaPlugin {
             } catch (Throwable t) {
                 t.printStackTrace();
                 logger.severe("Um erro ocorreu na inicialização do plugin!");
+                Bukkit.getPluginManager().disablePlugin(this);
             }
         });
     }

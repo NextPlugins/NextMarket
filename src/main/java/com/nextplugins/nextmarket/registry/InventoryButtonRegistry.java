@@ -10,9 +10,6 @@ import org.bukkit.configuration.Configuration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class InventoryButtonRegistry {
 
@@ -25,8 +22,17 @@ public final class InventoryButtonRegistry {
         register("main.personalMarket", inventoryButtonParser.parse(
                 categoriesConfig.getConfigurationSection("inventory.main.buttons.personalMarket")
         ));
-        register("main.announcedItems", inventoryButtonParser.parse(
-                categoriesConfig.getConfigurationSection("inventory.main.buttons.announcedItems")
+        register("main.sellingMarket", inventoryButtonParser.parse(
+                categoriesConfig.getConfigurationSection("inventory.main.buttons.sellingMarket")
+        ));
+        register("category.update", inventoryButtonParser.parse(
+                categoriesConfig.getConfigurationSection("inventory.category.buttons.update")
+        ));
+        register("personal.update", inventoryButtonParser.parse(
+                categoriesConfig.getConfigurationSection("inventory.personal.buttons.update")
+        ));
+        register("selling.update", inventoryButtonParser.parse(
+                categoriesConfig.getConfigurationSection("inventory.selling.buttons.update")
         ));
     }
 

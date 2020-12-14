@@ -10,9 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.PlayerInventory;
 
-/**
- * @author Henry Fábio
- */
 public final class ProductRemoveListener implements Listener {
 
     @Inject private ProductStorage productStorage;

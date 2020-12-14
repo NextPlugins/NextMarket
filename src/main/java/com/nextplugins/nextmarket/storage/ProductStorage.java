@@ -8,14 +8,12 @@ import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.dao.ProductDAO;
 import com.nextplugins.nextmarket.manager.ProductManager;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class ProductStorage {
 
@@ -55,6 +53,21 @@ public final class ProductStorage {
         for (Set<Product> products : products.values()) {
             for (Product product : products) {
                 if (product.getSeller().getUniqueId().equals(player.getUniqueId())) {
+                    playerProducts.add(product);
+                }
+            }
+        }
+        return ImmutableSet.copyOf(playerProducts);
+    }
+
+    public Set<Product> findProductsByDestination(Player player) {
+        Set<Product> playerProducts = new LinkedHashSet<>();
+        for (Set<Product> products : products.values()) {
+            for (Product product : products) {
+                OfflinePlayer destination = product.getDestination();
+                if (destination == null) continue;
+
+                if (destination.getUniqueId().equals(player.getUniqueId())) {
                     playerProducts.add(product);
                 }
             }

@@ -10,9 +10,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.function.Function;
 
-/**
- * @author Henry Fábio
- */
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

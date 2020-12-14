@@ -3,12 +3,11 @@ package com.nextplugins.nextmarket.api.model.category;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.util.List;
 
-/**
- * @author Henry Fábio
- */
+@ToString(of = {"id", "displayName"})
 @EqualsAndHashCode(of = "id")
 @Builder
 @Data

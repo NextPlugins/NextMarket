@@ -11,9 +11,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.logging.Logger;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class EconomyHook {
 
@@ -33,8 +30,8 @@ public final class EconomyHook {
         return economy.getBalance(player);
     }
 
-    public EconomyResponse depositCoins(OfflinePlayer player, double amount) {
-        return economy.depositPlayer(player, amount);
+    public void depositCoins(OfflinePlayer player, double amount) {
+        economy.depositPlayer(player, amount);
     }
 
     public EconomyResponse withdrawCoins(OfflinePlayer player, double amount) {

@@ -4,9 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.ChatColor;
 
-/**
- * @author Henry Fábio
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ColorUtils {
 

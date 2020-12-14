@@ -15,9 +15,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-/**
- * @author Henry Fábio
- */
 public final class ConfirmationInventory extends SimpleInventory {
 
     public ConfirmationInventory() {

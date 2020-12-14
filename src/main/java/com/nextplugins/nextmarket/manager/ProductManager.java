@@ -13,9 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class ProductManager {
 

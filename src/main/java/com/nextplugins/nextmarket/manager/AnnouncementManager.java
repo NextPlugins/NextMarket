@@ -18,9 +18,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class AnnouncementManager {
 
@@ -35,7 +32,7 @@ public final class AnnouncementManager {
         Player player = event.getPlayer();
         player.sendMessage(sellerMessage
                 .replace("%price%", NumberUtils.formatNumber(product.getPrice()))
-                .replace("%player%", player.getName())
+                .replace("%player%", destination != null ? destination.getName() : "")
         );
 
         sendTextComponent(player, hasDelay, () -> {

@@ -13,9 +13,6 @@ import org.bukkit.event.Listener;
 
 import java.util.Objects;
 
-/**
- * @author Henry Fábio
- */
 public final class ProductCreateListener implements Listener {
 
     @Inject private AnnouncementManager announcementManager;

@@ -12,9 +12,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
 
-/**
- * @author Henry Fábio
- */
 public final class ProductAdapter implements SQLAdapter<Product> {
 
     @Override

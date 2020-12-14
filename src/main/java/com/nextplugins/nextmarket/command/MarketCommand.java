@@ -17,9 +17,6 @@ import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-/**
- * @author Henry Fábio
- */
 public final class MarketCommand {
 
     @Inject private CategoryManager categoryManager;
@@ -88,8 +85,8 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.announced",
-            aliases = {"anunciados"},
+            name = "market.selling",
+            aliases = {"anunciados", "vendidos"},
             async = true
     )
     public void announcedMarketCommand(Context<Player> context) {

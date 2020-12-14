@@ -11,9 +11,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-/**
- * @author Henry Fábio
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemStackUtils {
 

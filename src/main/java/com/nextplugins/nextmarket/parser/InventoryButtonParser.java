@@ -9,9 +9,6 @@ import org.bukkit.material.MaterialData;
 
 import java.util.stream.Collectors;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class InventoryButtonParser {
 

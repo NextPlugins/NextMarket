@@ -7,9 +7,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-/**
- * @author Henry Fábio
- */
 @Data(staticConstructor = "of")
 public final class ConfigurationLoader {
 

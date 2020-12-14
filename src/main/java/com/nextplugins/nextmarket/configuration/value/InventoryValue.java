@@ -13,9 +13,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * @author Henry Fábio
- */
 @Getter
 @Accessors(fluent = true)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -31,15 +28,15 @@ public final class InventoryValue {
     private final String categoryInventoryTitle = message("inventory.category.title");
     private final int categoryInventoryLines = configuration.getInt("inventory.category.lines");
 
-    private final String announcedInventoryTitle = message("inventory.announced.title");
-    private final int announcedInventoryLines = configuration.getInt("inventory.announced.lines");
+    private final String announcedInventoryTitle = message("inventory.selling.title");
+    private final int announcedInventoryLines = configuration.getInt("inventory.selling.lines");
 
-    private final String privateInventoryTitle = message("inventory.private.title");
-    private final int privateInventoryLines = configuration.getInt("inventory.private.lines");
+    private final String privateInventoryTitle = message("inventory.personal.title");
+    private final int privateInventoryLines = configuration.getInt("inventory.personal.lines");
 
     private final List<String> categoryInventoryItemLore = messageList("inventory.category.lore");
-    private final List<String> announcedInventoryItemLore = messageList("inventory.announced.lore");
-    private final List<String> privateInventoryItemLore = messageList("inventory.private.lore");
+    private final List<String> announcedInventoryItemLore = messageList("inventory.selling.lore");
+    private final List<String> privateInventoryItemLore = messageList("inventory.personal.lore");
 
     public static <T> T get(Function<InventoryValue, T> supplier) {
         return supplier.apply(InventoryValue.instance);

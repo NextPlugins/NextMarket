@@ -6,9 +6,6 @@ import lombok.NoArgsConstructor;
 import java.text.DecimalFormat;
 import java.util.function.Function;
 
-/**
- * @author Henry Fábio
- */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class NumberUtils {
 

@@ -5,16 +5,12 @@ import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.util.ColorUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
 
 import java.util.stream.Collectors;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class CategoryParser {
 

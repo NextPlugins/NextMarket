@@ -14,9 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.PlayerInventory;
 
-/**
- * @author Henry Fábio
- */
 public final class ProductBuyListener implements Listener {
 
     @Inject private EconomyHook economyHook;

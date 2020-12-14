@@ -15,9 +15,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-/**
- * @author Henry Fábio
- */
 @Singleton
 public final class CategoryManager {
 

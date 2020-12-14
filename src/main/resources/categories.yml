@@ -12,14 +12,14 @@ inventory:
       personalMarket:
         material: CHEST
         data: 0
-        displayName: "&aMercado pessoal &8(%amount%)"
+        displayName: "&aMercado pessoal"
         lore:
           - '&7Clique para ver os itens que estão vendendo para você'
         inventorySlot: 39
-      announcedItems:
+      sellingMarket:
         material: EYE_OF_ENDER
         data: 0
-        displayName: "&aItens Anunciados &8(%amount%)"
+        displayName: "&aItens Anunciados"
         lore:
           - '&7Clique para ver os seus itens anunciados no mercado'
         inventorySlot: 41
@@ -32,15 +32,29 @@ inventory:
       - '&7Preço: &e%price% coins'
       - ''
       - '&aClique para comprar este item!'
-  announced: # Inventário de itens que você anunciou
+    buttons:
+      update:
+        material: BARRIER # Deixe o material como "BARRIER" para ser colocado o item da categoria que estiver aberta
+        data: 0
+        displayName: "&6Atualizar"
+        lore:
+          - '&7Clique para atualizar os itens desta categoria!'
+        inventorySlot: 39
+  selling: # Inventário de itens que você anunciou
     title: "Seus itens no mercado"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&7Vendedor: &f%seller%'
-      - ''
       - '&aClique para coletar seu item.'
-  private:
+    buttons:
+      update:
+        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
+        data: 3
+        displayName: "&6Atualizar"
+        lore:
+          - '&7Clique para atualizar os itens do mercado pessoal!'
+        inventorySlot: 39
+  personal:
     title: "Mercado pessoal"
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
@@ -48,10 +62,18 @@ inventory:
       - '&7Vendedor: &f%seller%'
       - '&7Preço: &e%price% coins'
       - ''
+    buttons:
+      update:
+        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
+        data: 3
+        displayName: "&6Atualizar"
+        lore:
+          - '&7Clique para atualizar os itens do mercado pessoal!'
+        inventorySlot: 39
 
 categories:
   weapons:
-    displayName: "&aArmas &8(%amount%)" # Nome da categoria
+    displayName: "&aArmas &8(%amount% itens)" # Nome da categoria
     description: # Descrição da categoria
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -71,7 +93,7 @@ categories:
         - "DIAMOND_SWORD"
         - "BOW"
   armors:
-    displayName: "&aArmaduras &8(%amount%)"
+    displayName: "&aArmaduras &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -95,7 +117,7 @@ categories:
         - "DIAMOND_LEGGINGS"
         - "DIAMOND_BOOTS"
   tools:
-    displayName: "&aFerramentas &8(%amount%)"
+    displayName: "&aFerramentas &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -119,7 +141,7 @@ categories:
         - "DIAMOND_SPADE"
         - "DIAMOND_HOE"
   books:
-    displayName: "&aLivros de Encantamento &8(%amount%)"
+    displayName: "&aLivros de Encantamento &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -137,7 +159,7 @@ categories:
       materials:
         - "BOOK"
   potions:
-    displayName: "&aPoções &8(%amount%)"
+    displayName: "&aPoções &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -155,7 +177,7 @@ categories:
       materials:
         - "POTION"
   redstone:
-    displayName: "&aRedstone &8(%amount%)"
+    displayName: "&aRedstone &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -184,7 +206,7 @@ categories:
         - "DROPPER"
         - "DISPENSER"
   protection:
-    displayName: "&aBlocos de Proteção &8(%amount%)"
+    displayName: "&aBlocos de Proteção &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -205,7 +227,7 @@ categories:
         - "OBSIDIAN"
         - "BEDROCK"
   monsters:
-    displayName: "&aMonstros &8(%amount%)"
+    displayName: "&aMonstros &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -224,7 +246,7 @@ categories:
       materials:
         - "MOB_SPAWNER"
   heads:
-    displayName: "&aCabeças &8(%amount%)"
+    displayName: "&aCabeças &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -244,7 +266,7 @@ categories:
         - "SKULL"
         - "SKULL_ITEM"
   ores:
-    displayName: "&aMinérios &8(%amount%)"
+    displayName: "&aMinérios &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
@@ -279,7 +301,7 @@ categories:
         - "IRON_BLOCK"
         - "LAPIS_ORE"
   especials:
-    displayName: "&aItens Especiais &8(%amount%)"
+    displayName: "&aItens Especiais &8(%amount% itens)"
     description:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
