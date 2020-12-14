@@ -41,9 +41,9 @@ messages:
   maximum-value-reached: '&cVocê inseriu um valor muito alto.'
   minimum-value-not-reached: '&cVocê precisa por um valor acima de %amount%.'
   no-permission: '&cVocê não tem permissão para anunciar um item no mercado.'
-  out-of-bounds: '&cVocê atingiu o limite de items no mercado (%limit%)'
+  out-of-bounds: '&cVocê atingiu o limite de %limit% items no mercado!'
   player-offline: '&cEste jogador encontra-se offline.'
-  cancel-a-sell: '&cVocê cancelou a venda deste item'
+  cancel-a-sell: '&cVocê cancelou a venda deste item!'
   expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados&c para coletar.'
   bought-a-item: '&aVocê comprou um item do mercado.'
   sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
@@ -51,10 +51,10 @@ messages:
   announced-a-item-in-personal-market: '&aVocê anunciou um item por &f%price% &ano mercado pessoal de &f%player%&a.'
   insufficient-money: '&cVocê precisa de mais %difference% para comprar este item.'
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
-  full-inventory: '&cSeu inventário está cheio, cancelando operação'
-  selling-for-you: '&cVocê não pode vender um item para você mesmo'
+  full-inventory: '&cSeu inventário está cheio, cancelando operação!'
+  selling-for-you: '&cVocê não pode vender um item para você mesmo!'
   category-not-exists: "&cOps, me parece que esta categoria não existe!"
   unavailable-product: "&COps, me parece que este produto não está mais disponível!"
-  announcement: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%"
+  announcement: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%!"
   private-announcement: "&2&lMERCADO &7%player%&f colocou um item em seu mercado pessoal!"
   changed-hand-item: "&cVocê mudou o item de sua mão em quando estava confirmando a ação, por favor, refaça a operação!"
