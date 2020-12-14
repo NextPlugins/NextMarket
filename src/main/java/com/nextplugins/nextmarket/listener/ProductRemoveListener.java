@@ -37,7 +37,11 @@ public final class ProductRemoveListener implements Listener {
 
         inventory.addItem(product.getItemStack());
 
-        player.sendMessage(MessageValue.get(MessageValue::cancelAnSellMessage));
+        if (product.isExpired()) {
+            player.sendMessage(MessageValue.get(MessageValue::collectProductMessage));
+        } else {
+            player.sendMessage(MessageValue.get(MessageValue::cancelAnSellMessage));
+        }
     }
 
 }

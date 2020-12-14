@@ -30,6 +30,7 @@ public final class MessageValue {
     private final String outOfBoundsMessage = message("messages.out-of-bounds");
     private final String offlinePlayerMessage = message("messages.player-offline");
     private final String cancelAnSellMessage = message("messages.cancel-a-sell");
+    private final String collectProductMessage = message("messages.collect-product");
     private final String expiredItemMessage = message("messages.expired-item");
     private final String boughtAnItemMessage = message("messages.bought-a-item");
     private final String soldAItemMessage = message("messages.sold-a-item");

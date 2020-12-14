@@ -44,6 +44,7 @@ messages:
   out-of-bounds: '&cVocê atingiu o limite de %limit% items no mercado!'
   player-offline: '&cEste jogador encontra-se offline.'
   cancel-a-sell: '&cVocê cancelou a venda deste item!'
+  collect-product: '&aVocê recolheu um produto que estava expirado!'
   expired-item: '&cUm item seu expirou no mercado, use &f/mercado expirados&c para coletar.'
   bought-a-item: '&aVocê comprou um item do mercado.'
   sold-a-item: '&aVocê vendeu um item por &f%amount% &ano mercado.'
