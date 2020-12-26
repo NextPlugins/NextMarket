@@ -35,7 +35,7 @@ public final class ProductCreateListener implements Listener {
         if (product.getDestination() == null) {
             announcementManager.sendCreationAnnounce(
                     event,
-                    MessageValue.get(MessageValue::announcedAItemMessage),
+                    MessageValue.get(MessageValue::sellingAItemMessage),
                     MessageValue.get(MessageValue::announcementMessage),
                     true,
                     target -> !target.equals(player)
@@ -43,7 +43,7 @@ public final class ProductCreateListener implements Listener {
         } else {
             announcementManager.sendCreationAnnounce(
                     event,
-                    MessageValue.get(MessageValue::announcedAItemInPersonalMarket),
+                    MessageValue.get(MessageValue::sellingAItemInPersonalMarket),
                     MessageValue.get(MessageValue::privateAnnouncementMessage),
                     false,
                     target -> Objects.equals(target, product.getDestination())

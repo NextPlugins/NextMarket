@@ -6,13 +6,12 @@ import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
+/**
+ * Evento chamado quando um item é removido do mercado manualmente.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public final class ProductRemoveEvent extends CustomEvent implements Cancellable {
-
-    /*
-     * Este evento é chamado quando um item é removido do mercado manualmente.
-     */
 
     private final Player player;
     private final Product product;

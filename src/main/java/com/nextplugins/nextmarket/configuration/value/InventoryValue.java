@@ -28,8 +28,8 @@ public final class InventoryValue {
     private final String categoryInventoryTitle = message("inventory.category.title");
     private final int categoryInventoryLines = configuration.getInt("inventory.category.lines");
 
-    private final String announcedInventoryTitle = message("inventory.selling.title");
-    private final int announcedInventoryLines = configuration.getInt("inventory.selling.lines");
+    private final String sellingInventoryTitle = message("inventory.selling.title");
+    private final int sellingInventoryLines = configuration.getInt("inventory.selling.lines");
 
     private final String privateInventoryTitle = message("inventory.personal.title");
     private final int privateInventoryLines = configuration.getInt("inventory.personal.lines");
@@ -37,7 +37,7 @@ public final class InventoryValue {
     private final String sellingExpiredTag = message("inventory.selling.expiredTag");
 
     private final List<String> categoryInventoryItemLore = messageList("inventory.category.lore");
-    private final List<String> announcedInventoryItemLore = messageList("inventory.selling.lore");
+    private final List<String> sellingInventoryItemLore = messageList("inventory.selling.lore");
     private final List<String> privateInventoryItemLore = messageList("inventory.personal.lore");
 
     public static <T> T get(Function<InventoryValue, T> supplier) {

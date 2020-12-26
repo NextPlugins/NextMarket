@@ -6,6 +6,8 @@ import com.nextplugins.nextmarket.api.event.ProductCreateEvent;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.MessageValue;
+import com.nextplugins.nextmarket.inventory.PersonalMarketInventory;
+import com.nextplugins.nextmarket.inventory.SellingMarketInventory;
 import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
@@ -66,7 +68,8 @@ public final class MarketCommand {
             async = true
     )
     public void personalMarketCommand(Context<Player> context) {
-
+        PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
+        personalMarketInventory.openInventory(context.getSender());
     }
 
     @Command(
@@ -89,8 +92,9 @@ public final class MarketCommand {
             aliases = {"anunciados", "vendidos"},
             async = true
     )
-    public void announcedMarketCommand(Context<Player> context) {
-
+    public void sellingMarketCommand(Context<Player> context) {
+        SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
+        sellingMarketInventory.openInventory(context.getSender());
     }
 
 }

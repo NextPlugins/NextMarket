@@ -14,11 +14,11 @@ import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.event.ProductBuyEvent;
 import com.nextplugins.nextmarket.api.event.ProductRemoveEvent;
-import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.InventoryValue;
+import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
@@ -88,7 +88,7 @@ public final class CategoryInventory extends PagedInventory {
     private InventoryItem productInventoryItem(Viewer viewer, Product product) {
         return InventoryItem.of(product.toViewItemStack((
                 product.getSeller().getName().equalsIgnoreCase(viewer.getName()) ?
-                InventoryValue.get(InventoryValue::announcedInventoryItemLore) :
+                InventoryValue.get(InventoryValue::sellingInventoryItemLore) :
                 InventoryValue.get(InventoryValue::categoryInventoryItemLore)))
         ).defaultCallback(event -> {
             Player player = event.getPlayer();

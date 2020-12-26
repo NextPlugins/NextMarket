@@ -34,8 +34,8 @@ public final class MessageValue {
     private final String expiredItemMessage = message("messages.expired-item");
     private final String boughtAnItemMessage = message("messages.bought-a-item");
     private final String soldAItemMessage = message("messages.sold-a-item");
-    private final String announcedAItemMessage = message("messages.announced-a-item");
-    private final String announcedAItemInPersonalMarket = message("messages.announced-a-item-in-personal-market");
+    private final String sellingAItemMessage = message("messages.selling-a-item");
+    private final String sellingAItemInPersonalMarket = message("messages.selling-a-item-in-personal-market");
     private final String insufficientMoneyMessage = message("messages.insufficient-money");
     private final String invalidItemMessage = message("messages.invalid-item");
     private final String fullInventoryMessage = message("messages.full-inventory");

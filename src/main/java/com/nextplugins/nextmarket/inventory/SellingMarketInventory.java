@@ -13,9 +13,9 @@ import com.henryfabio.minecraft.inventoryapi.viewer.impl.paged.PagedViewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.event.ProductRemoveEvent;
-import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.InventoryValue;
+import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
@@ -38,8 +38,8 @@ public final class SellingMarketInventory extends PagedInventory {
     public SellingMarketInventory() {
         super(
                 "market.selling",
-                InventoryValue.get(InventoryValue::announcedInventoryTitle),
-                InventoryValue.get(InventoryValue::announcedInventoryLines) * 9
+                InventoryValue.get(InventoryValue::sellingInventoryTitle),
+                InventoryValue.get(InventoryValue::sellingInventoryLines) * 9
         );
 
         NextMarket.getInstance().getInjector().injectMembers(this);
@@ -75,7 +75,7 @@ public final class SellingMarketInventory extends PagedInventory {
     }
 
     private InventoryItem productInventoryItem(Product product) {
-        ItemStack itemStack = product.toViewItemStack(InventoryValue.get(InventoryValue::announcedInventoryItemLore));
+        ItemStack itemStack = product.toViewItemStack(InventoryValue.get(InventoryValue::sellingInventoryItemLore));
 
         if (product.isExpired()) {
             addExpiredTag(itemStack);
