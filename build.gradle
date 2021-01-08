@@ -1,28 +1,20 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
-buildscript {
-    repositories {
-        maven { url 'https://plugins.gradle.org/m2/' }
-    }
-}
-
 plugins {
     id "java"
 
-    id "me.bristermitten.pdm" version "0.0.29"
-    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id 'me.bristermitten.pdm' version '0.0.30'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
 
-    id "net.minecrell.plugin-yml.bukkit" version '0.3.0'
+    id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
 }
 
-group "com.nextplugins"
-version "1.0.0"
+group 'com.nextplugins'
+version '1.0.0'
 
-tasks.jar.dependsOn project.tasks.getByName('pdm')
-tasks.build.dependsOn project.tasks.getByName('shadowJar')
+tasks.build.dependsOn('pdm', 'shadowJar')
 
 repositories {
     mavenCentral()
+    jcenter()
 
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
@@ -50,9 +42,9 @@ dependencies {
 }
 
 bukkit {
-    main = "com.nextplugins.nextmarket.NextMarket"
-    authors = ["Henry_Fabio", "Eike", "Gabriel Santos", "Yuhtin"]
-    website = "https://github.com/NextPlugins"
+    main = 'com.nextplugins.nextmarket.NextMarket'
+    authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
+    website = 'https://github.com/NextPlugins'
 }
 
 shadowJar {
@@ -66,10 +58,4 @@ compileJava {
 
     sourceCompatibility = "1.8"
     targetCompatibility = "1.8"
-}
-
-processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [version: version]
-    }
 }
