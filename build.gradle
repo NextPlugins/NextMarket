@@ -45,6 +45,7 @@ bukkit {
     main = 'com.nextplugins.nextmarket.NextMarket'
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
+    depend = ['Vault']
 }
 
 shadowJar {
