@@ -53,7 +53,7 @@ inventory:
         data: 3
         displayName: "&6Atualizar"
         lore:
-          - '&7Clique para atualizar os itens do mercado pessoal!'
+          - '&7Clique para atualizar os seus itens anunciados!'
         inventorySlot: 39
   personal:
     title: "&8Mercado pessoal"
