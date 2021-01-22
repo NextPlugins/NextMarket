@@ -79,11 +79,12 @@ public final class ProductManager {
     }
 
     public int getPlayerLimit(Player player) {
-        int playerLimit = 0;
-
         ConfigurationSection limitSection = ConfigValue.get(ConfigValue::sellLimit);
+
+        int playerLimit = limitSection.getInt("default");
+
         for (String limitPermission : limitSection.getKeys(false)) {
-            if (player.hasPermission(limitPermission)) {
+            if (player.hasPermission("nextmarket.limit." + limitPermission)) {
                 playerLimit = limitSection.getInt(limitPermission);
             }
         }

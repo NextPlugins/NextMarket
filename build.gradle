@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'com.nextplugins'
-version '1.0.0'
+version '1.0.3'
 
 tasks.build.dependsOn('pdm', 'shadowJar')
 
@@ -19,6 +19,8 @@ repositories {
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
 
+    maven { url = 'https://repo.codemc.org/repository/maven-public' }
+
     maven { url = 'https://jitpack.io/' }
 }
 
@@ -28,6 +30,7 @@ dependencies {
 
     implementation "com.github.HenryFabio:inventory-api:2.0.3"
     implementation "com.github.HenryFabio:sql-provider:1.0.0"
+    implementation "org.bstats:bstats-bukkit:1.8"
 
     pdm "com.github.SaiintBrisson:command-framework:1.1.0"
 
@@ -52,6 +55,7 @@ shadowJar {
     archiveName("${project.name}-${project.version}.jar")
     relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.nextmarket.libs.inventoryapi'
     relocate 'com.henryfabio.sqlprovider', 'com.nextplugins.nextmarket.libs.sqlprovider'
+    relocate 'org.bstats', 'com.nextplugins.nextmarket.libs.bstats'
 }
 
 compileJava {

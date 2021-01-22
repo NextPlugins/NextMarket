@@ -12,6 +12,7 @@ import com.henryfabio.sqlprovider.sqlite.configuration.SQLiteConfiguration;
 import com.nextplugins.nextmarket.api.NextMarketAPI;
 import com.nextplugins.nextmarket.command.MarketCommand;
 import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
+import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.guice.PluginModule;
 import com.nextplugins.nextmarket.hook.EconomyHook;
 import com.nextplugins.nextmarket.listener.ProductBuyListener;
@@ -24,6 +25,7 @@ import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -83,6 +85,8 @@ public final class NextMarket extends JavaPlugin {
                 registerListener(ProductRemoveListener.class);
                 registerListener(ProductBuyListener.class);
 
+                configureBStats();
+
                 this.injector.injectMembers(NextMarketAPI.getInstance());
             } catch (Throwable t) {
                 t.printStackTrace();
@@ -123,6 +127,16 @@ public final class NextMarket extends JavaPlugin {
 
     private void registerListener(Class<? extends Listener> clazz) {
         Bukkit.getPluginManager().registerEvents(injector.getInstance(clazz), this);
+    }
+
+    private void configureBStats() {
+        if (ConfigValue.get(ConfigValue::useBStats)) {
+            int pluginId = 9933;
+            new Metrics(this, pluginId);
+            logger.info("Integração com o bStats configurada com sucesso.");
+        } else {
+            logger.info("Você desabilitou o uso do bStats, portanto, não utilizaremos dele.");
+        }
     }
 
 }

@@ -8,6 +8,10 @@ connection:
   sqlite:
     file: "market.sql"
 
+features:
+  # bStats é usado apenas para os desenvolvedores terem uma noção de quantas pessoas usam o plugin
+  useBStats: true
+
 announcement:
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
   # novo item, um novo anúncio, do contrário, o item será anunciado sem destaque.
@@ -20,13 +24,13 @@ announcement:
   maximum-value: -1
 
 limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar itens, é preciso ter pelo menos uma delas)
-  # Limite para membros comuns
+  # Limite para membros comuns (não precisa de permissão de limites, apenas a permissão para usar os comandos)
   default: 3
-  # Limite para o jogador com a permissão 'nextmarket.vip1'
+  # Limite para o jogador com a permissão 'nextmarket.limit.vip1'
   vip1: 5
-  # Limite para o jogador com a permissão 'nextmarket.vip2'
+  # Limite para o jogador com a permissão 'nextmarket.limit.vip2'
   vip2: 7
-  # Limite para o jogador com a permissão 'nextmarket.vip3'
+  # Limite para o jogador com a permissão 'nextmarket.limit.vip3'
   vip3: 9
 
 messages:

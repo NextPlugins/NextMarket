@@ -27,6 +27,8 @@ public final class ConfigValue {
     private final int announcementSecondsDelay = configuration.getInt("announcement.delay");
     private final int announcementExpireTime = configuration.getInt("announcement.expire-time");
 
+    private final boolean useBStats = configuration.getBoolean("features.useBStats");
+
     public static <T> T get(Function<ConfigValue, T> supplier) {
         return supplier.apply(ConfigValue.instance);
     }
