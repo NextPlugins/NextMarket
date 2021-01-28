@@ -1,5 +1,7 @@
 # NextMarket
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4f70e3b047e445ec8508694297e037a4)](https://app.codacy.com/gh/NextPlugins/NextMarket?utm_source=github.com&utm_medium=referral&utm_content=NextPlugins/NextMarket&utm_campaign=Badge_Grade_Settings)
+
 Um sistema completo de mercado para servidores de Minecraft, organizado por menus, informações salvas em banco de dados SQL e com uma robusta [API](https://github.com/NextPlugins/NextMarket/blob/master/src/main/java/com/nextplugins/nextmarket/api/NextMarketAPI.java) para desenvolvedores. [Prints in-game](https://imgur.com/gallery/pfn8wBE).
 
 ## Comandos
