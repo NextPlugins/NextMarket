@@ -25,10 +25,10 @@ O plugin conta com dois arquivos de configuração `config.yml` e `categories.ym
 O NextMarket apenas precisa do [Vault](https://www.spigotmc.org/resources/vault.34315/) e de algum plugin de economia. As dependências de desenvolvimento serão baixadas automáticamente quando o plugin for habilitado pela primeira vez.
 
 ### Tecnologias usadas
-- [Google Guice](https://github.com/google/guice) - Fornece suporte para injeção de dependência usando anotações.
+  - [Google Guice](https://github.com/google/guice) - Fornece suporte para injeção de dependência usando anotações.
 
 **APIs e Frameworks**
 
-- [command-framework](https://github.com/SaiintBrisson/command-framework) - Framework para criação e gerenciamento de comandos.
-- [inventory-api](https://github.com/HenryFabio/inventory-api) - API para criação e o gerenciamento de inventários customizados.
-- [sql-provider](https://github.com/henryfabio/sql-provider) - Provê a conexão com o banco de dados.
+  - [command-framework](https://github.com/SaiintBrisson/command-framework) - Framework para criação e gerenciamento de comandos.
+  - [inventory-api](https://github.com/HenryFabio/inventory-api) - API para criação e o gerenciamento de inventários customizados.
+  - [sql-provider](https://github.com/henryfabio/sql-provider) - Provê a conexão com o banco de dados.
