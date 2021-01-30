@@ -23,9 +23,12 @@ public final class AnnouncementManager {
 
     private final Map<String, Long> delayMap = new LinkedHashMap<>();
 
-    public void sendCreationAnnounce(
-            ProductCreateEvent event, String sellerMessage, String announcement, boolean hasDelay, Predicate<Player> filter
-    ) {
+    public void sendCreationAnnounce(ProductCreateEvent event,
+                                     String sellerMessage,
+                                     String announcement,
+                                     boolean hasDelay,
+                                     Predicate<Player> filter) {
+
         Product product = event.getProduct();
         OfflinePlayer destination = product.getDestination();
 
@@ -35,6 +38,8 @@ public final class AnnouncementManager {
                 .replace("%player%", destination != null ? destination.getName() : "")
         );
 
+        if (!ConfigValue.get(ConfigValue::useAnnouncementMessage)) return;
+
         sendTextComponent(player, hasDelay, () -> {
             TextComponent component = TextUtils.sendItemTooltipMessage(
                     announcement
@@ -42,29 +47,31 @@ public final class AnnouncementManager {
                             .replace("%player%", player.getName()),
                     product.getItemStack());
             String clickCommand = "/mercado " + (destination == null ?
-                                                 "ver " + product.getCategory().getId() :
-                                                 "pessoal"
+                    "ver " + product.getCategory().getId() :
+                    "pessoal"
             );
             component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
             return component;
         }, filter);
+
     }
 
     private void sendTextComponent(Player player, boolean hasDelay, Supplier<TextComponent> supplier, Predicate<Player> filter) {
-        if (!hasDelay || !inDelay(player)) {
-            if (hasDelay) {
-                insertDelay(player);
-            }
 
-            TextComponent textComponent = supplier.get();
-            for (Player target : Bukkit.getOnlinePlayers()) {
-                if (filter.test(target)) {
+        if (hasDelay && inDelay(player)) return;
+        if (hasDelay) insertDelay(player);
+
+        TextComponent textComponent = supplier.get();
+
+        Bukkit.getOnlinePlayers()
+                .stream()
+                .filter(filter)
+                .forEach(target -> {
                     target.sendMessage("");
                     target.spigot().sendMessage(textComponent);
                     target.sendMessage("");
-                }
-            }
-        }
+                });
+
     }
 
     public void insertDelay(Player player) {

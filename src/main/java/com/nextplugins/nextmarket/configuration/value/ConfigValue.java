@@ -28,6 +28,7 @@ public final class ConfigValue {
     private final int announcementExpireTime = configuration.getInt("announcement.expire-time");
 
     private final boolean useBStats = configuration.getBoolean("features.useBStats");
+    private final boolean useAnnouncementMessage = configuration.getBoolean("announcement.message");
 
     public static <T> T get(Function<ConfigValue, T> supplier) {
         return supplier.apply(ConfigValue.instance);

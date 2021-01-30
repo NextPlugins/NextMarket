@@ -13,6 +13,8 @@ features:
   useBStats: true
 
 announcement:
+  # Enviar mensagem de aviso sobre novos anúncios no mercado (pessoal e global)
+  message: true
   # Para evitar floods de anúncios, a cada 10 minutos (600 segundos), o jogador terá, ao anunciar um
   # novo item, um novo anúncio, do contrário, o item será anunciado sem destaque.
   delay: 600
