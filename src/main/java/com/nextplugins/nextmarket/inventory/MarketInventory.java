@@ -15,6 +15,7 @@ import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
+import com.nextplugins.nextmarket.util.VersionUtils;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -75,7 +76,9 @@ public final class MarketInventory extends SimpleInventory {
 
     private ItemStack categoryItemStack(Category category, Set<Product> products) {
         MaterialData materialData = category.getIcon().getMaterialData();
-        ItemStack itemStack = new ItemStack(materialData.getItemType(), Math.min(products.size(), 64), materialData.getData());
+        ItemStack itemStack = new ItemStack(materialData.getItemType(),
+                VersionUtils.isLegacy() ? Math.min(products.size(), 64) : 1,
+                materialData.getData());
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(category.getDisplayName()
