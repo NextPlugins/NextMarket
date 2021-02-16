@@ -3,6 +3,7 @@ package com.nextplugins.nextmarket.parser;
 import com.google.inject.Singleton;
 import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.util.ColorUtils;
+import com.nextplugins.nextmarket.util.TypeUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
@@ -19,7 +20,7 @@ public final class InventoryButtonParser {
                         .map(ColorUtils::format)
                         .collect(Collectors.toList()))
                 .materialData(new MaterialData(
-                        Material.getMaterial(section.getString("material")),
+                        TypeUtil.getType(section.getString("material")),
                         (byte) section.getInt("data")))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
