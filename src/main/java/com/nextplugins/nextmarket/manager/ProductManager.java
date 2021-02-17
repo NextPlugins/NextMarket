@@ -7,7 +7,9 @@ import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.configuration.value.MessageValue;
 import com.nextplugins.nextmarket.storage.ProductStorage;
+import com.nextplugins.nextmarket.util.TypeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -50,7 +52,7 @@ public final class ProductManager {
         }
 
         ItemStack itemStack = player.getItemInHand();
-        Category category = categoryManager.findCategoryByMaterial(itemStack.getType()).orElse(null);
+        Category category = categoryManager.findCategoryByMaterial(TypeUtil.getType(itemStack.getType().name())).orElse(null);
         if (category == null) {
             player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
             return null;

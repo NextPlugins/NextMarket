@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class ReflectionUtils {
@@ -31,6 +33,23 @@ public class ReflectionUtils {
             ReflectionUtils.versionString = name.substring(name.lastIndexOf(46) + 1) + ".";
         }
         return ReflectionUtils.versionString;
+    }
+
+    public static int getVersionNumber() {
+        Pattern pattern = Pattern.compile("[0-9]+");
+        Matcher matcher = pattern.matcher(getVersion());
+
+        StringBuilder versionString = new StringBuilder();
+
+        while (matcher.find()) {
+            versionString.append(matcher.group());
+        }
+
+        if (versionString.length() == 3) {
+            return Integer.parseInt(versionString.substring(0, 2));
+        } else {
+            return Integer.parseInt(versionString.substring(0, 3));
+        }
     }
 
     public static Class<?> getNMSClass(final String nmsClassName) {

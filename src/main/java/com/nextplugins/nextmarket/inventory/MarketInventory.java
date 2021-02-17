@@ -15,6 +15,8 @@ import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
+import com.nextplugins.nextmarket.util.VersionUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -64,18 +66,25 @@ public final class MarketInventory extends SimpleInventory {
     }
 
     private InventoryItem categoryInventoryItem(Category category, Set<Product> products) {
-        return InventoryItem.of(categoryItemStack(category, products)).defaultCallback(event ->
+        return InventoryItem.of(categoryItemStack(category, products)).defaultCallback(event -> {
+            try {
                 inventoryRegistry.getCategoryInventory().openInventory(event.getPlayer(), viewer -> {
                     ViewerPropertyMap propertyMap = viewer.getPropertyMap();
                     propertyMap.set("category", category);
                     propertyMap.set("products", products);
-                })
-        );
+                });
+            } catch (Throwable ignored) {
+                event.getPlayer().closeInventory();
+                event.getPlayer().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+            }
+        });
     }
 
     private ItemStack categoryItemStack(Category category, Set<Product> products) {
         MaterialData materialData = category.getIcon().getMaterialData();
-        ItemStack itemStack = new ItemStack(materialData.getItemType(), Math.min(products.size(), 64), materialData.getData());
+        ItemStack itemStack = new ItemStack(materialData.getItemType(),
+                VersionUtils.isLegacy() ? Math.min(products.size(), 64) : 1,
+                materialData.getData());
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(category.getDisplayName()
@@ -93,15 +102,25 @@ public final class MarketInventory extends SimpleInventory {
 
     private InventoryItem personalMarketInventoryItem(InventoryButton inventoryButton) {
         return InventoryItem.of(inventoryButton.getItemStack()).defaultCallback(event -> {
-            PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
-            personalMarketInventory.openInventory(event.getPlayer());
+            try {
+                PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
+                personalMarketInventory.openInventory(event.getPlayer());
+            } catch (Throwable ignored) {
+                event.getPlayer().closeInventory();
+                event.getPlayer().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+            }
         });
     }
 
     private InventoryItem sellingMarketInventoryItem(InventoryButton inventoryButton) {
         return InventoryItem.of(inventoryButton.getItemStack()).defaultCallback(event -> {
-            SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
-            sellingMarketInventory.openInventory(event.getPlayer());
+            try {
+                SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
+                sellingMarketInventory.openInventory(event.getPlayer());
+            } catch (Throwable ignored) {
+                event.getPlayer().closeInventory();
+                event.getPlayer().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+            }
         });
     }
 

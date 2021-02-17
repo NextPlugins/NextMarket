@@ -7,6 +7,8 @@ import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.configuration.ViewerConfiguration;
 import com.henryfabio.minecraft.inventoryapi.viewer.impl.simple.SimpleViewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
+import com.nextplugins.nextmarket.util.TypeUtil;
+import com.nextplugins.nextmarket.util.VersionUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -64,7 +66,9 @@ public final class ConfirmationInventory extends SimpleInventory {
     }
 
     private InventoryItem confirmInventoryItem() {
-        ItemStack itemStack = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
+        ItemStack itemStack = new ItemStack(VersionUtils.isLegacy()
+                ? TypeUtil.getType("STAINED_CLAY")
+                : Material.GREEN_CONCRETE, 1, (short) 13);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§aConfirmar");
         itemMeta.setLore(Arrays.asList(
@@ -79,7 +83,9 @@ public final class ConfirmationInventory extends SimpleInventory {
     }
 
     private InventoryItem declineInventoryItem() {
-        ItemStack itemStack = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
+        ItemStack itemStack = new ItemStack(VersionUtils.isLegacy()
+                ? TypeUtil.getType("STAINED_CLAY")
+                : Material.RED_CONCRETE, 1, (short) 14);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§aCancelar");
         itemMeta.setLore(Arrays.asList(

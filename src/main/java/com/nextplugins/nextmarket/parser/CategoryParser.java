@@ -5,6 +5,7 @@ import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.util.ColorUtils;
+import com.nextplugins.nextmarket.util.TypeUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
@@ -29,7 +30,7 @@ public final class CategoryParser {
     private CategoryIcon parseCategoryIcon(ConfigurationSection section) {
         return CategoryIcon.builder()
                 .materialData(new MaterialData(
-                        Material.getMaterial(section.getString("material")),
+                        TypeUtil.getType(section.getString("material")),
                         (byte) section.getInt("data")))
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
@@ -40,7 +41,7 @@ public final class CategoryParser {
         return CategoryConfiguration.builder()
                 .inventoryTitle(section.getString("inventoryTitle"))
                 .materials(section.getStringList("materials").stream()
-                        .map(Material::getMaterial)
+                        .map(TypeUtil::getType)
                         .collect(Collectors.toList())
                 )
                 .build();
