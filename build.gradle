@@ -50,7 +50,6 @@ bukkit {
     website = 'https://github.com/NextPlugins'
     version = "${project.version}"
     depend = ['Vault']
-    apiVersion = '1.16'
 }
 
 shadowJar {
