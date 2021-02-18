@@ -8,7 +8,7 @@ plugins {
 }
 
 group 'com.nextplugins'
-version '1.1.0'
+version '1.1.1'
 
 tasks.build.dependsOn('pdm', 'shadowJar')
 
@@ -48,6 +48,7 @@ bukkit {
     main = 'com.nextplugins.nextmarket.NextMarket'
     authors = ['Henry_Fabio', 'Eike', 'Gabriel Santos', 'Yuhtin']
     website = 'https://github.com/NextPlugins'
+    version = "${project.version}"
     depend = ['Vault']
     apiVersion = '1.16'
 }
