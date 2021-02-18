@@ -5,7 +5,7 @@ public final class VersionUtils {
     public static boolean isLegacy() {
         int version = ReflectionUtils.getVersionNumber();
 
-        return version < 113;
+        return version < 111;
     }
 
 }
