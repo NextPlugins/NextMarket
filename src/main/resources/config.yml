@@ -65,3 +65,4 @@ messages:
   announcement: "&2&lMERCADO &7%player%&f anunciou um item por &a%price%!"
   private-announcement: "&2&lMERCADO &7%player%&f colocou um item em seu mercado pessoal!"
   changed-hand-item: "&cVocê mudou o item de sua mão em quando estava confirmando a ação, por favor, refaça a operação!"
+  correct-usage-sell: "&cUse /mercado vender <valor> [jogador]!"

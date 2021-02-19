@@ -35,7 +35,13 @@ public final class EconomyHook {
     }
 
     public EconomyResponse withdrawCoins(OfflinePlayer player, double amount) {
-        return economy.withdrawPlayer(player, amount);
+        if (has(player, amount)) return economy.withdrawPlayer(player, amount);
+        else return new EconomyResponse(amount, getBalance(player), EconomyResponse.ResponseType.FAILURE, "");
+    }
+
+    public boolean has(OfflinePlayer player, double amount) {
+        // avoid unimplemented economy methods
+        return economy.has(player, amount) || getBalance(player) >= amount;
     }
 
 }
