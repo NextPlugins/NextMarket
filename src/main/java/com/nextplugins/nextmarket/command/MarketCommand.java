@@ -77,7 +77,15 @@ public final class MarketCommand {
             aliases = {"vender"},
             async = true
     )
-    public void sellMarketCommand(Context<Player> context, double price, @Optional String destination) {
+    public void sellMarketCommand(Context<Player> context, @Optional String priceText, @Optional String destination) {
+       if (priceText == null) {
+            context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
+
+            return;
+       }
+
+       final double price = Double.parseDouble(priceText);
+
         Product product = productManager.createProduct(context.getSender(), destination, price);
         if (product == null) return;
 
