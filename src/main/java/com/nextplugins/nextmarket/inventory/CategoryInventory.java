@@ -35,9 +35,12 @@ import java.util.Set;
 
 public final class CategoryInventory extends PagedInventory {
 
-    @Inject private ProductStorage productStorage;
-    @Inject private InventoryRegistry inventoryRegistry;
-    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject
+    private ProductStorage productStorage;
+    @Inject
+    private InventoryRegistry inventoryRegistry;
+    @Inject
+    private InventoryButtonRegistry inventoryButtonRegistry;
 
     public CategoryInventory() {
         super(
@@ -88,8 +91,8 @@ public final class CategoryInventory extends PagedInventory {
     private InventoryItem productInventoryItem(Viewer viewer, Product product) {
         return InventoryItem.of(product.toViewItemStack((
                 product.getSeller().getName().equalsIgnoreCase(viewer.getName()) ?
-                InventoryValue.get(InventoryValue::sellingInventoryItemLore) :
-                InventoryValue.get(InventoryValue::categoryInventoryItemLore)))
+                        InventoryValue.get(InventoryValue::sellingInventoryItemLore) :
+                        InventoryValue.get(InventoryValue::categoryInventoryItemLore)))
         ).defaultCallback(event -> {
             Player player = event.getPlayer();
             boolean itemCollect = product.getSeller().getUniqueId().equals(player.getUniqueId());
@@ -123,10 +126,8 @@ public final class CategoryInventory extends PagedInventory {
             itemStack.setType(materialData.getItemType());
             itemStack.setDurability(materialData.getData());
 
-            if (categoryIcon.isEnchant()) {
-                if (Enchantment.DURABILITY.canEnchantItem(itemStack)) {
-                    itemStack.addEnchantment(Enchantment.DURABILITY, 1);
-                }
+            if (categoryIcon.isEnchant() && Enchantment.DURABILITY.canEnchantItem(itemStack)) {
+                itemStack.addEnchantment(Enchantment.DURABILITY, 1);
             }
         }
 

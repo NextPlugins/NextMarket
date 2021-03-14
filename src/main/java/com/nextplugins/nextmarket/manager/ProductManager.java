@@ -9,7 +9,6 @@ import com.nextplugins.nextmarket.configuration.value.MessageValue;
 import com.nextplugins.nextmarket.storage.ProductStorage;
 import com.nextplugins.nextmarket.util.TypeUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;

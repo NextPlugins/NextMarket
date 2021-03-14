@@ -36,18 +36,4 @@ public final class NumberUtils {
         return FORMAT.format(number / (double) VALUES[1][index]) + VALUES[0][index];
     }
 
-    public static boolean isNaN(String str) {
-        return !str.equalsIgnoreCase("nan");
-    }
-
-    private static <T extends Number> T parseNumber(String str, Function<String, T> consumer) {
-        if (!isNaN(str)) return null;
-
-        try {
-            return consumer.apply(str);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 }

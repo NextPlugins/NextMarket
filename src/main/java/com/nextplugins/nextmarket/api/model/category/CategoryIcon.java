@@ -2,7 +2,6 @@ package com.nextplugins.nextmarket.api.model.category;
 
 import lombok.Builder;
 import lombok.Data;
-import org.bukkit.Material;
 import org.bukkit.material.MaterialData;
 
 @Builder

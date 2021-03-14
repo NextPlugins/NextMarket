@@ -1,7 +1,11 @@
 package com.nextplugins.nextmarket.registry;
 
 import com.google.inject.Singleton;
-import com.nextplugins.nextmarket.inventory.*;
+import com.nextplugins.nextmarket.inventory.CategoryInventory;
+import com.nextplugins.nextmarket.inventory.ConfirmationInventory;
+import com.nextplugins.nextmarket.inventory.MarketInventory;
+import com.nextplugins.nextmarket.inventory.SellingMarketInventory;
+import com.nextplugins.nextmarket.inventory.PersonalMarketInventory;
 import lombok.Getter;
 
 @Getter

@@ -6,7 +6,6 @@ import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.util.ColorUtils;
 import com.nextplugins.nextmarket.util.TypeUtil;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.material.MaterialData;
 
