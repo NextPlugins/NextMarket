@@ -17,7 +17,10 @@ public final class PluginUpdater {
         this.updater = new BukkitGithubUpdater(
                 plugin,
                 UpdaterConfiguration.DEFAULT,
-                GithubCredentials.builder().build());
+                GithubCredentials.builder()
+                        .username("eikefab")
+                        .accessToken("74d445235d40c503aaa51746eba383f6a51573fa")
+                        .build());
     }
 
     public void init() {
