@@ -22,6 +22,7 @@ import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
 import com.nextplugins.nextmarket.registry.InventoryButtonRegistry;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
+import com.nextplugins.nextmarket.updater.PluginUpdater;
 import lombok.Getter;
 import me.bristermitten.pdm.PluginDependencyManager;
 import me.saiintbrisson.bukkit.command.BukkitFrame;
@@ -53,6 +54,8 @@ public final class NextMarket extends JavaPlugin {
 
     @Getter private Configuration categoriesConfig;
 
+    @Inject private PluginUpdater pluginUpdater;
+
     @Override
     public void onLoad() {
         saveDefaultConfig();
@@ -78,6 +81,8 @@ public final class NextMarket extends JavaPlugin {
 
                 inventoryRegistry.init();
                 inventoryButtonRegistry.init();
+
+                pluginUpdater.init();
 
                 enableCommandFrame();
 
