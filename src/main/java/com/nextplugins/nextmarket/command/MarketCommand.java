@@ -90,6 +90,7 @@ public final class MarketCommand {
            price = Double.parseDouble(priceText);
        } catch (Throwable ignored) {
            context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
+           return;
        }
 
         Product product = productManager.createProduct(context.getSender(), destination, price);
