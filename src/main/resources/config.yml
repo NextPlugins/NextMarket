@@ -58,6 +58,7 @@ messages:
   selling-a-item-in-personal-market: '&aVocê anunciou um item por &f%price% &ano mercado pessoal de &f%player%&a.'
   insufficient-money: '&cVocê precisa de mais %difference% para comprar este item.'
   invalid-item: '&cEste item não pertence a nenhuma categoria.'
+  invalid-number: '&cInsira apenas números válidos.'
   full-inventory: '&cSeu inventário está cheio, cancelando operação!'
   selling-for-you: '&cVocê não pode vender um item para você mesmo!'
   category-not-exists: "&cOps, me parece que esta categoria não existe!"

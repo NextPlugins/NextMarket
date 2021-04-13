@@ -46,6 +46,7 @@ public final class MessageValue {
     private final String privateAnnouncementMessage = message("messages.private-announcement");
     private final String changedHandItemMessage = message("messages.changed-hand-item");
     private final String correctUsageSellMessage = message("messages.correct-usage-sell");
+    private final String invalidNumber = message("messages.invalid-number");
 
     public static <T> T get(Function<MessageValue, T> supplier) {
         return supplier.apply(MessageValue.instance);
