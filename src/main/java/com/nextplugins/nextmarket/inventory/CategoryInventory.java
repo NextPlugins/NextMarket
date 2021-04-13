@@ -61,8 +61,8 @@ public final class CategoryInventory extends PagedInventory {
         configuration.titleInventory(category.getConfiguration().getInventoryTitle());
         configuration.backInventory("market.main");
 
-        configuration.nextPageSlot(45);
-        configuration.previousPageSlot(53);
+        configuration.nextPageSlot(53);
+        configuration.previousPageSlot(45);
     }
 
     @Override
