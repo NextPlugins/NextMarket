@@ -84,7 +84,7 @@ public final class MarketCommand {
             return;
        }
 
-       double price = 0;
+       double price;
 
        try {
            price = Double.parseDouble(priceText);
