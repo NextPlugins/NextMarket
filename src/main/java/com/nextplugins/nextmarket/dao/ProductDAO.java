@@ -21,7 +21,7 @@ public final class ProductDAO {
                 "destination VARCHAR(36)," +
                 "itemStack TEXT NOT NULL," +
                 "price DOUBLE NOT NULL," +
-                "createAt INTEGER(16) NOT NULL" +
+                "createAt BIGINT NOT NULL" +
                 ");");
     }
 
