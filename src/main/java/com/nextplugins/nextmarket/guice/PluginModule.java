@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
-import com.henryfabio.sqlprovider.common.SQLProvider;
+import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.nextmarket.NextMarket;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,8 +33,8 @@ public class PluginModule extends AbstractModule {
                 .annotatedWith(Names.named("categories"))
                 .toInstance(nextMarket.getCategoriesConfig());
 
-        bind(SQLProvider.class)
-                .toInstance(nextMarket.getSqlProvider());
+        bind(SQLExecutor.class)
+                .toInstance(nextMarket.getSqlExecutor());
     }
 
     public Injector createInjector() {

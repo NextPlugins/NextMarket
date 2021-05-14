@@ -28,8 +28,8 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
-    pdm "com.github.HenryFabio:inventory-api:2.0.3"
-    pdm "com.github.HenryFabio:sql-provider:1.0.0"
+    pdm 'com.github.HenryFabio:inventory-api:2.0.3'
+    pdm 'com.github.HenryFabio:sql-provider:9561f20fd2'
     pdm "org.bstats:bstats-bukkit:1.8"
 
     pdm 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'

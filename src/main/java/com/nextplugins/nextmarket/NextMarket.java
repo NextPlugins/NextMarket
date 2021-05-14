@@ -5,15 +5,12 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
 import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
-import com.henryfabio.sqlprovider.common.SQLProvider;
-import com.henryfabio.sqlprovider.mysql.MySQLProvider;
-import com.henryfabio.sqlprovider.mysql.configuration.MySQLConfiguration;
-import com.henryfabio.sqlprovider.sqlite.SQLiteProvider;
-import com.henryfabio.sqlprovider.sqlite.configuration.SQLiteConfiguration;
+import com.henryfabio.sqlprovider.connector.SQLConnector;
+import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.nextmarket.api.NextMarketAPI;
 import com.nextplugins.nextmarket.command.MarketCommand;
 import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
-import com.nextplugins.nextmarket.configuration.value.ConfigValue;
+import com.nextplugins.nextmarket.dao.SQLProvider;
 import com.nextplugins.nextmarket.guice.PluginModule;
 import com.nextplugins.nextmarket.hook.EconomyHook;
 import com.nextplugins.nextmarket.listener.ProductBuyListener;
@@ -30,19 +27,17 @@ import me.saiintbrisson.bukkit.command.BukkitFrame;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public final class NextMarket extends JavaPlugin {
 
     @Getter private Injector injector;
-    @Getter private SQLProvider sqlProvider;
+    @Getter private SQLConnector sqlConnector;
+    @Getter private SQLExecutor sqlExecutor;
 
     @Inject @Named("main") private Logger logger;
 
@@ -91,8 +86,8 @@ public final class NextMarket extends JavaPlugin {
         this.categoriesConfig = ConfigurationLoader.of("categories.yml").saveResource().create();
         InventoryManager.enable(this);
 
-        configureSqlProvider();
-        this.sqlProvider.connect();
+        sqlConnector = SQLProvider.of(this).setup(null);
+        sqlExecutor = new SQLExecutor(sqlConnector);
 
         this.injector = PluginModule.of(this).createInjector();
         this.injector.injectMembers(this);
@@ -123,24 +118,6 @@ public final class NextMarket extends JavaPlugin {
         return getPlugin(NextMarket.class);
     }
 
-    private void configureSqlProvider() {
-        FileConfiguration configuration = getConfig();
-        if (configuration.getBoolean("connection.mysql.enable")) {
-            ConfigurationSection mysqlSection = configuration.getConfigurationSection("connection.mysql");
-            sqlProvider = new MySQLProvider(new MySQLConfiguration()
-                    .address(mysqlSection.getString("address"))
-                    .username(mysqlSection.getString("username"))
-                    .password(mysqlSection.getString("password"))
-                    .database(mysqlSection.getString("database"))
-            );
-        } else {
-            ConfigurationSection sqliteSection = configuration.getConfigurationSection("connection.sqlite");
-            sqlProvider = new SQLiteProvider(new SQLiteConfiguration()
-                    .file(new File(this.getDataFolder(), sqliteSection.getString("file")))
-            );
-        }
-    }
-
     private void enableCommandFrame() {
         BukkitFrame bukkitFrame = new BukkitFrame(this);
         bukkitFrame.registerCommands(
@@ -153,13 +130,9 @@ public final class NextMarket extends JavaPlugin {
     }
 
     private void configureBStats() {
-        if (ConfigValue.get(ConfigValue::useBStats)) {
-            int pluginId = 9933;
-            new Metrics(this, pluginId);
-            logger.info("Integração com o bStats configurada com sucesso.");
-        } else {
-            logger.info("Você desabilitou o uso do bStats, portanto, não utilizaremos dele.");
-        }
+        int pluginId = 9933;
+        new Metrics(this, pluginId);
+        logger.info("Integração com o bStats configurada com sucesso.");
     }
 
 }
