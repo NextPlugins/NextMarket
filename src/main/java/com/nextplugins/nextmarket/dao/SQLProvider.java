@@ -16,33 +16,27 @@ public final class SQLProvider {
 
     private final Plugin plugin;
 
-    public SQLConnector setup(String forceType) {
+    public SQLConnector setup() {
 
         val configuration = plugin.getConfig();
-        val databaseConfiguration = configuration.getConfigurationSection("database");
+        val databaseConfiguration = configuration.getConfigurationSection("connection");
 
-        val sqlType = forceType != null ? forceType : databaseConfiguration.getString("type");
         val logger = plugin.getLogger();
 
         SQLConnector sqlConnector;
 
-        if (sqlType.equalsIgnoreCase("mysql")) {
+        if (databaseConfiguration.getBoolean("mysql.enable")) {
 
             ConfigurationSection mysqlSection = databaseConfiguration.getConfigurationSection("mysql");
             sqlConnector = mysqlDatabaseType(mysqlSection).connect();
             logger.info("Conexão com o banco de dados (MySQL) realizada com sucesso.");
 
-        } else if (sqlType.equalsIgnoreCase("sqlite")) {
+        } else {
 
             ConfigurationSection sqliteSection = databaseConfiguration.getConfigurationSection("sqlite");
             sqlConnector = sqliteDatabaseType(sqliteSection).connect();
             logger.info("Conexão com o banco de dados (SQLite) realizada com sucesso.");
             logger.warning("Recomendamos o uso do banco de dados MySQL.");
-
-        } else {
-
-            logger.severe("O tipo de database selecionado não é válido.");
-            return null;
 
         }
 

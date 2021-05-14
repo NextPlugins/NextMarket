@@ -86,7 +86,7 @@ public final class NextMarket extends JavaPlugin {
         this.categoriesConfig = ConfigurationLoader.of("categories.yml").saveResource().create();
         InventoryManager.enable(this);
 
-        sqlConnector = SQLProvider.of(this).setup(null);
+        sqlConnector = SQLProvider.of(this).setup();
         sqlExecutor = new SQLExecutor(sqlConnector);
 
         this.injector = PluginModule.of(this).createInjector();
