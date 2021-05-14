@@ -64,10 +64,12 @@ public final class ConfirmationInventory extends SimpleInventory {
     }
 
     private InventoryItem confirmInventoryItem() {
+
         ItemStack itemStack = new ItemStack(TypeUtil.getType("STAINED_CLAY"),
                 1,
                 (short) 13
         );
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§aConfirmar");
         itemMeta.setLore(Arrays.asList(

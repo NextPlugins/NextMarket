@@ -79,9 +79,10 @@ public final class MarketCommand {
     )
     public void sellMarketCommand(Context<Player> context, @Optional String priceText, @Optional String destination) {
        if (priceText == null) {
-            context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
 
+            context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
             return;
+
        }
 
        double price;
