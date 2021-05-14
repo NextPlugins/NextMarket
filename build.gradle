@@ -28,11 +28,12 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
-    implementation "com.github.HenryFabio:inventory-api:2.0.3"
-    implementation "com.github.HenryFabio:sql-provider:1.0.0"
-    implementation "org.bstats:bstats-bukkit:1.8"
+    pdm "com.github.HenryFabio:inventory-api:2.0.3"
+    pdm "com.github.HenryFabio:sql-provider:1.0.0"
+    pdm "org.bstats:bstats-bukkit:1.8"
 
-    pdm "com.github.SaiintBrisson:command-framework:1.1.0"
+    pdm 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'
+    pdm 'com.github.SaiintBrisson.command-framework:shared:1.2.0'
 
     pdm "com.google.inject:guice:4.0"
     pdm "javax.inject:javax.inject:1"
@@ -56,9 +57,6 @@ bukkit {
 
 shadowJar {
     archiveName("${project.name}-${project.version}.jar")
-    relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.nextmarket.libs.inventoryapi'
-    relocate 'com.henryfabio.sqlprovider', 'com.nextplugins.nextmarket.libs.sqlprovider'
-    relocate 'org.bstats', 'com.nextplugins.nextmarket.libs.bstats'
 }
 
 compileJava {
