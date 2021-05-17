@@ -94,6 +94,13 @@ public final class MarketCommand {
            return;
        }
 
+       if (Double.isNaN(price) || Double.isInfinite(price)) {
+
+           context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
+           return;
+
+       }
+
         Product product = productManager.createProduct(context.getSender(), destination, price);
         if (product == null) return;
 
