@@ -22,8 +22,8 @@ announcement:
   expire-time: 3600
   # Valor mínimo para colocar itens no mercado (Não colocar valores menores que 1 :d)
   minimum-value: 100
-  # Valor máximo para colocar itens no mercado (-1 para desativar)
-  maximum-value: -1
+  # Valor máximo para colocar itens no mercado (-1 para desativar). Atenção: O formatador só vai até 1E72 (QTV), em breve será aumentado
+  maximum-value: 1E72
 
 limits: # Limite de itens de um mesmo jogador no mercado (para poder anunciar itens, é preciso ter pelo menos uma delas)
   # Limite para membros comuns (não precisa de permissão de limites, apenas a permissão para usar os comandos)
