@@ -1,7 +1,6 @@
 plugins {
     id "java"
 
-    id 'me.bristermitten.pdm' version '0.0.30'
     id 'com.github.johnrengelman.shadow' version '5.0.0'
 
     id 'net.minecrell.plugin-yml.bukkit' version '0.3.0'
@@ -10,7 +9,7 @@ plugins {
 group 'com.nextplugins'
 version '1.1.4'
 
-tasks.build.dependsOn('pdm', 'shadowJar')
+tasks.build.dependsOn('shadowJar')
 
 repositories {
     mavenCentral()
@@ -28,17 +27,15 @@ dependencies {
     compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
-    pdm 'com.github.HenryFabio:inventory-api:2.0.3'
-    pdm 'com.github.HenryFabio:sql-provider:9561f20fd2'
-    pdm "org.bstats:bstats-bukkit:1.8"
+    implementation 'com.github.HenryFabio:inventory-api:2.0.3'
+    implementation 'com.github.HenryFabio:sql-provider:9561f20fd2'
 
-    pdm 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'
-    pdm 'com.github.SaiintBrisson.command-framework:shared:1.2.0'
+    implementation 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'
 
-    pdm "com.google.inject:guice:4.0"
-    pdm "javax.inject:javax.inject:1"
-    pdm "aopalliance:aopalliance:1.0"
-    pdm "org.ow2.asm:asm:8.0.1"
+    implementation "com.google.inject:guice:4.0"
+    implementation "javax.inject:javax.inject:1"
+    implementation "aopalliance:aopalliance:1.0"
+    implementation "org.ow2.asm:asm:8.0.1"
 
     def lombok = "org.projectlombok:lombok:1.18.16"
 
@@ -57,6 +54,19 @@ bukkit {
 
 shadowJar {
     archiveName("${project.name}-${project.version}.jar")
+
+    relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.nextmarket.libs.inventoryapi'
+
+    relocate 'com.henryfabio.sqlprovider', 'com.nextplugins.nextmarket.libs.sqlprovider'
+    relocate 'com.zaxxer.hikari', 'com.nextplugins.nextmarket.libs.hikari'
+
+    relocate 'me.saiintbrisson.minecraft.command', 'com.nextplugins.nextmarket.libs.command.common'
+    relocate 'me.saiintbrisson.bukkit.command', 'com.nextplugins.nextmarket.libs.command.bukkit'
+
+    relocate 'com.google.common', 'com.nextplugins.nextmarket.libs.guice.common'
+    relocate 'com.google.inject', 'com.nextplugins.nextmarket.libs.guice.inject'
+    relocate 'com.google.thirdparty', 'com.nextplugins.nextmarket.libs.guice.thirdparty'
+    relocate 'javax.inject', 'com.nextplugins.nextmarket.libs.guice.inject.javax'
 }
 
 compileJava {
