@@ -41,7 +41,7 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.ver",
+            name = "mercado.ver",
             aliases = {"show"},
             async = true
     )
@@ -64,7 +64,7 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.pessoal",
+            name = "mercado.pessoal",
             aliases = {"personal"},
             async = true
     )
@@ -79,7 +79,7 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.vender",
+            name = "mercado.vender",
             aliases = {"sell"},
             async = true
     )
@@ -117,8 +117,8 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.selling",
-            aliases = {"anunciados", "vendidos"},
+            name = "mercado.anunciados",
+            aliases = {"selling", "vendidos"},
             async = true
     )
     public void sellingMarketCommand(Context<Player> context) {
