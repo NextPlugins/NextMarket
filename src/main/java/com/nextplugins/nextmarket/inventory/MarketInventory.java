@@ -48,6 +48,7 @@ public final class MarketInventory extends SimpleInventory {
 
     @Override
     protected void configureInventory(Viewer viewer, InventoryEditor editor) {
+
         Map<Category, Set<Product>> allProducts = productStorage.getProducts();
         for (Category category : categoryManager.getCategoryMap().values()) {
             Set<Product> products = new LinkedHashSet<>(allProducts.getOrDefault(category, Collections.emptySet()));

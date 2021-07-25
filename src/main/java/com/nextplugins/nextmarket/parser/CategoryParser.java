@@ -6,9 +6,14 @@ import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.util.ColorUtils;
 import com.nextplugins.nextmarket.util.TypeUtil;
+import lombok.val;
+import lombok.var;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -27,10 +32,13 @@ public final class CategoryParser {
     }
 
     private CategoryIcon parseCategoryIcon(ConfigurationSection section) {
+
+        val itemStack = TypeUtil.convertFromLegacy(
+                section.getString("material"),
+                (byte) section.getInt("data"));
+
         return CategoryIcon.builder()
-                .materialData(new MaterialData(
-                        TypeUtil.getType(section.getString("material")),
-                        (byte) section.getInt("data")))
+                .materialData(itemStack == null ? new MaterialData(Material.BARRIER) : itemStack.getData())
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
@@ -40,7 +48,8 @@ public final class CategoryParser {
         return CategoryConfiguration.builder()
                 .inventoryTitle(section.getString("inventoryTitle"))
                 .materials(section.getStringList("materials").stream()
-                        .map(TypeUtil::getType)
+                        .map(TypeUtil::convertFromLegacy)
+                        .filter(Objects::nonNull)
                         .collect(Collectors.toList())
                 )
                 .build();

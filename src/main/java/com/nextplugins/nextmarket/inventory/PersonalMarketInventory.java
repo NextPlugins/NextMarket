@@ -41,6 +41,7 @@ public final class PersonalMarketInventory extends PagedInventory {
         );
 
         NextMarket.getInstance().getInjector().injectMembers(this);
+        configuration(configuration -> configuration.secondUpdate(5));
     }
 
     @Override

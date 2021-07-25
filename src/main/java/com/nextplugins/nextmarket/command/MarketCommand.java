@@ -17,6 +17,7 @@ import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public final class MarketCommand {
@@ -29,8 +30,8 @@ public final class MarketCommand {
     @Inject private InventoryRegistry inventoryRegistry;
 
     @Command(
-            name = "market",
-            aliases = {"mercado"},
+            name = "mercado",
+            aliases = {"market"},
             permission = "nextmarket.use",
             target = CommandTarget.PLAYER,
             async = true
@@ -40,8 +41,8 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.show",
-            aliases = {"ver"},
+            name = "market.ver",
+            aliases = {"show"},
             async = true
     )
     public void showMarketCommand(Context<Player> context, @Optional String id) {
@@ -63,43 +64,48 @@ public final class MarketCommand {
     }
 
     @Command(
-            name = "market.personal",
-            aliases = {"pessoal"},
+            name = "market.pessoal",
+            aliases = {"personal"},
             async = true
     )
     public void personalMarketCommand(Context<Player> context) {
-        PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
-        personalMarketInventory.openInventory(context.getSender());
+        try {
+            PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
+            personalMarketInventory.openInventory(context.getSender());
+        } catch (Throwable ignored) {
+            context.getSender().closeInventory();
+            context.getSender().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+        }
     }
 
     @Command(
-            name = "market.sell",
-            aliases = {"vender"},
+            name = "market.vender",
+            aliases = {"sell"},
             async = true
     )
     public void sellMarketCommand(Context<Player> context, @Optional String priceText, @Optional String destination) {
-       if (priceText == null) {
+        if (priceText == null) {
 
             context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
             return;
 
-       }
+        }
 
-       double price;
+        double price;
 
-       try {
-           price = Double.parseDouble(priceText);
-       } catch (Throwable ignored) {
-           context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
-           return;
-       }
+        try {
+            price = Double.parseDouble(priceText);
+        } catch (Throwable ignored) {
+            context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
+            return;
+        }
 
-       if (Double.isNaN(price) || Double.isInfinite(price)) {
+        if (Double.isNaN(price) || Double.isInfinite(price)) {
 
-           context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
-           return;
+            context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
+            return;
 
-       }
+        }
 
         Product product = productManager.createProduct(context.getSender(), destination, price);
         if (product == null) return;
@@ -116,8 +122,13 @@ public final class MarketCommand {
             async = true
     )
     public void sellingMarketCommand(Context<Player> context) {
-        SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
-        sellingMarketInventory.openInventory(context.getSender());
+        try {
+            SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
+            sellingMarketInventory.openInventory(context.getSender());
+        } catch (Throwable ignored) {
+            context.getSender().closeInventory();
+            context.getSender().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+        }
     }
 
 }

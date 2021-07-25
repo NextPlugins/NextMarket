@@ -113,6 +113,10 @@ categories:
     configuration:
       inventoryTitle: "Armaduras"
       materials:
+        - "NETHERITE_HELMET"
+        - "NETHERITE_CHESTPLATE"
+        - "NETHERITE_LEGGINS"
+        - "NETHERITE_BOOTS"
         - "DIAMOND_HELMET"
         - "DIAMOND_CHESTPLATE"
         - "DIAMOND_LEGGINGS"
@@ -136,11 +140,15 @@ categories:
       inventorySlot: 12
     configuration:
       inventoryTitle: "Ferramentas"
+      names:
+        - 'chupa minha pica'
+        - 'espada de diamante'
+        - 'espada dos deuses'
       materials:
-        - "DIAMOND_PICKAXE"
-        - "DIAMOND_AXE"
-        - "DIAMOND_SPADE"
-        - "DIAMOND_HOE"
+        - "DIAMOND_PICKAXE:0"
+        - "DIAMOND_AXE:0"
+        - "DIAMOND_SPADE:0"
+        - "DIAMOND_HOE:0"
   books:
     displayName: "&aLivros de Encantamento &8(%amount% itens)"
     description:
@@ -215,6 +223,7 @@ categories:
       - '&f▪ Obsidiana'
       - '&f▪ Pedra do Fim'
       - '&f▪ Rocha Matriz'
+      - '&f▪ Lã Vermelha'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -225,6 +234,8 @@ categories:
     configuration:
       inventoryTitle: "Blocos de Proteção"
       materials:
+        - "WOOL:14"
+        - "END_STONE"
         - "OBSIDIAN"
         - "BEDROCK"
   monsters:

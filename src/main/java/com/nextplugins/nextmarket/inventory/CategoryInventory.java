@@ -35,12 +35,9 @@ import java.util.Set;
 
 public final class CategoryInventory extends PagedInventory {
 
-    @Inject
-    private ProductStorage productStorage;
-    @Inject
-    private InventoryRegistry inventoryRegistry;
-    @Inject
-    private InventoryButtonRegistry inventoryButtonRegistry;
+    @Inject private ProductStorage productStorage;
+    @Inject private InventoryRegistry inventoryRegistry;
+    @Inject private InventoryButtonRegistry inventoryButtonRegistry;
 
     public CategoryInventory() {
         super(
@@ -50,6 +47,7 @@ public final class CategoryInventory extends PagedInventory {
         );
 
         NextMarket.getInstance().getInjector().injectMembers(this);
+        configuration(configuration -> configuration.secondUpdate(5));
     }
 
     @Override
@@ -119,6 +117,7 @@ public final class CategoryInventory extends PagedInventory {
         InventoryButton inventoryButton = inventoryButtonRegistry.get("category.update");
         ItemStack itemStack = inventoryButton.getItemStack().clone();
 
+        NextMarket.getInstance().getLogger().info(itemStack.getType().toString());
         if (itemStack.getType() == Material.BARRIER) {
             CategoryIcon categoryIcon = category.getIcon();
 

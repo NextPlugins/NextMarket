@@ -9,6 +9,7 @@ import com.nextplugins.nextmarket.parser.CategoryParser;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -40,9 +41,9 @@ public final class CategoryManager {
         return Optional.ofNullable(this.categoryMap.get(id));
     }
 
-    public Optional<Category> findCategoryByMaterial(Material material) {
+    public Optional<Category> findCategoryByMaterial(MaterialData materialData) {
         return categoryMap.values().stream()
-                .filter(category -> category.getConfiguration().getMaterials().contains(material))
+                .filter(category -> category.getConfiguration().getMaterials().contains(materialData))
                 .findFirst();
     }
 

@@ -65,10 +65,7 @@ public final class ConfirmationInventory extends SimpleInventory {
 
     private InventoryItem confirmInventoryItem() {
 
-        ItemStack itemStack = new ItemStack(TypeUtil.getType("STAINED_CLAY"),
-                1,
-                (short) 13
-        );
+        ItemStack itemStack = TypeUtil.convertFromLegacy("STAINED_CLAY", 13);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§aConfirmar");
@@ -84,10 +81,8 @@ public final class ConfirmationInventory extends SimpleInventory {
     }
 
     private InventoryItem declineInventoryItem() {
-        ItemStack itemStack = new ItemStack(TypeUtil.getType("STAINED_CLAY"),
-                1,
-                (short) 14
-        );
+        ItemStack itemStack = TypeUtil.convertFromLegacy("STAINED_CLAY", 14);
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName("§aCancelar");
         itemMeta.setLore(Arrays.asList(

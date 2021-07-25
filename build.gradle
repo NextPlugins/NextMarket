@@ -7,13 +7,13 @@ plugins {
 }
 
 group 'com.nextplugins'
-version '1.1.4'
+version '1.2.0'
 
 tasks.build.dependsOn('shadowJar')
 
 repositories {
     mavenCentral()
-    jcenter()
+    mavenLocal()
 
     maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     maven { url = 'https://oss.sonatype.org/content/groups/public/' }
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
 
     implementation 'com.github.HenryFabio:inventory-api:2.0.3'
@@ -32,10 +32,7 @@ dependencies {
 
     implementation 'com.github.SaiintBrisson.command-framework:bukkit:1.2.0'
 
-    implementation "com.google.inject:guice:4.0"
-    implementation "javax.inject:javax.inject:1"
-    implementation "aopalliance:aopalliance:1.0"
-    implementation "org.ow2.asm:asm:8.0.1"
+    implementation "com.google.inject:guice:5.0.1"
 
     def lombok = "org.projectlombok:lombok:1.18.16"
 
@@ -48,7 +45,7 @@ bukkit {
     authors = ['NextPlugins']
     website = 'https://nextplugins.com.br'
     version = "${project.version}"
-    apiVersion = "1.16"
+    apiVersion = "1.17"
     depend = ['Vault']
 }
 
@@ -66,7 +63,6 @@ shadowJar {
     relocate 'com.google.common', 'com.nextplugins.nextmarket.libs.guice.common'
     relocate 'com.google.inject', 'com.nextplugins.nextmarket.libs.guice.inject'
     relocate 'com.google.thirdparty', 'com.nextplugins.nextmarket.libs.guice.thirdparty'
-    relocate 'javax.inject', 'com.nextplugins.nextmarket.libs.guice.inject.javax'
 }
 
 compileJava {

@@ -43,6 +43,7 @@ public final class SellingMarketInventory extends PagedInventory {
         );
 
         NextMarket.getInstance().getInjector().injectMembers(this);
+        configuration(configuration -> configuration.secondUpdate(5));
     }
 
     @Override
