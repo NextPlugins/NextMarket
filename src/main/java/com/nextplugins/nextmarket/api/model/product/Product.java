@@ -3,6 +3,7 @@ package com.nextplugins.nextmarket.api.model.product;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.util.NumberUtils;
+import com.nextplugins.nextmarket.util.TimeUtils;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,7 +43,7 @@ public final class Product {
     }
 
     public boolean isExpired() {
-        return createAt.plusSeconds(ConfigValue.get(ConfigValue::announcementExpireTime)).isBefore(Instant.now());
+        return expireTime().isBefore(Instant.now());
     }
 
     /**
@@ -61,7 +62,9 @@ public final class Product {
                 .stream()
                 .map(line -> line
                         .replace("%seller%", this.seller.getName())
-                        .replace("%price%", NumberUtils.formatNumber(this.price)))
+                        .replace("%price%", NumberUtils.formatNumber(this.price))
+                        .replace("%created_at%", TimeUtils.simpleFormat(createAt.toEpochMilli()))
+                        .replace("%expires_in%", TimeUtils.format(expireTime().toEpochMilli() - System.currentTimeMillis())))
                 .collect(Collectors.toList())
         );
         itemMeta.setLore(itemLore);
@@ -69,6 +72,10 @@ public final class Product {
         itemStack.setItemMeta(itemMeta);
 
         return itemStack;
+    }
+
+    public Instant expireTime() {
+        return createAt.plusSeconds(ConfigValue.get(ConfigValue::announcementExpireTime));
     }
 
 }

@@ -31,6 +31,10 @@ inventory:
       - '&fVendedor: &6%seller%'
       - '&fPreço: &e%price% coins'
       - ''
+      - '&eInformações sobre este item:'
+      - ' &7Expira em:&f %expires_in%'
+      - ' &7Publicado em:&f %created_at%'
+      - ''
       - '&aClique para comprar este item!'
     buttons:
       update:

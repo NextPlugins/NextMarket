@@ -47,7 +47,7 @@ public final class CategoryInventory extends PagedInventory {
         );
 
         NextMarket.getInstance().getInjector().injectMembers(this);
-        configuration(configuration -> configuration.secondUpdate(5));
+        configuration(configuration -> configuration.secondUpdate(1));
     }
 
     @Override
