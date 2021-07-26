@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.parser.CategoryParser;
@@ -14,14 +13,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Singleton
 public final class CategoryManager {
 
     private final Map<String, Category> categoryMap = new LinkedHashMap<>();
 
-    @Inject @Named("main") private Logger logger;
     @Inject @Named("categories") private Configuration categoriesConfiguration;
 
     @Inject

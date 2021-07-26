@@ -1,7 +1,6 @@
 package com.nextplugins.nextmarket.parser;
 
 import com.google.inject.Singleton;
-import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
