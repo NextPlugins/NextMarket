@@ -1,17 +1,16 @@
 package com.nextplugins.nextmarket.parser;
 
 import com.google.inject.Singleton;
+import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
+import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.util.ColorUtils;
 import com.nextplugins.nextmarket.util.TypeUtil;
 import lombok.val;
-import lombok.var;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public final class CategoryParser {
                 (byte) section.getInt("data"));
 
         return CategoryIcon.builder()
-                .materialData(itemStack == null ? new MaterialData(Material.BARRIER) : itemStack.getData())
+                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0) : MaterialData.of(itemStack))
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
@@ -50,8 +49,7 @@ public final class CategoryParser {
                 .materials(section.getStringList("materials").stream()
                         .map(TypeUtil::convertFromLegacy)
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toList())
-                )
+                        .collect(Collectors.toList()))
                 .build();
     }
 

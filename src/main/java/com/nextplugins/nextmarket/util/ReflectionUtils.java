@@ -64,7 +64,6 @@ public class ReflectionUtils {
 
         Class<?> clazz;
         try { clazz = Class.forName(clazzName); } catch (Throwable t) {
-            t.printStackTrace();
             return ReflectionUtils.loadedNMSClasses.put(nmsClassName, null);
         }
 
@@ -80,7 +79,6 @@ public class ReflectionUtils {
 
         Class<?> clazz;
         try { clazz = Class.forName(clazzName); } catch (Throwable t) {
-            t.printStackTrace();
             ReflectionUtils.loadedOBCClasses.put(obcClassName, null);
             return null;
         }
@@ -103,7 +101,6 @@ public class ReflectionUtils {
                 return playerConField.get(nmsPlayer);
 
             } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         return null;
@@ -133,8 +130,6 @@ public class ReflectionUtils {
 
         } catch (Exception e) {
 
-            e.printStackTrace();
-
             methods.put(methodName, null);
             ReflectionUtils.loadedMethods.put(clazz, methods);
 
@@ -160,8 +155,6 @@ public class ReflectionUtils {
             return field;
 
         } catch (Exception e) {
-
-            e.printStackTrace();
 
             fields.put(fieldName, null);
             ReflectionUtils.loadedFields.put(clazz, fields);

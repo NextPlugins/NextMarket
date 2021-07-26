@@ -1,12 +1,12 @@
 package com.nextplugins.nextmarket.inventory.button;
 
+import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.MaterialData;
 
 import java.util.List;
 

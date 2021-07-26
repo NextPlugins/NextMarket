@@ -4,12 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.model.category.Category;
+import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.parser.CategoryParser;
-import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.material.MaterialData;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,7 +24,8 @@ public final class CategoryManager {
     @Inject @Named("main") private Logger logger;
     @Inject @Named("categories") private Configuration categoriesConfiguration;
 
-    @Inject private CategoryParser categoryParser;
+    @Inject
+    private CategoryParser categoryParser;
 
     public void init() {
         ConfigurationSection categoriesSection = categoriesConfiguration.getConfigurationSection("categories");
@@ -42,9 +43,15 @@ public final class CategoryManager {
     }
 
     public Optional<Category> findCategoryByMaterial(MaterialData materialData) {
-        return categoryMap.values().stream()
-                .filter(category -> category.getConfiguration().getMaterials().contains(materialData))
-                .findFirst();
+        for (Category category : categoryMap.values()) {
+            for (MaterialData material : category.getConfiguration().getMaterials()) {
+                if (material.equals(materialData)) {
+                    return Optional.of(category);
+                }
+            }
+        }
+
+        return Optional.empty();
     }
 
     public Map<String, Category> getCategoryMap() {

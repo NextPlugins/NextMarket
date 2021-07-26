@@ -1,8 +1,8 @@
 package com.nextplugins.nextmarket.api.model.category;
 
+import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import lombok.Builder;
 import lombok.Data;
-import org.bukkit.material.MaterialData;
 
 import java.util.List;
 

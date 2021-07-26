@@ -41,11 +41,15 @@ public final class AnnouncementManager {
         if (!ConfigValue.get(ConfigValue::useAnnouncementMessage)) return;
 
         sendTextComponent(player, hasDelay, () -> {
+
             TextComponent component = TextUtils.sendItemTooltipMessage(
                     announcement
                             .replace("%price%", NumberUtils.formatNumber(product.getPrice()))
                             .replace("%player%", player.getName()),
                     product.getItemStack());
+
+            if (component == null) return null;
+
             String clickCommand = "/mercado " + (destination == null ?
                     "ver " + product.getCategory().getId() :
                     "pessoal"
@@ -62,6 +66,7 @@ public final class AnnouncementManager {
         if (hasDelay) insertDelay(player);
 
         TextComponent textComponent = supplier.get();
+        if (textComponent == null) return;
 
         Bukkit.getOnlinePlayers()
                 .stream()

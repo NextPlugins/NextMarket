@@ -8,6 +8,7 @@ import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
 import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.model.category.Category;
+import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.InventoryValue;
 import com.nextplugins.nextmarket.inventory.button.InventoryButton;
@@ -21,7 +22,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -83,9 +83,9 @@ public final class MarketInventory extends SimpleInventory {
 
     private ItemStack categoryItemStack(Category category, Set<Product> products) {
         MaterialData materialData = category.getIcon().getMaterialData();
-        ItemStack itemStack = new ItemStack(materialData.getItemType(),
+        ItemStack itemStack = new ItemStack(materialData.getMaterial(),
                 VersionUtils.isLegacy() ? Math.min(products.size(), 64) : 1,
-                materialData.getData());
+                (short) materialData.getData());
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(category.getDisplayName()

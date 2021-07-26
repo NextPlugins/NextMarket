@@ -28,8 +28,8 @@ inventory:
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&7Vendedor: &f%seller%'
-      - '&7Preço: &e%price% coins'
+      - '&fVendedor: &6%seller%'
+      - '&fPreço: &e%price% coins'
       - ''
       - '&aClique para comprar este item!'
     buttons:
@@ -60,8 +60,8 @@ inventory:
     lines: 6
     lore: # A lore (modificada) que será adicionada em baixo da lore (padrão) do item.
       - ''
-      - '&7Vendedor: &f%seller%'
-      - '&7Preço: &e%price% coins'
+      - '&fVendedor: &6%seller%'
+      - '&fPreço: &e%price% coins'
       - ''
     buttons:
       update:
@@ -79,7 +79,8 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Espadas de diamante'
+      - '&f▪ Espadas de Netherite'
+      - '&f▪ Espadas de Diamante'
       - '&f▪ Arco'
       - ''
       - '&aClique para abrir.'
@@ -91,6 +92,7 @@ categories:
     configuration:
       inventoryTitle: "Armas" # Identificador do inventário (nome do inventário)
       materials: # Materiais permitidos na categoria
+        - "NETHERITE_SWORD"
         - "DIAMOND_SWORD"
         - "BOW"
   armors:
@@ -99,10 +101,8 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Elmos de Diamante'
-      - '&f▪ Peitorais de Diamante'
-      - '&f▪ Calças de Diamante'
-      - '&f▪ Botas de Diamante'
+      - '&f▪ Armaduras de Diamante'
+      - '&f▪ Armaduras de Netherite'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -115,7 +115,7 @@ categories:
       materials:
         - "NETHERITE_HELMET"
         - "NETHERITE_CHESTPLATE"
-        - "NETHERITE_LEGGINS"
+        - "NETHERITE_LEGGINGS"
         - "NETHERITE_BOOTS"
         - "DIAMOND_HELMET"
         - "DIAMOND_CHESTPLATE"
@@ -127,10 +127,8 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Picaretas de Diamante'
-      - '&f▪ Machados de Diamante'
-      - '&f▪ Pás de Diamante'
-      - '&f▪ Enxadas de Diamante'
+      - '&f▪ Ferramentas de Diamante'
+      - '&f▪ Ferramentas de Netherite'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -140,15 +138,15 @@ categories:
       inventorySlot: 12
     configuration:
       inventoryTitle: "Ferramentas"
-      names:
-        - 'chupa minha pica'
-        - 'espada de diamante'
-        - 'espada dos deuses'
       materials:
-        - "DIAMOND_PICKAXE:0"
-        - "DIAMOND_AXE:0"
-        - "DIAMOND_SPADE:0"
-        - "DIAMOND_HOE:0"
+        - "NETHERITE_PICKAXE"
+        - "NETHERITE_AXE"
+        - "NETHERITE_SHOVEL"
+        - "NETHERITE_HOE"
+        - "DIAMOND_PICKAXE"
+        - "DIAMOND_AXE"
+        - "DIAMOND_SPADE"
+        - "DIAMOND_HOE"
   books:
     displayName: "&aLivros de Encantamento &8(%amount% itens)"
     description:
@@ -303,6 +301,8 @@ categories:
     configuration:
       inventoryTitle: "Minérios"
       materials:
+        - "NETHERITE_INGOT"
+        - "NETHERITE_BLOCK"
         - "EMERALD"
         - "EMERALD_BLOCK"
         - "DIAMOND"
