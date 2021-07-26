@@ -51,15 +51,7 @@ public final class ProductManager {
             return null;
         }
 
-        ItemStack itemStack;
-        try {
-
-            itemStack = player.getInventory().getItemInMainHand();
-            if (itemStack.getType() == Material.AIR) itemStack = player.getInventory().getItemInOffHand();
-
-        } catch (Exception exception) {
-            itemStack = player.getItemInHand();
-        }
+        final ItemStack itemStack = player.getItemInHand();
 
         if (itemStack.getType() == Material.AIR) {
 
