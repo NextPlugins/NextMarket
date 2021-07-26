@@ -45,7 +45,7 @@ bukkit {
     authors = ['NextPlugins']
     website = 'https://nextplugins.com.br'
     version = "${project.version}"
-    apiVersion = "1.17"
+    apiVersion = "1.13"
     depend = ['Vault']
 }
 
