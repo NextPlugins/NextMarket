@@ -17,9 +17,10 @@ public class MaterialData {
 
     private final Material material;
     private final int data;
+    private final boolean ignoreData;
 
-    public static MaterialData of(@NonNull ItemStack item) {
-        return new MaterialData(item.getType(), item.getDurability());
+    public static MaterialData of(@NonNull ItemStack item, boolean ignoreData) {
+        return new MaterialData(item.getType(), item.getDurability(), ignoreData);
     }
 
     public ItemStack toItemStack(int quantity) {
@@ -27,7 +28,7 @@ public class MaterialData {
     }
 
     public boolean equals(MaterialData materialData) {
-        return materialData.getMaterial() == material && materialData.getData() == data;
+        return materialData.getMaterial() == material && (ignoreData || materialData.getData() == data);
     }
 
 }

@@ -4,6 +4,19 @@
 # Ao anunciar, o item irá diretamente para categoria qual corresponde,
 # além de também, servir para melhor organização do mercado.
 
+# NOVIDADE v1.2.0 (apenas 1.12 1.11 1.10 1.9 e 1.8)
+# Você pode definir a 'data' que o item precisa ter para ser de tal categoria
+# Por exemplo, você pode definir um tipo específico de cor de corante para uma categoria
+# apenas use este formato:
+# MATERIAL:DATA -> Exemplo abaixo
+# WOOL:14 -> Apenas a lã vermelha poderá ser vendida na categoria
+#
+# ATENÇÃO
+# Caso você queira que TODAS as cores de lã funcione na categoria, siga o formato abaixo:
+# MATERIAL:all -> Exemplo abaixo:
+# - "WOOL:all"
+
+
 inventory:
   main: # Inventário principal onde serão exibidas todas as categorias
     title: "&8Categorias do Mercado"
@@ -214,6 +227,13 @@ categories:
         - "TNT"
         - "REDSTONE"
         - "REDSTONE_BLOCK"
+        - "REDSTONE_TORCH" # 1.13 ou superior ( retire caso não precise )
+        - "REDSTONE_TORCH_ON" # 1.8 ( retire caso não precise )
+        - "REDSTONE_TORCH_OFF" # 1.8 ( retire caso não precise )
+        - "REPEATER" # 1.13 ou superior ( retire caso não precise )
+        - "DIODE" # 1.12 ou inferior ( retire caso não precise )
+        - "COMPARATOR" # 1.13 ou superior ( retire caso não precise )
+        - "REDSTONE_COMPARATOR" # 1.12 ou inferior ( retire caso não precise )
         - "DROPPER"
         - "DISPENSER"
   protection:
@@ -225,7 +245,6 @@ categories:
       - '&f▪ Obsidiana'
       - '&f▪ Pedra do Fim'
       - '&f▪ Rocha Matriz'
-      - '&f▪ Lã Vermelha'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -236,7 +255,6 @@ categories:
     configuration:
       inventoryTitle: "Blocos de Proteção"
       materials:
-        - "WOOL:14"
         - "END_STONE"
         - "OBSIDIAN"
         - "BEDROCK"
@@ -246,7 +264,6 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Invocar'
       - '&f▪ Geradores de Monstros'
       - ''
       - '&aClique para abrir.'
@@ -265,7 +282,6 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
-      - '&f▪ Cabeças de Monstros'
       - '&f▪ Cabeças de Jogadores'
       - ''
       - '&aClique para abrir.'
@@ -277,7 +293,6 @@ categories:
     configuration:
       inventoryTitle: "Cabeças"
       materials:
-        - "SKULL"
         - "SKULL_ITEM"
   ores:
     displayName: "&aMinérios &8(%amount% itens)"
@@ -285,16 +300,12 @@ categories:
       - '&7Itens que você encontra nesta'
       - '&7categoria:'
       - ''
+      - '&f▪ Netherite'
       - '&f▪ Esmeralda'
-      - '&f▪ Bloco de Esmeralda'
       - '&f▪ Diamante'
-      - '&f▪ Bloco de Diamante'
-      - '&f▪ Barras de Ouro'
-      - '&f▪ Bloco de Ouro'
-      - '&f▪ Barras de Ferro'
-      - '&f▪ Bloco de Ferro'
+      - '&f▪ Ouro'
+      - '&f▪ Ferro'
       - '&f▪ Lápis-Lazúli'
-      - '&f▪ Bloco de Lápis-Lazúli'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -316,6 +327,7 @@ categories:
         - "IRON_INGOT"
         - "IRON_BLOCK"
         - "LAPIS_ORE"
+        - "LAPIS_BLOCK"
   especials:
     displayName: "&aItens Especiais &8(%amount% itens)"
     description:
@@ -323,6 +335,7 @@ categories:
       - '&7categoria:'
       - ''
       - '&f▪ Poder máximo'
+      - '&f▪ Poder Instantâneo'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -334,3 +347,4 @@ categories:
       inventoryTitle: "Especiais"
       materials:
         - "NETHER_STAR"
+        - "PAPER"

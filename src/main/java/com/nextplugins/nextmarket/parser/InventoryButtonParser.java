@@ -25,7 +25,7 @@ public final class InventoryButtonParser {
                 .lore(section.getStringList("lore").stream()
                         .map(ColorUtils::format)
                         .collect(Collectors.toList()))
-                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0) : MaterialData.of(itemStack))
+                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0, false) : MaterialData.of(itemStack, false))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
     }

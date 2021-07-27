@@ -36,7 +36,7 @@ public final class CategoryParser {
                 (byte) section.getInt("data"));
 
         return CategoryIcon.builder()
-                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0) : MaterialData.of(itemStack))
+                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0, false) : MaterialData.of(itemStack, false))
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();

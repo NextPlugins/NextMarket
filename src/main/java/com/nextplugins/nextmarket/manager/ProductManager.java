@@ -60,7 +60,7 @@ public final class ProductManager {
 
         }
 
-        Category category = categoryManager.findCategoryByMaterial(MaterialData.of(itemStack)).orElse(null);
+        Category category = categoryManager.findCategoryByMaterial(MaterialData.of(itemStack, false)).orElse(null);
         if (category == null) {
             player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
             return null;
@@ -85,7 +85,7 @@ public final class ProductManager {
     }
 
     public void insertProductCategory(Product product) {
-        categoryManager.findCategoryByMaterial(MaterialData.of(product.getItemStack())).ifPresent(product::setCategory);
+        categoryManager.findCategoryByMaterial(MaterialData.of(product.getItemStack(), false)).ifPresent(product::setCategory);
     }
 
     public int getPlayerLimit(Player player) {

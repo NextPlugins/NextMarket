@@ -26,19 +26,24 @@ public final class TypeUtil {
     public static MaterialData convertFromLegacy(String materialData) {
 
         String materialName = materialData;
-        int data = 0;
+        int data = -1;
+        boolean ignoreData = false;
 
         if (materialData.contains(":")) {
 
             val args = materialData.split(":");
-            data = Integer.parseInt(args[1]);
+
+            val type = args[1];
+            if (type.equalsIgnoreCase("all")) ignoreData = true;
+            else data = Integer.parseInt(type);
+
             materialName = args[0];
 
         }
 
-        val itemStack = convertFromLegacy(materialName, data);
+        val itemStack = convertFromLegacy(materialName, data == -1 ? 0 : data);
         if (itemStack != null && itemStack.getType() != Material.AIR) {
-            return MaterialData.of(itemStack);
+            return MaterialData.of(itemStack, ignoreData);
         }
 
         return null;
