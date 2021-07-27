@@ -26,7 +26,7 @@ public final class TypeUtil {
     public static MaterialData convertFromLegacy(String materialData) {
 
         String materialName = materialData;
-        int data = -1;
+        int data = 0;
         boolean ignoreData = false;
 
         if (materialData.contains(":")) {
@@ -41,7 +41,7 @@ public final class TypeUtil {
 
         }
 
-        val itemStack = convertFromLegacy(materialName, data == -1 ? 0 : data);
+        val itemStack = convertFromLegacy(materialName, data);
         if (itemStack != null && itemStack.getType() != Material.AIR) {
             return MaterialData.of(itemStack, ignoreData);
         }
