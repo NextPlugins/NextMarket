@@ -1,5 +1,6 @@
 package com.nextplugins.nextmarket.configuration.value;
 
+import com.google.common.collect.Lists;
 import com.nextplugins.nextmarket.NextMarket;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public final class MessageValue {
 
     private final Configuration configuration = NextMarket.getInstance().getConfig();
 
+    private final List<String> currencyFormat = messageList("messages.currencyFormat");
     private final List<String> commandMessage = messageList("messages.command-message");
     private final String maximumValueReachedMessage = message("messages.maximum-value-reached")
             .replace("%amount%", String.valueOf(ConfigValue.<Double>get(ConfigValue::maximumAnnouncementValue)));
@@ -57,10 +59,21 @@ public final class MessageValue {
     }
 
     private String message(String key) {
+        if (!configuration.contains(key)) {
+            NextMarket.getInstance().getLogger().severe("O campo '" + key + "' não existe no arquivo '" + configuration.getName() + "', apague-o");
+            return "";
+        }
+
         return colors(configuration.getString(key));
     }
 
     private List<String> messageList(String key) {
+
+        if (!configuration.contains(key)) {
+            NextMarket.getInstance().getLogger().severe("O campo '" + key + "' não existe no arquivo '" + configuration.getName() + "', apague-o");
+            return Lists.newArrayList();
+        }
+
         return configuration.getStringList(key)
                 .stream()
                 .map(this::colors)

@@ -12,6 +12,7 @@ import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
+import com.nextplugins.nextmarket.util.NumberUtils;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
@@ -83,7 +84,7 @@ public final class MarketCommand {
             aliases = {"sell"},
             async = true
     )
-    public void sellMarketCommand(Context<Player> context, @Optional String priceText, @Optional String destination) {
+    public void sellMarketCommand(Context<Player> context, String priceText, @Optional String destination) {
         if (priceText == null) {
 
             context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
@@ -91,16 +92,8 @@ public final class MarketCommand {
 
         }
 
-        double price;
-
-        try {
-            price = Double.parseDouble(priceText);
-        } catch (Throwable ignored) {
-            context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
-            return;
-        }
-
-        if (Double.isNaN(price) || Double.isInfinite(price)) {
+        double price = NumberUtils.parse(priceText);
+        if (NumberUtils.isInvalid(price)) {
 
             context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
             return;
