@@ -22,7 +22,7 @@ public final class MessageValue {
 
     private final Configuration configuration = NextMarket.getInstance().getConfig();
 
-    private final List<String> currencyFormat = messageList("messages.currencyFormat");
+    private final List<String> currencyFormat = messageList("messages.currency-format");
     private final List<String> commandMessage = messageList("messages.command-message");
     private final String maximumValueReachedMessage = message("messages.maximum-value-reached")
             .replace("%amount%", String.valueOf(ConfigValue.<Double>get(ConfigValue::maximumAnnouncementValue)));

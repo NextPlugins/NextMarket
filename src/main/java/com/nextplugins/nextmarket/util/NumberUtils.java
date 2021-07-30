@@ -52,7 +52,6 @@ public final class NumberUtils {
         val value = amount * Math.pow(1000, index);
         return isInvalid(value) ? 0 : value;
 
-
     }
 
     public static boolean isInvalid(double value) {
