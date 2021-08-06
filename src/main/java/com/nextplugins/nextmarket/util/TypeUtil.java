@@ -27,15 +27,17 @@ public final class TypeUtil {
 
         String materialName = materialData;
         int data = 0;
-        boolean ignoreData = false;
+        boolean ignoreData = true;
 
         if (materialData.contains(":")) {
 
             val args = materialData.split(":");
 
             val type = args[1];
-            if (type.equalsIgnoreCase("all")) ignoreData = true;
-            else data = Integer.parseInt(type);
+            if (!type.equalsIgnoreCase("all")) {
+            	data = Integer.parseInt(type);
+            	ignoreData = false;
+            }
 
             materialName = args[0];
 
