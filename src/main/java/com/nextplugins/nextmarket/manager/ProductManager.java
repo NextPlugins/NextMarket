@@ -26,6 +26,15 @@ public final class ProductManager {
     }
 
     public Product createProduct(Player player, String destinationName, double price) {
+
+        final ItemStack itemStack = player.getItemInHand();
+        if (itemStack.getType() == Material.AIR) {
+
+            player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
+            return null;
+
+        }
+
         if (player.getName().equalsIgnoreCase(destinationName)) {
             player.sendMessage(MessageValue.get(MessageValue::sellingForYou));
             return null;
@@ -49,15 +58,6 @@ public final class ProductManager {
         } else if (price < minValue) {
             player.sendMessage(MessageValue.get(MessageValue::minimumValueNotReachedMessage));
             return null;
-        }
-
-        final ItemStack itemStack = player.getItemInHand();
-
-        if (itemStack.getType() == Material.AIR) {
-
-            player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
-            return null;
-
         }
 
         Category category = categoryManager.findCategoryByMaterial(MaterialData.of(itemStack, false)).orElse(null);
