@@ -31,7 +31,6 @@ public class TextUtils {
 
     @Nullable
     private static String convertItemStackToJson(ItemStack itemStack) {
-
         Class<?> craftItemStackClazz = ReflectionUtils.getOBCClass("inventory.CraftItemStack");
         Method asNMSCopyMethod = ReflectionUtils.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
         Class<?> nmsItemStackClazz = ReflectionUtils.getNMSClass("ItemStack");
@@ -41,7 +40,6 @@ public class TextUtils {
 
         Method saveNmsItemStackMethod = ReflectionUtils.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
         Object itemAsJsonObject;
-
 
         try {
             Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();

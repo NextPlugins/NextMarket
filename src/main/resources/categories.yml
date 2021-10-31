@@ -108,6 +108,10 @@ categories:
       inventorySlot: 10
     configuration:
       inventoryTitle: "Armas" # Identificador do inventário (nome do inventário)
+      # Caso o item seja de uma material permitido ou tenha um nome permitido, ele irá para esta categoria
+      names: # Nomes de itens permitidos na categoria
+        - "&aEspada dos deuses"
+        - "&cArco de Fogo"
       materials: # Materiais permitidos na categoria
         - "NETHERITE_SWORD"
         - "DIAMOND_SWORD"
@@ -129,6 +133,8 @@ categories:
       inventorySlot: 11
     configuration:
       inventoryTitle: "Armaduras"
+      names:
+        - ""
       materials:
         - "NETHERITE_HELMET"
         - "NETHERITE_CHESTPLATE"
@@ -155,6 +161,8 @@ categories:
       inventorySlot: 12
     configuration:
       inventoryTitle: "Ferramentas"
+      names:
+        - ""
       materials:
         - "NETHERITE_PICKAXE"
         - "NETHERITE_AXE"
@@ -180,6 +188,8 @@ categories:
       inventorySlot: 13
     configuration:
       inventoryTitle: "Livros"
+      names:
+        - ""
       materials:
         - "BOOK"
   potions:
@@ -198,6 +208,8 @@ categories:
       inventorySlot: 14
     configuration:
       inventoryTitle: "Poções"
+      names:
+        - ""
       materials:
         - "POTION"
   redstone:
@@ -223,6 +235,8 @@ categories:
       inventorySlot: 15
     configuration:
       inventoryTitle: "Redstone"
+      names:
+        - ""
       materials:
         - "TNT"
         - "REDSTONE"
@@ -254,6 +268,8 @@ categories:
       inventorySlot: 16
     configuration:
       inventoryTitle: "Blocos de Proteção"
+      names:
+        - ""
       materials:
         - "END_STONE"
         - "OBSIDIAN"
@@ -274,6 +290,8 @@ categories:
       inventorySlot: 19
     configuration:
       inventoryTitle: "Monstros"
+      names:
+        - "&eGerador de Monstros"
       materials:
         - "MOB_SPAWNER"
   heads:
@@ -292,6 +310,8 @@ categories:
       inventorySlot: 20
     configuration:
       inventoryTitle: "Cabeças"
+      names:
+        - ""
       materials:
         - "SKULL_ITEM"
   ores:
@@ -315,6 +335,8 @@ categories:
       inventorySlot: 21
     configuration:
       inventoryTitle: "Minérios"
+      names:
+        - ""
       materials:
         - "NETHERITE_INGOT"
         - "NETHERITE_BLOCK"
@@ -345,6 +367,8 @@ categories:
       inventorySlot: 22
     configuration:
       inventoryTitle: "Especiais"
+      names:
+        - "&cPoder máximo"
       materials:
         - "NETHER_STAR"
         - "PAPER"

@@ -8,10 +8,6 @@ connection:
   sqlite:
     file: "market.sql"
 
-features:
-  # bStats é usado apenas para os desenvolvedores terem uma noção de quantas pessoas usam o plugin
-  useBStats: true
-
 announcement:
   # Enviar mensagem de aviso sobre novos anúncios no mercado (pessoal e global)
   message: true

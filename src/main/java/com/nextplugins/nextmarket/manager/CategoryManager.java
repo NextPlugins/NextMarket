@@ -7,8 +7,10 @@ import com.google.inject.name.Named;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.parser.CategoryParser;
+import lombok.val;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,8 +41,16 @@ public final class CategoryManager {
         return Optional.ofNullable(this.categoryMap.get(id));
     }
 
-    public Optional<Category> findCategoryByMaterial(MaterialData materialData) {
+    public Optional<Category> findCategory(ItemStack itemStack) {
         for (Category category : categoryMap.values()) {
+            for (String name : category.getConfiguration().getNames()) {
+                val itemMeta = itemStack.getItemMeta();
+                if (itemMeta != null && itemMeta.getDisplayName() != null && itemMeta.getDisplayName().equalsIgnoreCase(name)) {
+                    return Optional.of(category);
+                }
+            }
+
+            val materialData = MaterialData.of(itemStack, false);
             for (MaterialData material : category.getConfiguration().getMaterials()) {
                 if (material.equals(materialData)) {
                     return Optional.of(category);

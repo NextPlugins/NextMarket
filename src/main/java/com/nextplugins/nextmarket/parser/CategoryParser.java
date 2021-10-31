@@ -11,7 +11,10 @@ import lombok.val;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -30,7 +33,6 @@ public final class CategoryParser {
     }
 
     private CategoryIcon parseCategoryIcon(ConfigurationSection section) {
-
         val itemStack = TypeUtil.convertFromLegacy(
                 section.getString("material"),
                 (byte) section.getInt("data"));
@@ -45,11 +47,34 @@ public final class CategoryParser {
     private CategoryConfiguration parseCategoryConfiguration(ConfigurationSection section) {
         return CategoryConfiguration.builder()
                 .inventoryTitle(section.getString("inventoryTitle"))
+                .names(section.contains("names") ? section.getStringList("names")
+                        .stream()
+                        .filter(not(CategoryParser::isBlank))
+                        .map(ColorUtils::format)
+                        .collect(Collectors.toList())
+                        : Collections.emptyList())
                 .materials(section.getStringList("materials").stream()
                         .map(TypeUtil::convertFromLegacy)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
                 .build();
+    }
+
+    // Apache method
+    public static boolean isBlank(CharSequence sequence) {
+        val strLen = sequence.length();
+        if (strLen == 0) return true;
+
+        for (int i = 0; i < strLen; i++) {
+            if (Character.isWhitespace(sequence.charAt(i))) continue;
+            return false;
+        }
+
+        return true;
+    }
+
+    public <T> Predicate<T> not(Predicate<T> t) {
+        return t.negate();
     }
 
 }

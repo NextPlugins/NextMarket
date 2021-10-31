@@ -6,6 +6,7 @@ import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.util.NumberUtils;
 import com.nextplugins.nextmarket.util.TextUtils;
+import lombok.val;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -35,17 +36,19 @@ public final class AnnouncementManager {
         Player player = event.getPlayer();
         player.sendMessage(sellerMessage
                 .replace("%price%", NumberUtils.formatNumber(product.getPrice()))
-                .replace("%player%", destination != null ? destination.getName() : "")
+                .replace("%player%", destination != null && destination.getName() != null ? destination.getName() : "")
         );
 
         if (!ConfigValue.get(ConfigValue::useAnnouncementMessage)) return;
 
-        sendTextComponent(player, hasDelay, () -> {
+        val message = announcement
+                .replace("%price%", NumberUtils.formatNumber(product.getPrice()))
+                .replace("%player%", player.getName());
+
+        sendTextComponent(player, message, hasDelay, () -> {
 
             TextComponent component = TextUtils.sendItemTooltipMessage(
-                    announcement
-                            .replace("%price%", NumberUtils.formatNumber(product.getPrice()))
-                            .replace("%player%", player.getName()),
+                    message,
                     product.getItemStack());
 
             if (component == null) return null;
@@ -54,26 +57,31 @@ public final class AnnouncementManager {
                     "ver " + product.getCategory().getId() :
                     "pessoal"
             );
+
             component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand));
             return component;
         }, filter);
 
     }
 
-    private void sendTextComponent(Player player, boolean hasDelay, Supplier<TextComponent> supplier, Predicate<Player> filter) {
+    private void sendTextComponent(Player player,
+                                   String message,
+                                   boolean hasDelay,
+                                   Supplier<TextComponent> supplier,
+                                   Predicate<Player> filter) {
+        if (hasDelay) {
+            if (inDelay(player)) return;
+            insertDelay(player);
+        }
 
-        if (hasDelay && inDelay(player)) return;
-        if (hasDelay) insertDelay(player);
-
-        TextComponent textComponent = supplier.get();
-        if (textComponent == null) return;
-
+        val textComponent = supplier.get();
+        val component = textComponent == null ? new TextComponent(message) : textComponent;
         Bukkit.getOnlinePlayers()
                 .stream()
                 .filter(filter)
                 .forEach(target -> {
                     target.sendMessage("");
-                    target.spigot().sendMessage(textComponent);
+                    target.spigot().sendMessage(component);
                     target.sendMessage("");
                 });
 

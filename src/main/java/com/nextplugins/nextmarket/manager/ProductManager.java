@@ -3,7 +3,6 @@ package com.nextplugins.nextmarket.manager;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.nextplugins.nextmarket.api.model.category.Category;
-import com.nextplugins.nextmarket.api.model.product.MaterialData;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.configuration.value.MessageValue;
@@ -26,7 +25,6 @@ public final class ProductManager {
     }
 
     public Product createProduct(Player player, String destinationName, double price) {
-
         final ItemStack itemStack = player.getItemInHand();
         if (itemStack.getType() == Material.AIR) {
 
@@ -60,7 +58,7 @@ public final class ProductManager {
             return null;
         }
 
-        Category category = categoryManager.findCategoryByMaterial(MaterialData.of(itemStack, false)).orElse(null);
+        Category category = categoryManager.findCategory(itemStack).orElse(null);
         if (category == null) {
             player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
             return null;
@@ -85,12 +83,11 @@ public final class ProductManager {
     }
 
     public void insertProductCategory(Product product) {
-        categoryManager.findCategoryByMaterial(MaterialData.of(product.getItemStack(), false)).ifPresent(product::setCategory);
+        categoryManager.findCategory(product.getItemStack()).ifPresent(product::setCategory);
     }
 
     public int getPlayerLimit(Player player) {
         ConfigurationSection limitSection = ConfigValue.get(ConfigValue::sellLimit);
-
         int playerLimit = limitSection.getInt("default");
 
         for (String limitPermission : limitSection.getKeys(false)) {
