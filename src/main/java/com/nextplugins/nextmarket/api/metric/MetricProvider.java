@@ -12,7 +12,7 @@ public final class MetricProvider {
 
         System.setProperty("bstats.relocatecheck", "false");
 
-        new MetricsConnector(plugin, 10041);
+        new MetricsConnector(plugin, 9933);
         plugin.getLogger().info("Métrica de uso habilitada com sucesso.");
 
     }
