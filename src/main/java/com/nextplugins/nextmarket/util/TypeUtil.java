@@ -24,13 +24,11 @@ public final class TypeUtil {
     }
 
     public static MaterialData convertFromLegacy(String materialData) {
-
         String materialName = materialData;
         int data = 0;
         boolean ignoreData = true;
 
         if (materialData.contains(":")) {
-
             val args = materialData.split(":");
 
             val type = args[1];
@@ -40,7 +38,6 @@ public final class TypeUtil {
             }
 
             materialName = args[0];
-
         }
 
         val itemStack = convertFromLegacy(materialName, data);
@@ -49,7 +46,6 @@ public final class TypeUtil {
         }
 
         return null;
-
     }
 
 }
