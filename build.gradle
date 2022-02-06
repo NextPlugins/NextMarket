@@ -49,7 +49,7 @@ bukkit {
 }
 
 shadowJar {
-    archiveName("${project.name}-${project.version}.jar")
+    archiveName("${project.name}.jar")
 
     relocate 'com.henryfabio.minecraft.inventoryapi', 'com.nextplugins.nextmarket.libs.inventoryapi'
 
