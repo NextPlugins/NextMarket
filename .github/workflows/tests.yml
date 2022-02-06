@@ -36,3 +36,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+      - name: Upload NextMarket
+        uses: actions/upload-artifact@v2
+        with:
+          name: "NextMarket-*"
+          path: "build/libs/NextMarket-*"
+          if-no-files-found: error
