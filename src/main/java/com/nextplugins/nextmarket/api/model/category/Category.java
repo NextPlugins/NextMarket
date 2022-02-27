@@ -14,6 +14,7 @@ import java.util.List;
 public final class Category {
 
     private final String id;
+    private final boolean trashTable;
 
     private final String displayName;
     private final List<String> description;

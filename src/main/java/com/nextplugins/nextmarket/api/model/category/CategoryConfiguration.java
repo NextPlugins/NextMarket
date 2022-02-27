@@ -13,5 +13,6 @@ public final class CategoryConfiguration {
     private final String inventoryTitle;
     private final List<MaterialData> materials;
     private final List<String> names;
+    private final List<String> nbts;
 
 }

@@ -116,6 +116,8 @@ categories:
         - "NETHERITE_SWORD"
         - "DIAMOND_SWORD"
         - "BOW"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'test1'
   armors:
     displayName: "&aArmaduras &8(%amount% itens)"
     description:
@@ -133,9 +135,9 @@ categories:
       inventorySlot: 11
     configuration:
       inventoryTitle: "Armaduras"
-      names:
+      names: # Nomes de itens permitidos na categoria
         - ""
-      materials:
+      materials: # Materiais permitidos na categoria
         - "NETHERITE_HELMET"
         - "NETHERITE_CHESTPLATE"
         - "NETHERITE_LEGGINGS"
@@ -144,6 +146,8 @@ categories:
         - "DIAMOND_CHESTPLATE"
         - "DIAMOND_LEGGINGS"
         - "DIAMOND_BOOTS"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'test1'
   tools:
     displayName: "&aFerramentas &8(%amount% itens)"
     description:
@@ -161,9 +165,9 @@ categories:
       inventorySlot: 12
     configuration:
       inventoryTitle: "Ferramentas"
-      names:
+      names: # Nomes de itens permitidos na categoria
         - ""
-      materials:
+      materials: # Materiais permitidos na categoria
         - "NETHERITE_PICKAXE"
         - "NETHERITE_AXE"
         - "NETHERITE_SHOVEL"
@@ -172,6 +176,8 @@ categories:
         - "DIAMOND_AXE"
         - "DIAMOND_SPADE"
         - "DIAMOND_HOE"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'test1'
   books:
     displayName: "&aLivros de Encantamento &8(%amount% itens)"
     description:
@@ -192,6 +198,8 @@ categories:
         - ""
       materials:
         - "BOOK"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'customEnchantmentBook'
   potions:
     displayName: "&aPoções &8(%amount% itens)"
     description:
@@ -212,6 +220,8 @@ categories:
         - ""
       materials:
         - "POTION"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'hastePotion'
   redstone:
     displayName: "&aRedstone &8(%amount% itens)"
     description:
@@ -226,6 +236,7 @@ categories:
       - '&f▪ Comparador de Redstone'
       - '&f▪ Liberador'
       - '&f▪ Ejetor'
+      - '&f▪ Camada Regenerativa'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -250,6 +261,8 @@ categories:
         - "REDSTONE_COMPARATOR" # 1.12 ou inferior ( retire caso não precise )
         - "DROPPER"
         - "DISPENSER"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'CanhaoInstantaneo'
   protection:
     displayName: "&aBlocos de Proteção &8(%amount% itens)"
     description:
@@ -259,6 +272,7 @@ categories:
       - '&f▪ Obsidiana'
       - '&f▪ Pedra do Fim'
       - '&f▪ Rocha Matriz'
+      - '&f▪ Camada Regenerativa'
       - ''
       - '&aClique para abrir.'
     icon:
@@ -274,6 +288,8 @@ categories:
         - "END_STONE"
         - "OBSIDIAN"
         - "BEDROCK"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'CamadaRegenerativa'
   monsters:
     displayName: "&aMonstros &8(%amount% itens)"
     description:
@@ -287,13 +303,15 @@ categories:
       material: MOB_SPAWNER
       data: 0
       enchant: false
-      inventorySlot: 19
+      inventorySlot: 20
     configuration:
       inventoryTitle: "Monstros"
       names:
         - "&eGerador de Monstros"
       materials:
         - "MOB_SPAWNER"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'CustomSpawnerType'
   heads:
     displayName: "&aCabeças &8(%amount% itens)"
     description:
@@ -301,19 +319,22 @@ categories:
       - '&7categoria:'
       - ''
       - '&f▪ Cabeças de Jogadores'
+      - '&f▪ Cabeças de Rankup'
       - ''
       - '&aClique para abrir.'
     icon:
       material: SKULL_ITEM
       data: 3
       enchant: false
-      inventorySlot: 20
+      inventorySlot: 21
     configuration:
       inventoryTitle: "Cabeças"
       names:
         - ""
       materials:
         - "SKULL_ITEM"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'RankupHead'
   ores:
     displayName: "&aMinérios &8(%amount% itens)"
     description:
@@ -332,7 +353,7 @@ categories:
       material: DIAMOND_ORE
       data: 0
       enchant: false
-      inventorySlot: 21
+      inventorySlot: 22
     configuration:
       inventoryTitle: "Minérios"
       names:
@@ -350,6 +371,8 @@ categories:
         - "IRON_BLOCK"
         - "LAPIS_ORE"
         - "LAPIS_BLOCK"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'test1'
   especials:
     displayName: "&aItens Especiais &8(%amount% itens)"
     description:
@@ -364,7 +387,7 @@ categories:
       material: NETHER_STAR
       data: 0
       enchant: true
-      inventorySlot: 22
+      inventorySlot: 23
     configuration:
       inventoryTitle: "Especiais"
       names:
@@ -372,3 +395,26 @@ categories:
       materials:
         - "NETHER_STAR"
         - "PAPER"
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - 'PoderMaximo'
+  outros:
+    trashTableCategory: true
+    displayName: "&aOutros Itens &8(%amount% itens)"
+    description:
+      - '&7Itens que não tem nenhuma categoria'
+      - ''
+      - '&aClique para abrir.'
+    icon:
+      material: ENDER_PEARL
+      data: 0
+      enchant: false
+      inventorySlot: 24
+    configuration:
+      inventoryTitle: "Especiais"
+      names:
+        - ""
+      materials:
+        - ""
+        - ""
+      nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
+        - ''

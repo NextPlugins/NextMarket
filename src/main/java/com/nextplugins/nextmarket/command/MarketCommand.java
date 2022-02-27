@@ -2,6 +2,7 @@ package com.nextplugins.nextmarket.command;
 
 import com.google.inject.Inject;
 import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
+import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.event.ProductCreateEvent;
 import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.Product;
@@ -12,13 +13,16 @@ import com.nextplugins.nextmarket.manager.CategoryManager;
 import com.nextplugins.nextmarket.manager.ProductManager;
 import com.nextplugins.nextmarket.registry.InventoryRegistry;
 import com.nextplugins.nextmarket.storage.ProductStorage;
+import com.nextplugins.nextmarket.util.MessageUtils;
 import com.nextplugins.nextmarket.util.NumberUtils;
+import lombok.val;
 import me.saiintbrisson.minecraft.command.annotation.Command;
 import me.saiintbrisson.minecraft.command.annotation.Optional;
 import me.saiintbrisson.minecraft.command.command.Context;
 import me.saiintbrisson.minecraft.command.target.CommandTarget;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public final class MarketCommand {
@@ -39,6 +43,34 @@ public final class MarketCommand {
     )
     public void marketCommand(Context<Player> context) {
         context.sendMessage(MessageValue.get(MessageValue::commandMessage).toArray(new String[]{}));
+    }
+
+    @Command(
+            name = "mercado.info",
+            permission = "nextmarket.admin",
+            target = CommandTarget.ALL,
+            async = true
+    )
+    public void infoCommand(Context<CommandSender> context) {
+        val updateChecker = NextMarket.getInstance().getUpdateChecker();
+
+        double itemCount = categoryManager.getCategoryMap().values()
+                .stream()
+                .map(Category::getConfiguration)
+                .map(config -> config.getMaterials().size() + config.getNbts().size() + config.getNames().size())
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        context.sendMessage("");
+        context.sendMessage(MessageUtils.colored(" &6&lNextMarket &f- &eInformações"));
+        context.sendMessage("");
+        context.sendMessage(MessageUtils.colored("  &fCategorias: &e" + categoryManager.getCategoryMap().size()));
+        context.sendMessage(MessageUtils.colored("  &fItens registrados: &e" + itemCount));
+        context.sendMessage(MessageUtils.colored("  &fVersão atual: &e" + updateChecker.getCurrentVersion()));
+
+        if (!MessageUtils.sendUpdateMessage(context.getSender())) {
+            context.sendMessage("");
+        }
     }
 
     @Command(
@@ -82,6 +114,7 @@ public final class MarketCommand {
     @Command(
             name = "mercado.vender",
             aliases = {"sell"},
+            usage = "/mercado vender <valor> [jogador]",
             async = true
     )
     public void sellMarketCommand(Context<Player> context, String priceText, @Optional String destination) {
