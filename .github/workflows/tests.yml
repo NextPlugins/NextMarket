@@ -39,6 +39,6 @@ jobs:
       - name: Upload plugin
         uses: actions/upload-artifact@v2
         with:
-          name: NextMarket.jar
-          path: build/libs/NextMarket.jar
+          name: nextmarket-production-builds
+          path: build/libs/**
           if-no-files-found: error
