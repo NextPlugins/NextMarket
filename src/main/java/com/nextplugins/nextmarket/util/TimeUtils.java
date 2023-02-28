@@ -40,7 +40,7 @@ public class TimeUtils {
     public static String simpleFormat(long time) {
         final String date = dateFormat.format(new Date(time));
 
-        final String day = date.split(" ")[0];
+        final String day = date.split(" ")[0].replace(":", "/");
         final String hour = date.split(" ")[1];
 
         return String.format("%s às %s", day, hour);
