@@ -1,34 +1,84 @@
 package com.nextplugins.nextmarket.inventory;
 
-import com.henryfabio.minecraft.inventoryapi.editor.InventoryEditor;
-import com.henryfabio.minecraft.inventoryapi.inventory.impl.simple.SimpleInventory;
-import com.henryfabio.minecraft.inventoryapi.item.InventoryItem;
-import com.henryfabio.minecraft.inventoryapi.viewer.Viewer;
-import com.henryfabio.minecraft.inventoryapi.viewer.configuration.ViewerConfiguration;
-import com.henryfabio.minecraft.inventoryapi.viewer.impl.simple.SimpleViewer;
-import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
-import com.nextplugins.nextmarket.util.TypeUtil;
+import com.nextplugins.nextmarket.compat.Items;
+import com.nextplugins.nextmarket.inventory.menu.MarketMenu;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public final class ConfirmationInventory extends SimpleInventory {
-
-    public ConfirmationInventory() {
-        super("nextmarket.confirmation", "§8Confirmação", 3 * 9);
-    }
+public final class ConfirmationInventory {
 
     public void openConfirmation(Player player, String description, Runnable confirm, Runnable decline, ItemStack itemStack) {
-        openInventory(player, viewer -> {
-            ViewerPropertyMap propertyMap = viewer.getPropertyMap();
-            propertyMap.set("description", description);
-            propertyMap.set("confirm", confirm);
-            propertyMap.set("decline", decline);
-            propertyMap.set("itemStack", itemStack);
-        });
+        final String safeDescription = description == null ? "Confirmação" : description;
+        final boolean hasPreview = itemStack != null;
+        int size = (hasPreview ? 4 : 3) * 9;
+        String title = ("§8" + safeDescription);
+        if (title.length() > 32) {
+            title = title.substring(0, 32);
+        }
+
+        new MarketMenu(title, size) {
+            @Override
+            protected void render(Player viewer) {
+                int increment = hasPreview ? 9 : 0;
+
+                if (hasPreview) {
+                    setItem(13, itemStack.clone());
+                }
+
+                ItemStack confirmItem = Items.named(
+                        Items.create("LIME_TERRACOTTA"),
+                        "§aConfirmar",
+                        Arrays.asList(
+                                "§7Clique para confirmar esta ação!",
+                                "§c§lOBS: §cEsta opção é irreversível!"
+                        )
+                );
+                // Fallback for 1.8 stained clay
+                if (confirmItem.getType().name().equals("STONE") || confirmItem.getType().name().contains("BARRIER")) {
+                    confirmItem = Items.named(
+                            Items.create("STAINED_CLAY", 13),
+                            "§aConfirmar",
+                            Arrays.asList(
+                                    "§7Clique para confirmar esta ação!",
+                                    "§c§lOBS: §cEsta opção é irreversível!"
+                            )
+                    );
+                }
+
+                ItemStack declineItem = Items.named(
+                        Items.create("RED_TERRACOTTA"),
+                        "§cCancelar",
+                        Arrays.asList(
+                                "§7Clique para cancelar esta ação!",
+                                "§c§lOBS: §cEsta opção é irreversível!"
+                        )
+                );
+                if (declineItem.getType().name().equals("STONE") || declineItem.getType().name().contains("BARRIER")) {
+                    declineItem = Items.named(
+                            Items.create("STAINED_CLAY", 14),
+                            "§cCancelar",
+                            Arrays.asList(
+                                    "§7Clique para cancelar esta ação!",
+                                    "§c§lOBS: §cEsta opção é irreversível!"
+                            )
+                    );
+                }
+
+                setItem(11 + increment, confirmItem, event -> {
+                    Player clicker = (Player) event.getWhoClicked();
+                    clicker.closeInventory();
+                    if (confirm != null) confirm.run();
+                });
+
+                setItem(15 + increment, declineItem, event -> {
+                    Player clicker = (Player) event.getWhoClicked();
+                    clicker.closeInventory();
+                    if (decline != null) decline.run();
+                });
+            }
+        }.open(player);
     }
 
     public void openConfirmation(Player player, String description, Runnable confirm, ItemStack itemStack) {
@@ -37,71 +87,6 @@ public final class ConfirmationInventory extends SimpleInventory {
 
     public void openConfirmation(Player player, String description, Runnable confirm) {
         openConfirmation(player, description, confirm, null, null);
-    }
-
-    @Override
-    protected void configureViewer(SimpleViewer viewer) {
-        ViewerPropertyMap propertyMap = viewer.getPropertyMap();
-        String description = propertyMap.get("description");
-        ItemStack itemStack = propertyMap.get("itemStack");
-
-        ViewerConfiguration configuration = viewer.getConfiguration();
-        configuration.titleInventory(("§8" + description).substring(0, Math.min(32, description.length() + 2)));
-        configuration.inventorySize((itemStack == null ? 3 : 4) * 9);
-    }
-
-    @Override
-    protected void configureInventory(Viewer viewer, InventoryEditor editor) {
-        ItemStack itemStack = viewer.getPropertyMap().get("itemStack");
-        int increment = itemStack != null ? 9 : 0;
-
-        editor.setItem(11 + increment, confirmInventoryItem());
-        editor.setItem(15 + increment, declineInventoryItem());
-
-        if (itemStack != null) {
-            editor.setItem(13, InventoryItem.of(itemStack));
-        }
-    }
-
-    private InventoryItem confirmInventoryItem() {
-
-        ItemStack itemStack = TypeUtil.convertFromLegacy("STAINED_CLAY", 13);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("§aConfirmar");
-        itemMeta.setLore(Arrays.asList(
-                "§7Clique para confirmar esta ação!",
-                "§c§lOBS: §cEsta opção é irreversível!"
-        ));
-        itemMeta.addItemFlags(ItemFlag.values());
-        itemStack.setItemMeta(itemMeta);
-
-        return InventoryItem.of(itemStack)
-                .defaultCallback(event -> acceptRunnable(event.getViewer(), "confirm"));
-    }
-
-    private InventoryItem declineInventoryItem() {
-        ItemStack itemStack = TypeUtil.convertFromLegacy("STAINED_CLAY", 14);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName("§aCancelar");
-        itemMeta.setLore(Arrays.asList(
-                "§7Clique para cancelar esta ação!",
-                "§c§lOBS: §cEsta opção é irreversível!"
-        ));
-        itemMeta.addItemFlags(ItemFlag.values());
-        itemStack.setItemMeta(itemMeta);
-
-        return InventoryItem.of(itemStack)
-                .defaultCallback(event -> acceptRunnable(event.getViewer(), "decline"));
-    }
-
-    private void acceptRunnable(Viewer viewer, String property) {
-        Player player = viewer.getPlayer();
-        player.closeInventory();
-
-        Runnable runnable = viewer.getPropertyMap().get(property);
-        if (runnable != null) runnable.run();
     }
 
 }

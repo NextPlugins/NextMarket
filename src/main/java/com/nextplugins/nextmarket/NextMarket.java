@@ -3,16 +3,17 @@ package com.nextplugins.nextmarket;
 import com.google.common.base.Stopwatch;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.henryfabio.minecraft.inventoryapi.manager.InventoryManager;
 import com.henryfabio.sqlprovider.connector.SQLConnector;
 import com.henryfabio.sqlprovider.executor.SQLExecutor;
 import com.nextplugins.nextmarket.api.NextMarketAPI;
 import com.nextplugins.nextmarket.api.metric.MetricProvider;
 import com.nextplugins.nextmarket.command.MarketCommand;
+import com.nextplugins.nextmarket.compat.ServerVersion;
 import com.nextplugins.nextmarket.configuration.ConfigurationLoader;
 import com.nextplugins.nextmarket.dao.SQLProvider;
 import com.nextplugins.nextmarket.guice.PluginModule;
 import com.nextplugins.nextmarket.hook.EconomyHook;
+import com.nextplugins.nextmarket.inventory.menu.MenuListener;
 import com.nextplugins.nextmarket.listener.ProductBuyListener;
 import com.nextplugins.nextmarket.listener.ProductCreateListener;
 import com.nextplugins.nextmarket.listener.ProductRemoveListener;
@@ -63,6 +64,8 @@ public final class NextMarket extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("Iniciando carregamento do plugin.");
+        getLogger().info("Servidor detectado: Minecraft " + ServerVersion.asString()
+                + (ServerVersion.isLegacy() ? " (legacy materials)" : " (flattening)"));
 
         val loadTime = Stopwatch.createStarted();
         if (updateChecker.canUpdate()) {
@@ -79,7 +82,10 @@ public final class NextMarket extends JavaPlugin {
         }
 
         this.categoriesConfig = ConfigurationLoader.of("categories.yml").saveResource().create();
-        InventoryManager.enable(this);
+
+        if (!de.tr7zw.changeme.nbtapi.NBT.preloadApi()) {
+            getLogger().warning("NBT-API não inicializou corretamente; matching por NBT de categorias pode falhar.");
+        }
 
         sqlConnector = SQLProvider.of(this).setup();
         sqlExecutor = new SQLExecutor(sqlConnector);
@@ -97,6 +103,7 @@ public final class NextMarket extends JavaPlugin {
 
         enableCommandFrame();
 
+        registerListener(MenuListener.class);
         registerListener(ProductCreateListener.class);
         registerListener(ProductRemoveListener.class);
         registerListener(ProductBuyListener.class);

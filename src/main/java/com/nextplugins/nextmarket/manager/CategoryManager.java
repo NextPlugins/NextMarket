@@ -12,7 +12,6 @@ import lombok.val;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,7 +20,7 @@ import java.util.Optional;
 @Singleton
 public final class CategoryManager {
 
-    private final Map<String, Category> categoryMap = new LinkedHashMap<>();
+    private final Map<String, Category> categoryMap = new LinkedHashMap<String, Category>();
     private Category trashTableCategory;
 
     @Inject @Named("categories") private Configuration categoriesConfiguration;
@@ -48,29 +47,41 @@ public final class CategoryManager {
         return Optional.ofNullable(this.categoryMap.get(id));
     }
 
-    public Optional<Category> findCategory(@NotNull ItemStack itemStack) {
+    public Optional<Category> findCategory(ItemStack itemStack) {
         val materialData = MaterialData.of(itemStack, false);
         val itemMeta = itemStack.getItemMeta();
-        val nbtItem = new NBTItem(itemStack);
+
+        NBTItem nbtItem = null;
+        try {
+            nbtItem = new NBTItem(itemStack);
+        } catch (Throwable ignored) {
+            // NBT-API may fail on edge cases; continue with material/name matching
+        }
 
         for (Category category : categoryMap.values()) {
             if (category.isTrashTable()) continue;
 
             val configuration = category.getConfiguration();
-            for (String nbt : configuration.getNbts()) {
-                if (nbtItem.hasKey(nbt)) {
-                    return Optional.of(category);
+
+            if (nbtItem != null) {
+                for (String nbt : configuration.getNbts()) {
+                    if (nbt != null && !nbt.isEmpty() && nbtItem.hasKey(nbt)) {
+                        return Optional.of(category);
+                    }
                 }
             }
 
             for (MaterialData material : configuration.getMaterials()) {
-                if (material.equals(materialData)) {
+                if (material.matches(itemStack) || material.equals(materialData)) {
                     return Optional.of(category);
                 }
             }
 
             for (String name : configuration.getNames()) {
-                if (itemMeta != null && itemMeta.getDisplayName() != null && itemMeta.getDisplayName().equalsIgnoreCase(name)) {
+                if (itemMeta != null
+                        && itemMeta.hasDisplayName()
+                        && itemMeta.getDisplayName() != null
+                        && itemMeta.getDisplayName().equalsIgnoreCase(name)) {
                     return Optional.of(category);
                 }
             }

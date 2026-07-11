@@ -1,7 +1,6 @@
 package com.nextplugins.nextmarket.command;
 
 import com.google.inject.Inject;
-import com.henryfabio.minecraft.inventoryapi.viewer.property.ViewerPropertyMap;
 import com.nextplugins.nextmarket.NextMarket;
 import com.nextplugins.nextmarket.api.event.ProductCreateEvent;
 import com.nextplugins.nextmarket.api.model.category.Category;
@@ -67,6 +66,7 @@ public final class MarketCommand {
         context.sendMessage(MessageUtils.colored("  &fCategorias: &e" + categoryManager.getCategoryMap().size()));
         context.sendMessage(MessageUtils.colored("  &fItens registrados: &e" + itemCount));
         context.sendMessage(MessageUtils.colored("  &fVersão atual: &e" + updateChecker.getCurrentVersion()));
+        context.sendMessage(MessageUtils.colored("  &fServidor: &e" + com.nextplugins.nextmarket.compat.ServerVersion.asString()));
 
         if (!MessageUtils.sendUpdateMessage(context.getSender())) {
             context.sendMessage("");
@@ -79,21 +79,23 @@ public final class MarketCommand {
             async = true
     )
     public void showMarketCommand(Context<Player> context, @Optional String id) {
+        Player player = context.getSender();
         if (id == null) {
-            inventoryRegistry.getMarketInventory().openInventory(context.getSender());
-        } else {
-            Category category = categoryManager.findCategoryById(id).orElse(null);
-            if (category == null) {
-                String message = MessageValue.get(MessageValue::categoryNotExists);
-                context.sendMessage(message);
-            } else {
-                inventoryRegistry.getCategoryInventory().openInventory(context.getSender(), viewer -> {
-                    ViewerPropertyMap propertyMap = viewer.getPropertyMap();
-                    propertyMap.set("category", category);
-                    propertyMap.set("products", productStorage.findProductsByCategory(category));
-                });
-            }
+            runSync(() -> inventoryRegistry.getMarketInventory().openInventory(player));
+            return;
         }
+
+        Category category = categoryManager.findCategoryById(id).orElse(null);
+        if (category == null) {
+            context.sendMessage(MessageValue.get(MessageValue::categoryNotExists));
+            return;
+        }
+
+        runSync(() -> inventoryRegistry.getCategoryInventory().openInventory(
+                player,
+                category,
+                productStorage.findProductsByCategory(category)
+        ));
     }
 
     @Command(
@@ -102,13 +104,15 @@ public final class MarketCommand {
             async = true
     )
     public void personalMarketCommand(Context<Player> context) {
-        try {
-            PersonalMarketInventory personalMarketInventory = inventoryRegistry.getPersonalMarketInventory();
-            personalMarketInventory.openInventory(context.getSender());
-        } catch (Throwable ignored) {
-            context.getSender().closeInventory();
-            context.getSender().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
-        }
+        Player player = context.getSender();
+        runSync(() -> {
+            try {
+                inventoryRegistry.getPersonalMarketInventory().openInventory(player);
+            } catch (Throwable ignored) {
+                player.closeInventory();
+                player.sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+            }
+        });
     }
 
     @Command(
@@ -119,27 +123,29 @@ public final class MarketCommand {
     )
     public void sellMarketCommand(Context<Player> context, String priceText, @Optional String destination) {
         if (priceText == null) {
-
             context.sendMessage(MessageValue.get(MessageValue::correctUsageSellMessage));
             return;
-
         }
 
         double price = NumberUtils.parse(priceText);
         if (NumberUtils.isInvalid(price)) {
-
             context.getSender().sendMessage(MessageValue.get(MessageValue::invalidNumber));
             return;
-
         }
 
-        Product product = productManager.createProduct(context.getSender(), destination, price);
+        Player player = context.getSender();
+        Product product = productManager.createProduct(player, destination, price);
         if (product == null) return;
 
-        inventoryRegistry.getConfirmationInventory().openConfirmation(context.getSender(), "Venda de item", () -> {
-            ProductCreateEvent createEvent = new ProductCreateEvent(context.getSender(), product);
-            Bukkit.getPluginManager().callEvent(createEvent);
-        }, product.getItemStack());
+        runSync(() -> inventoryRegistry.getConfirmationInventory().openConfirmation(
+                player,
+                "Venda de item",
+                () -> {
+                    ProductCreateEvent createEvent = new ProductCreateEvent(player, product);
+                    Bukkit.getPluginManager().callEvent(createEvent);
+                },
+                product.getItemStack()
+        ));
     }
 
     @Command(
@@ -148,13 +154,24 @@ public final class MarketCommand {
             async = true
     )
     public void sellingMarketCommand(Context<Player> context) {
-        try {
-            SellingMarketInventory sellingMarketInventory = inventoryRegistry.getSellingMarketInventory();
-            sellingMarketInventory.openInventory(context.getSender());
-        } catch (Throwable ignored) {
-            context.getSender().closeInventory();
-            context.getSender().sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+        Player player = context.getSender();
+        runSync(() -> {
+            try {
+                inventoryRegistry.getSellingMarketInventory().openInventory(player);
+            } catch (Throwable ignored) {
+                player.closeInventory();
+                player.sendMessage(ChatColor.RED + "Não existe itens nesta categoria.");
+            }
+        });
+    }
+
+    private void runSync(Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+            return;
         }
+        Bukkit.getScheduler().runTask(NextMarket.getInstance(), runnable);
     }
 
 }
+

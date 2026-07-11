@@ -1,12 +1,12 @@
 package com.nextplugins.nextmarket.parser;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.inject.Singleton;
 import com.nextplugins.nextmarket.api.model.product.MaterialData;
+import com.nextplugins.nextmarket.compat.Items;
 import com.nextplugins.nextmarket.inventory.button.InventoryButton;
 import com.nextplugins.nextmarket.util.MessageUtils;
-import com.nextplugins.nextmarket.util.TypeUtil;
 import lombok.val;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.stream.Collectors;
@@ -15,17 +15,25 @@ import java.util.stream.Collectors;
 public final class InventoryButtonParser {
 
     public InventoryButton parse(ConfigurationSection section) {
+        String materialName = section.getString("material", "BARRIER");
+        int data = section.getInt("data", 0);
 
-        val itemStack = TypeUtil.convertFromLegacy(
-                section.getString("material"),
-                (byte) section.getInt("data"));
+        MaterialData materialData = Items.parseMaterialData(
+                data > 0 ? materialName + ":" + data : materialName
+        );
+        if (materialData == null) {
+            materialData = Items.parseMaterialData(materialName);
+        }
+        if (materialData == null) {
+            materialData = new MaterialData(XMaterial.BARRIER, null, true);
+        }
 
         return InventoryButton.builder()
                 .displayName(MessageUtils.colored(section.getString("displayName")))
                 .lore(section.getStringList("lore").stream()
                         .map(MessageUtils::colored)
                         .collect(Collectors.toList()))
-                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0, false) : MaterialData.of(itemStack, false))
+                .materialData(materialData)
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
     }

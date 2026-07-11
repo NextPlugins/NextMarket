@@ -1,7 +1,11 @@
 package com.nextplugins.nextmarket.registry;
 
 import com.google.inject.Singleton;
-import com.nextplugins.nextmarket.inventory.*;
+import com.nextplugins.nextmarket.inventory.CategoryInventory;
+import com.nextplugins.nextmarket.inventory.ConfirmationInventory;
+import com.nextplugins.nextmarket.inventory.MarketInventory;
+import com.nextplugins.nextmarket.inventory.PersonalMarketInventory;
+import com.nextplugins.nextmarket.inventory.SellingMarketInventory;
 import lombok.Getter;
 
 @Getter
@@ -15,11 +19,11 @@ public final class InventoryRegistry {
     private SellingMarketInventory sellingMarketInventory;
 
     public void init() {
-        this.marketInventory = new MarketInventory().init();
-        this.categoryInventory = new CategoryInventory().init();
-        this.confirmationInventory = new ConfirmationInventory().init();
-        this.personalMarketInventory = new PersonalMarketInventory().init();
-        this.sellingMarketInventory = new SellingMarketInventory().init();
+        this.marketInventory = new MarketInventory();
+        this.categoryInventory = new CategoryInventory();
+        this.confirmationInventory = new ConfirmationInventory();
+        this.personalMarketInventory = new PersonalMarketInventory();
+        this.sellingMarketInventory = new SellingMarketInventory();
     }
 
 }

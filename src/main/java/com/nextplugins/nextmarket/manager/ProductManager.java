@@ -6,6 +6,7 @@ import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.ConfigValue;
 import com.nextplugins.nextmarket.configuration.value.MessageValue;
+import com.nextplugins.nextmarket.compat.PlayerHands;
 import com.nextplugins.nextmarket.storage.ProductStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -25,8 +26,8 @@ public final class ProductManager {
     }
 
     public Product createProduct(Player player, String destinationName, double price) {
-        final ItemStack itemStack = player.getItemInHand();
-        if (itemStack.getType() == Material.AIR) {
+        final ItemStack itemStack = PlayerHands.getMainHand(player);
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
 
             player.sendMessage(MessageValue.get(MessageValue::invalidItemMessage));
             return null;
@@ -77,7 +78,7 @@ public final class ProductManager {
                 .seller(player)
                 .destination(destination)
                 .price(price)
-                .itemStack(itemStack)
+                .itemStack(itemStack.clone())
                 .category(category)
                 .build();
     }

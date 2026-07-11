@@ -1,12 +1,12 @@
 package com.nextplugins.nextmarket.inventory.button;
 
 import com.nextplugins.nextmarket.api.model.product.MaterialData;
+import com.nextplugins.nextmarket.compat.Items;
+import com.nextplugins.nextmarket.compat.Skulls;
 import lombok.Builder;
 import lombok.Data;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
 
@@ -25,26 +25,34 @@ public final class InventoryButton {
 
     public ItemStack getItemStack() {
         if (this.itemStack == null) {
-            this.itemStack = materialData.toItemStack(1);
+            this.itemStack = materialData != null
+                    ? materialData.toItemStack(1)
+                    : Items.fallbackBarrier();
             ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(this.displayName);
-            itemMeta.setLore(this.lore);
-            itemMeta.addItemFlags(ItemFlag.values());
-            this.itemStack.setItemMeta(itemMeta);
+            if (itemMeta != null) {
+                if (this.displayName != null) {
+                    itemMeta.setDisplayName(this.displayName);
+                }
+                if (this.lore != null) {
+                    itemMeta.setLore(this.lore);
+                }
+                Items.applySafeFlags(itemMeta);
+                this.itemStack.setItemMeta(itemMeta);
+            }
         }
         return this.itemStack;
     }
 
     public ItemStack getSkullItemStack(String playerName) {
-        ItemStack itemStack = this.getItemStack().clone();
+        ItemStack base = this.getItemStack().clone();
+        ItemStack head = Skulls.createPlayerHead();
 
-        if (itemStack.getType().name().contains("SKULL_ITEM")) {
-            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
-            skullMeta.setOwner(playerName);
-            itemStack.setItemMeta(skullMeta);
+        ItemMeta baseMeta = base.getItemMeta();
+        if (baseMeta != null) {
+            head.setItemMeta(baseMeta);
         }
 
-        return itemStack;
+        return Skulls.withOwner(head, playerName);
     }
 
 }

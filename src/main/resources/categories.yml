@@ -1,20 +1,16 @@
 # Categorias do /mercado ver
-
-# Para que serve?
-# Ao anunciar, o item irá diretamente para categoria qual corresponde,
-# além de também, servir para melhor organização do mercado.
-
-# NOVIDADE v1.2.0 (apenas 1.12 1.11 1.10 1.9 e 1.8)
-# Você pode definir a 'data' que o item precisa ter para ser de tal categoria
-# Por exemplo, você pode definir um tipo específico de cor de corante para uma categoria
-# apenas use este formato:
-# MATERIAL:DATA -> Exemplo abaixo
-# WOOL:14 -> Apenas a lã vermelha poderá ser vendida na categoria
 #
-# ATENÇÃO
-# Caso você queira que TODAS as cores de lã funcione na categoria, siga o formato abaixo:
-# MATERIAL:all -> Exemplo abaixo:
-# - "WOOL:all"
+# Compatível com Minecraft 1.8 até 26.2 (nomes modernos e legacy).
+# Materiais inexistentes na versão do servidor são ignorados com warning no console.
+#
+# Formatos de material aceitos:
+#   DIAMOND_SWORD          -> nome moderno ou legacy
+#   WOOL:14                -> material + data (só relevante em 1.8–1.12)
+#   WOOL:all               -> ignora data (todas as variantes)
+#   PLAYER_HEAD / SKULL_ITEM:3  -> cabeças (ambos aceitos)
+#
+# Liste quantos sinônimos quiser (ex.: REDSTONE_TORCH e REDSTONE_TORCH_ON);
+# o plugin usa o que existir na versão atual.
 
 
 inventory:
@@ -30,7 +26,7 @@ inventory:
           - '&7Clique para ver os itens que estão vendendo para você'
         inventorySlot: 39
       sellingMarket:
-        material: EYE_OF_ENDER
+        material: ENDER_EYE
         data: 0
         displayName: "&aItens Anunciados"
         lore:
@@ -66,8 +62,8 @@ inventory:
       - '&aClique para coletar seu item.'
     buttons:
       update:
-        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
-        data: 3
+        material: PLAYER_HEAD
+        data: 0
         displayName: "&6Atualizar"
         lore:
           - '&7Clique para atualizar os seus itens anunciados!'
@@ -82,8 +78,8 @@ inventory:
       - ''
     buttons:
       update:
-        material: SKULL_ITEM # LEGACY_SKULL_ITEM para versões iguais ou superiores à 1.12
-        data: 3
+        material: PLAYER_HEAD
+        data: 0
         displayName: "&6Atualizar"
         lore:
           - '&7Clique para atualizar os itens do mercado pessoal!'
@@ -252,13 +248,13 @@ categories:
         - "TNT"
         - "REDSTONE"
         - "REDSTONE_BLOCK"
-        - "REDSTONE_TORCH" # 1.13 ou superior ( retire caso não precise )
-        - "REDSTONE_TORCH_ON" # 1.8 ( retire caso não precise )
-        - "REDSTONE_TORCH_OFF" # 1.8 ( retire caso não precise )
-        - "REPEATER" # 1.13 ou superior ( retire caso não precise )
-        - "DIODE" # 1.12 ou inferior ( retire caso não precise )
-        - "COMPARATOR" # 1.13 ou superior ( retire caso não precise )
-        - "REDSTONE_COMPARATOR" # 1.12 ou inferior ( retire caso não precise )
+        - "REDSTONE_TORCH"
+        - "REDSTONE_TORCH_ON"
+        - "REDSTONE_TORCH_OFF"
+        - "REPEATER"
+        - "DIODE"
+        - "COMPARATOR"
+        - "REDSTONE_COMPARATOR"
         - "DROPPER"
         - "DISPENSER"
       nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
@@ -300,7 +296,7 @@ categories:
       - ''
       - '&aClique para abrir.'
     icon:
-      material: MOB_SPAWNER
+      material: SPAWNER
       data: 0
       enchant: false
       inventorySlot: 20
@@ -309,6 +305,7 @@ categories:
       names:
         - "&eGerador de Monstros"
       materials:
+        - "SPAWNER"
         - "MOB_SPAWNER"
       nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
         - 'CustomSpawnerType'
@@ -323,8 +320,8 @@ categories:
       - ''
       - '&aClique para abrir.'
     icon:
-      material: SKULL_ITEM
-      data: 3
+      material: PLAYER_HEAD
+      data: 0
       enchant: false
       inventorySlot: 21
     configuration:
@@ -332,6 +329,7 @@ categories:
       names:
         - ""
       materials:
+        - "PLAYER_HEAD"
         - "SKULL_ITEM"
       nbts: # Caso o item tenha esta tag nbt, ele virá para esta categoria
         - 'RankupHead'

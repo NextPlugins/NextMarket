@@ -6,13 +6,10 @@ import com.nextplugins.nextmarket.api.model.category.Category;
 import com.nextplugins.nextmarket.api.model.category.CategoryConfiguration;
 import com.nextplugins.nextmarket.api.model.category.CategoryIcon;
 import com.nextplugins.nextmarket.api.model.product.MaterialData;
+import com.nextplugins.nextmarket.compat.Items;
 import com.nextplugins.nextmarket.util.MessageUtils;
-import com.nextplugins.nextmarket.util.TypeUtil;
 import lombok.val;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Objects;
@@ -22,12 +19,13 @@ import java.util.stream.Collectors;
 @Singleton
 public final class CategoryParser {
 
-    @Nullable
-    public Category parse(@NotNull ConfigurationSection section) {
+    public Category parse(ConfigurationSection section) {
         val iconSection = section.getConfigurationSection("icon");
         val configurationSection = section.getConfigurationSection("configuration");
         if (iconSection == null || configurationSection == null) {
-            NextMarket.getInstance().getLogger().warning("A categoria " + section.getName() + " tem um problema de configuração. (section de ícone ou configuração inválida)");
+            NextMarket.getInstance().getLogger().warning(
+                    "A categoria " + section.getName() + " tem um problema de configuração. (section de ícone ou configuração inválida)"
+            );
             return null;
         }
 
@@ -43,14 +41,22 @@ public final class CategoryParser {
                 .build();
     }
 
-    @NotNull
-    private CategoryIcon parseCategoryIcon(@NotNull ConfigurationSection section) {
-        val itemStack = TypeUtil.convertFromLegacy(
-                section.getString("material"),
-                (byte) section.getInt("data"));
+    private CategoryIcon parseCategoryIcon(ConfigurationSection section) {
+        String materialName = section.getString("material", "BARRIER");
+        int data = section.getInt("data", 0);
+
+        MaterialData materialData = Items.parseMaterialData(
+                data > 0 ? materialName + ":" + data : materialName
+        );
+        if (materialData == null) {
+            materialData = Items.parseMaterialData(materialName);
+        }
+        if (materialData == null) {
+            materialData = new MaterialData(com.cryptomorin.xseries.XMaterial.BARRIER, null, true);
+        }
 
         return CategoryIcon.builder()
-                .materialData(itemStack == null ? new MaterialData(Material.BARRIER, 0, false) : MaterialData.of(itemStack, false))
+                .materialData(materialData)
                 .enchant(section.getBoolean("enchant"))
                 .inventorySlot(section.getInt("inventorySlot"))
                 .build();
@@ -66,7 +72,7 @@ public final class CategoryParser {
                         .collect(Collectors.toList())
                         : Collections.emptyList())
                 .materials(section.getStringList("materials").stream()
-                        .map(TypeUtil::convertFromLegacy)
+                        .map(Items::parseMaterialData)
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList()))
                 .nbts(section.contains("nbts") ? section.getStringList("nbts")
@@ -77,7 +83,6 @@ public final class CategoryParser {
                 .build();
     }
 
-    // Apache method
     public static boolean isBlank(CharSequence sequence) {
         val strLen = sequence.length();
         if (strLen == 0) return true;

@@ -4,12 +4,14 @@ import com.google.inject.Inject;
 import com.nextplugins.nextmarket.api.event.ProductCreateEvent;
 import com.nextplugins.nextmarket.api.model.product.Product;
 import com.nextplugins.nextmarket.configuration.value.MessageValue;
+import com.nextplugins.nextmarket.compat.PlayerHands;
 import com.nextplugins.nextmarket.manager.AnnouncementManager;
 import com.nextplugins.nextmarket.storage.ProductStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
@@ -23,13 +25,18 @@ public final class ProductCreateListener implements Listener {
         Player player = event.getPlayer();
         Product product = event.getProduct();
 
-        if (!Objects.equals(player.getItemInHand(), product.getItemStack())) {
+        ItemStack hand = PlayerHands.getMainHand(player);
+        ItemStack expected = product.getItemStack();
+        if (hand == null
+                || hand.getType() != expected.getType()
+                || hand.getAmount() != expected.getAmount()
+                || !hand.isSimilar(expected)) {
             event.setCancelled(true);
             player.sendMessage(MessageValue.get(MessageValue::changedHandItemMessage));
             return;
         }
 
-        player.setItemInHand(null);
+        PlayerHands.clearMainHand(player);
         productStorage.insertOne(product);
 
         if (product.getDestination() == null) {

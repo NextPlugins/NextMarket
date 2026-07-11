@@ -5,51 +5,56 @@ import lombok.NoArgsConstructor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
-import java.util.logging.Level;
 
+/**
+ * Chat helpers. Item-hover uses a best-effort path and falls back to plain text
+ * when the server cannot serialize the item (common on remapped Paper builds).
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TextUtils {
 
     @Nullable
     public static TextComponent sendItemTooltipMessage(String message, ItemStack item) {
-        String itemJson = convertItemStackToJson(item);
-        if (itemJson == null) return null;
-
-        BaseComponent[] hoverEventComponents = {new TextComponent(itemJson)};
-        HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents);
+        if (message == null) return null;
 
         TextComponent component = new TextComponent(message);
-        component.setHoverEvent(event);
+        String itemJson = convertItemStackToJson(item);
+        if (itemJson == null) {
+            return component;
+        }
+
+        try {
+            BaseComponent[] hoverEventComponents = {new TextComponent(itemJson)};
+            HoverEvent event = new HoverEvent(HoverEvent.Action.SHOW_ITEM, hoverEventComponents);
+            component.setHoverEvent(event);
+        } catch (Throwable ignored) {
+            // SHOW_ITEM payload formats differ across versions — plain text is fine.
+        }
 
         return component;
     }
 
     @Nullable
     private static String convertItemStackToJson(ItemStack itemStack) {
-        Class<?> craftItemStackClazz = ReflectionUtils.getOBCClass("inventory.CraftItemStack");
-        Method asNMSCopyMethod = ReflectionUtils.getMethod(craftItemStackClazz, "asNMSCopy", ItemStack.class);
-        Class<?> nmsItemStackClazz = ReflectionUtils.getNMSClass("ItemStack");
+        if (itemStack == null) return null;
 
-        Class<?> nbtTagCompoundClazz = ReflectionUtils.getNMSClass("NBTTagCompound");
-        if (nbtTagCompoundClazz == null) return null;
-
-        Method saveNmsItemStackMethod = ReflectionUtils.getMethod(nmsItemStackClazz, "save", nbtTagCompoundClazz);
-        Object itemAsJsonObject;
-
+        // Prefer NBT-API when available (shaded, multi-version).
         try {
-            Object nmsNbtTagCompoundObj = nbtTagCompoundClazz.newInstance();
-            Object nmsItemStackObj = asNMSCopyMethod.invoke(null, itemStack);
-            itemAsJsonObject = saveNmsItemStackMethod.invoke(nmsItemStackObj, nmsNbtTagCompoundObj);
-        } catch (Throwable t) {
-            Bukkit.getLogger().log(Level.SEVERE, "failed to serialize itemstack to nms item", t);
-            return null;
+            de.tr7zw.changeme.nbtapi.NBTItem nbtItem = new de.tr7zw.changeme.nbtapi.NBTItem(itemStack);
+            String nbt = nbtItem.toString();
+            if (nbt != null && !nbt.isEmpty()) {
+                String type = itemStack.getType().name().toLowerCase();
+                int count = itemStack.getAmount();
+                // Legacy hover format used by many 1.8–1.12 clients
+                return "{id:\"" + type + "\",Count:" + count + "b,tag:" + nbt + "}";
+            }
+        } catch (Throwable ignored) {
         }
-        return itemAsJsonObject.toString();
+
+        return null;
     }
 
 }
